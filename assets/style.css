@@ -341,6 +341,11 @@ table.clean td:first-child { font-weight: 600; }
   margin-top: .1rem;
 }
 .step p { margin: 0; }
+/* A code box inside a step sits BELOW the step text at full width. Without this the flex row
+ * puts it in a half-width column beside the text and wraps code mid-token. */
+.step { flex-wrap: wrap; }
+.step > p { flex: 1 1 0; min-width: 0; }
+.step > .prompt-box { flex: 1 1 100%; margin: .7rem 0 .2rem; word-break: normal; overflow-x: auto; }
 
 /* ---------- callouts ---------- */
 .callout {
