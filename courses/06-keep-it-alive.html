@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Session 6 of 6. An RFM table is a photograph with a date on it. Retake it on a cadence, compare it with the last one, write the ten-field spec that lets the next analyst rebuild it, and know when to hand off to lifetime value, a churn model or clustering.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Keep it alive - learn rfm modeling with phoebe">
+<meta property="og:description" content="Session 6 of 6. Cadence, drift, the one-page spec, the handoff to CLV or clustering, and the eight-row gate a table has to clear before it ships.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/courses/06-keep-it-alive.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Keep it alive - learn rfm modeling with phoebe">
+<meta name="twitter:description" content="Session 6 of 6. Two dated snapshots, three kinds of drift, a ten-field spec and a ship gate.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Session 6 · Keep it alive - learn rfm modeling with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-rfm-modeling-with-phoebe</a> / Session 6 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn RFM Modeling with Phoebe · Session 6 of 6</div>
+    <h1>Keep it <span class="accent">alive</span></h1>
+    <p class="sub">An RFM table is a photograph with a date on it. It earns its keep only if it is retaken on a cadence, compared with the last one, and written down precisely enough that the next analyst produces the same table from the description alone. And it should know when its job is done: three digits answer "who, right now", and the moment the question becomes "how much next year" or "who is about to leave", the honest move is to hand the table to a model built for that question. Tonight we take the second photograph, read the drift between the two, write the one-page spec, and run the table through the gate it has to clear before anyone acts on it.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Core</span>
+      <span class="chip audience">Analysts, CRM and data leads</span>
+      <span class="chip audience">Python, pandas</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Cadence, drift, the spec, the handoff</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: two snapshots and the one-page spec</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Five sessions built one table: three columns on 93,358 real customers, a knife whose position decides who is called best, eight named corners with an action each, and a holdout behind every action. Every one of those numbers was measured from 1 September 2018. That date is the table's expiry stamp. Most RFM projects die not because the model was wrong but because it was built once, presented once, and then quietly re-run against a moving "today" by someone who had never read the original decisions. The last session is about the part after the build: the second photograph, the drift between the two, the page that makes the table reproducible, and the question of when RFM should stop being the model.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = run the code yourself</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> Two dated RFM tables and the code that compares their knives, their group sizes and their movers; a ten-field spec written as a JSON file a colleague could rebuild the table from; a check that fails loudly if the snapshot ever stops being a literal; and an eight-row gate that says whether the table is allowed to leave the notebook.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers cadence and drift</span>
+      <h2>Two photographs, three months apart</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Recompute on a declared cadence: monthly for a marketplace, weekly for a live-commerce room where a customer's whole relationship can run in a fortnight, quarterly for a small shop whose customers buy a few times a year. Each run is saved with its snapshot date in the filename, <code>rfm_2018-09-01.csv</code>, never <code>rfm.csv</code>. Between any two dated snapshots three things drift, and the one everyone forgets is the knife itself.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two sketched photograph frames side by side, the left dated rfm_2018-06-01.csv and the right dated rfm_2018-09-01.csv, each holding the same five group names. Arrows between the frames show customers moving from one corner to another between the two snapshots. One tangerine arrow runs from Key win-back in June to Low value in September and is labelled as the move that costs money if nobody sees it.">
+        <defs>
+          <filter id="s6aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="61" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s6aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s6aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+          <marker id="s6aArT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#B4530A" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s6aH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s6aL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s6aS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s6aB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s6aV { font: 800 16px Inter, sans-serif; fill: #1E3A8A; }
+          .s6aN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s6aH" x="30" y="26">TWO PHOTOGRAPHS, THREE MONTHS APART</text>
+        <text class="s6aS" x="330" y="26">same marketplace, same code, a different date on the frame</text>
+
+        <g filter="url(#s6aSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- left photograph frame -->
+          <rect x="40" y="56" width="280" height="244" rx="4" transform="rotate(-0.7 180 178)" fill="#FFFFFF"/>
+          <rect x="58" y="72" width="244" height="184" rx="2" transform="rotate(-0.4 180 164)" fill="#EEF3FC"/>
+          <!-- left rows -->
+          <rect x="80" y="88" width="200" height="22" rx="4" transform="rotate(-0.5 180 99)" fill="#FFFFFF"/>
+          <rect x="80" y="122" width="200" height="22" rx="4" transform="rotate(0.4 180 133)" fill="#FDEEDF" stroke="#B4530A"/>
+          <rect x="80" y="156" width="200" height="22" rx="4" transform="rotate(-0.3 180 167)" fill="#FFFFFF"/>
+          <rect x="80" y="190" width="200" height="22" rx="4" transform="rotate(0.5 180 201)" fill="url(#s6aHc)"/>
+          <rect x="80" y="224" width="200" height="22" rx="4" transform="rotate(-0.4 180 235)" fill="#FFFFFF"/>
+          <!-- right photograph frame -->
+          <rect x="560" y="56" width="280" height="244" rx="4" transform="rotate(0.6 700 178)" fill="#FFFFFF"/>
+          <rect x="578" y="72" width="244" height="184" rx="2" transform="rotate(0.3 700 164)" fill="#EEF3FC"/>
+          <!-- right rows -->
+          <rect x="600" y="88" width="200" height="22" rx="4" transform="rotate(0.4 700 99)" fill="#FFFFFF"/>
+          <rect x="600" y="122" width="200" height="22" rx="4" transform="rotate(-0.5 700 133)" fill="#FFFFFF"/>
+          <rect x="600" y="156" width="200" height="22" rx="4" transform="rotate(0.3 700 167)" fill="#FFFFFF"/>
+          <rect x="600" y="190" width="200" height="22" rx="4" transform="rotate(-0.4 700 201)" fill="url(#s6aHc)"/>
+          <rect x="600" y="224" width="200" height="22" rx="4" transform="rotate(0.5 700 235)" fill="#FDEEDF" stroke="#B4530A"/>
+          <!-- movers, ink -->
+          <path d="M322 99 C420 99 480 133 596 133" stroke="#4F5B7A" marker-end="url(#s6aAr)"/>
+          <path d="M322 167 C420 167 480 99 596 99" stroke="#4F5B7A" marker-end="url(#s6aAr)"/>
+          <path d="M322 201 C420 201 480 235 596 235" stroke="#4F5B7A" marker-end="url(#s6aAr)"/>
+          <!-- the mover that matters, tangerine -->
+          <path d="M322 133 C430 133 500 235 596 235" stroke="#B4530A" stroke-width="2.6" marker-end="url(#s6aArT)"/>
+        </g>
+
+        <text class="s6aL" x="90" y="104">High value</text>
+        <text class="s6aB" x="90" y="138">Key win-back</text>
+        <text class="s6aL" x="90" y="172">Key develop</text>
+        <text class="s6aL" x="90" y="206">General develop</text>
+        <text class="s6aL" x="90" y="240">Low value</text>
+        <text class="s6aB" x="180" y="286" text-anchor="middle">rfm_2018-06-01.csv</text>
+
+        <text class="s6aL" x="610" y="104">High value</text>
+        <text class="s6aL" x="610" y="138">Key win-back</text>
+        <text class="s6aL" x="610" y="172">Key develop</text>
+        <text class="s6aL" x="610" y="206">General develop</text>
+        <text class="s6aB" x="610" y="240">Low value</text>
+        <text class="s6aB" x="700" y="286" text-anchor="middle">rfm_2018-09-01.csv</text>
+
+        <text class="s6aS" x="440" y="64" text-anchor="middle">customers move corner to corner</text>
+        <text class="s6aS" x="440" y="78" text-anchor="middle">and the knife under both tables moves too</text>
+
+        <text class="s6aB" x="440" y="322" text-anchor="middle">the tangerine arrow: the move that costs money if nobody sees it</text>
+        <text class="s6aN" x="30" y="350">Frequent, big and gone quiet in June. Quiet, once-equivalent and small by September. Nobody sent the win-back message in between.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the crosstab between two dated tables is the only place this arrow is visible, and it needs both dates on both frames</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Three things drift, and the knife is the one people forget<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>First, the knife.</strong> With the cut at the mean, "high spend" means above the mean of M in <em>that</em> snapshot. New customers arrive, a few large baskets land, and the mean moves. A customer who spent R$ 160 has not changed, but in one snapshot she is below the line and in the next she is above it. The groups look different and nobody bought anything. The same happens to the frequency mean and to the recency mean, which drifts on its own as the whole base ages against a later snapshot date.</p>
+        <p><strong>Second, the group sizes.</strong> Even with the knife frozen, the shares move because the base moves: a marketplace that acquires 6,000 customers a month adds them almost entirely to General develop and Low value, so the Key groups shrink as a share without losing a single member.</p>
+        <p><strong>Third, individual customers moving corner to corner.</strong> This is the drift that pays for the cadence. The migration crosstab between two snapshots, one row per June group and one column per September group, is built step by step in the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">analyst session 4</a> and is described here in one paragraph rather than rebuilt: join the two tables on the person id, cross-tabulate the old group against the new, and read the off-diagonal cells. The cell that matters most is Key win-back to Low value, because it is the customer who was frequent and big, went quiet, and was not reached before "quiet" became "gone".</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Fix the knife or let it move: recomputing the mean each snapshot versus freezing the threshold from the first<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>There are two defensible policies and they answer different questions. <strong>A frozen threshold</strong>, the mean of M from the first snapshot written into the spec as a number, keeps the groups comparable across time: a customer only changes group when she changes. That is what you want when the question is "are we moving people up", because then the movement is the signal. <strong>A moving knife</strong>, the mean recomputed each run, keeps the groups honest to the current base: "high" means high among the customers you have now. That is what you want when the question is "who are the top people to call this month", because a threshold frozen in a year when baskets were smaller will eventually call half the base "high".</p>
+        <p>The trade-off is real and neither side wins it. What is not defensible is not knowing which one you are running. A team that recomputes the mean each month and then reports "Key win-back grew 20 percent" is reporting knife movement as customer movement. Write the policy into field 6 of the spec, and if it is the moving knife, print the knife's value in every run so a reader can see how much of the change is the line moving.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Why the Olist knife is so easy to move.</strong> On the 93,358 customers the mean spend is R$ 165.20 and the median is R$ 107.78. When the mean sits that far above the median, the spend column is dragged right by a few large baskets, and only 29.3 percent of customers clear the mean line. One quarter with a handful of unusually large orders lifts the mean for everyone, and a customer who has not bought since spring slips from Key potential to Low value without doing anything. A median knife would move far less between snapshots, at the cost of calling half the base "high" by construction. Whichever you choose, the reason it moved has to be readable in the run log, not reconstructed in a meeting.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the one-page RFM spec</span>
+      <h2>Ten fields on one page</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Session 1 opened with six decisions that every RFM build makes and most tutorials make silently. Sessions 2 to 5 added four more. Written down, the ten fit on one page, and that page is the difference between a table someone can rebuild and a table that lives in one analyst's notebook until she leaves. If any field is missing, two analysts will disagree about the table and both will be right.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A single sketched sheet of paper carrying ten short numbered field lines: person id, which orders count, spend column and total versus average, window, snapshot date and its rule, the cut and why, the taxonomy and action per group, holdout share, cadence, owner. The snapshot field is circled in tangerine. A pen lies beside the sheet. Side notes say the sheet has no adjectives and that a missing field means two analysts disagree and both are right.">
+        <defs>
+          <filter id="s6bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="67" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s6bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s6bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s6bH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s6bL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s6bS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s6bB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s6bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s6bH" x="30" y="26">THE ONE-PAGE RFM SPEC</text>
+        <text class="s6bS" x="210" y="26">ten fields, one page, no adjectives</text>
+
+        <g filter="url(#s6bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the sheet -->
+          <rect x="300" y="48" width="290" height="262" rx="3" transform="rotate(-0.8 445 179)" fill="#FFFFFF"/>
+          <!-- fill-in rules under each field -->
+          <path d="M470 84 L570 84 M470 106 L570 106 M470 128 L570 128 M470 150 L570 150 M470 172 L570 172 M470 194 L570 194 M470 216 L570 216 M470 238 L570 238 M470 260 L570 260 M470 282 L570 282" stroke="#CBD5EE" stroke-width="1.5"/>
+          <!-- the circled field -->
+          <ellipse cx="445" cy="168" rx="138" ry="15" stroke="#B4530A" stroke-width="2.4" transform="rotate(-1 445 168)"/>
+          <!-- pen -->
+          <rect x="640" y="78" width="14" height="120" rx="4" transform="rotate(32 647 138)" fill="#EEF3FC"/>
+          <path d="M609 192 L602 206 L616 200 Z" transform="rotate(32 647 138)" fill="#14213D"/>
+          <!-- arrow from the missing-field note to the sheet -->
+          <path d="M120 200 L292 200" stroke="#4F5B7A" marker-end="url(#s6bAr)"/>
+        </g>
+
+        <text class="s6bL" x="320" y="88">1  person id</text>
+        <text class="s6bL" x="320" y="110">2  which orders count</text>
+        <text class="s6bL" x="320" y="132">3  spend column, total or avg</text>
+        <text class="s6bL" x="320" y="154">4  window</text>
+        <text class="s6bB" x="320" y="176">5  snapshot date + its rule</text>
+        <text class="s6bL" x="320" y="198">6  the cut, and why</text>
+        <text class="s6bL" x="320" y="220">7  taxonomy + action per group</text>
+        <text class="s6bL" x="320" y="242">8  holdout share</text>
+        <text class="s6bL" x="320" y="264">9  cadence</text>
+        <text class="s6bL" x="320" y="286">10 owner</text>
+
+        <text class="s6bH" x="30" y="110">WHAT IT IS NOT</text>
+        <text class="s6bS" x="30" y="128">not a methodology document</text>
+        <text class="s6bS" x="30" y="144">not a slide with segment names</text>
+        <text class="s6bS" x="30" y="160">one page, literal values only</text>
+
+        <text class="s6bH" x="30" y="220">IF ONE FIELD IS BLANK</text>
+        <text class="s6bS" x="30" y="238">two analysts build two tables</text>
+        <text class="s6bS" x="30" y="254">and both of them are right</text>
+
+        <text class="s6bH" x="660" y="230">FIELD 5, CIRCLED</text>
+        <text class="s6bS" x="660" y="248">the date and the rule that</text>
+        <text class="s6bS" x="660" y="264">chose it: end of the last</text>
+        <text class="s6bS" x="660" y="280">complete month, 2018-09-01</text>
+
+        <text class="s6bN" x="30" y="332">A spec is finished when a colleague who has never seen the notebook rebuilds the table from the page alone and gets the same counts.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - field 5 is circled because it is the one that silently changes when nobody writes it down</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Ten fields, one page, no adjectives<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Each field is a literal value, not a description. <strong>1, person id:</strong> the column name, <code>customer_unique_id</code>, and one line on why it is not <code>customer_id</code>. <strong>2, which orders count:</strong> <code>order_status == "delivered"</code>. <strong>3, spend:</strong> the column, <code>payment_value</code> summed per order, and the word <em>total</em> or <em>average</em>. <strong>4, window:</strong> all time, or the trailing number of months. <strong>5, snapshot date and the rule that chose it:</strong> <code>2018-09-01</code>, end of the last complete month, found by plotting orders per month. <strong>6, the cut and why:</strong> mean split, because the tutorial the team learned from used it, or median split because the spend column is skewed, or Klaviyo's thresholds because the tool decides. The <em>why</em> is what a successor needs when she wants to change it. <strong>7, the taxonomy and the action per group:</strong> the eight names from session 1 and the action table from session 5, as a table, not a paragraph. <strong>8, holdout share:</strong> the fraction of every audience that is not messaged, so the action can be proved. <strong>9, cadence:</strong> monthly, weekly or quarterly, and the day of the run. <strong>10, owner:</strong> a name.</p>
+        <p>Adjectives are the failure mode. "Recent customers with meaningful spend" is a sentence two analysts read two ways. "R below 239.5 days, M above R$ 165.20" is a sentence that produces one table.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The spec as a data contract: a change to any field arrives as a diff to review, not as a surprise in the segment counts<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Once the spec is a file, it can be put under version control next to the code, and then a change to the model is a change to the file. Someone moves the knife from the mean to the median: that is a one-line diff in field 6, and the reviewer asks "why" before it runs, instead of asking "why did Key win-back double" after the segment counts land in a dashboard. Someone shortens the window to twelve months: a diff in field 4, and the reviewer knows to expect the frequency column to fall. The eight-group taxonomy from session 1 lives in field 7 as a dictionary, so swapping it for Klaviyo's six or Putler's eleven is also a diff, and the reviewer can pull up the finding from sessions 2 and 3 that under those two maps nine in ten "Champions" on a one-time-buyer base bought exactly once.</p>
+        <p>This is the same discipline any shared dataset gets from a schema: the consumers of the table are protected from silent change because the definition is a reviewable artefact. RFM tables rarely get it because they start life in a notebook, and the spec is how they leave it.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>When the tool is the spec.</strong> A shop that runs its segments inside Klaviyo has field 6 filled in by the vendor: recency scored 3 within 180 days and 2 within 365, frequency and monetary by thirds, six groups with published code lists, as the help centre states them. That is a legitimate spec, and it is a good one to copy into the page precisely because it is a vendor default: the day the shop exports its customers to a warehouse and an analyst rebuilds the segments in pandas, she needs to know that "Champions" meant those thresholds and not the mean split. Without the page, the two systems disagree, the marketing team trusts the one with the prettier dashboard, and both were right.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the handoff</span>
+      <h2>Three questions RFM cannot answer, and one it usually can</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">RFM answers "who, right now, by three coordinates". It is a description of the present. Three questions sound similar and are not: what is this customer worth over the next year, which customers are about to leave, and are there natural groups I have not drawn. Each has a model built for it, each takes the RFM table as an input, and none of them should be reached for until the question is actually being asked.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched decision tree. A small figure stands at the top-left. Three questions run downward: do I need a money forecast per customer, do I need a leaving probability per customer, do I suspect groups I have not drawn. Each yes arrow points right to an outcome: lifetime value with BG/NBD and Gamma-Gamma, a churn model, clustering on the raw three columns. Each no arrow drops to the next question, and the final no lands on a tangerine box reading RFM is enough, the common answer.">
+        <defs>
+          <filter id="s6cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="71" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s6cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s6cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s6cH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s6cL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s6cS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s6cB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s6cV { font: 800 16px Inter, sans-serif; fill: #FFFFFF; }
+          .s6cA { font: 700 11px Inter, sans-serif; fill: #1D4ED8; letter-spacing: .05em; }
+          .s6cN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s6cH" x="30" y="26">WHICH MODEL ANSWERS THE QUESTION I AM ACTUALLY ASKING</text>
+
+        <g filter="url(#s6cSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the analyst -->
+          <circle cx="48" cy="72" r="12"/>
+          <path d="M28 112 C32 90 64 90 68 112"/>
+          <!-- three questions -->
+          <rect x="90" y="52" width="250" height="56" rx="8" transform="rotate(-0.5 215 80)" fill="#EEF3FC"/>
+          <rect x="90" y="142" width="250" height="56" rx="8" transform="rotate(0.4 215 170)" fill="#EEF3FC"/>
+          <rect x="90" y="232" width="250" height="56" rx="8" transform="rotate(-0.4 215 260)" fill="#EEF3FC"/>
+          <!-- the common answer -->
+          <rect x="90" y="322" width="250" height="48" rx="8" transform="rotate(0.5 215 346)" fill="#B4530A" stroke="#B4530A"/>
+          <!-- outcomes -->
+          <rect x="580" y="52" width="270" height="56" rx="8" transform="rotate(0.5 715 80)" fill="#FFFFFF"/>
+          <rect x="580" y="142" width="270" height="56" rx="8" transform="rotate(-0.4 715 170)" fill="#FFFFFF"/>
+          <rect x="580" y="232" width="270" height="56" rx="8" transform="rotate(0.4 715 260)" fill="#FFFFFF"/>
+          <!-- yes arrows -->
+          <path d="M344 80 L574 80" marker-end="url(#s6cAr)"/>
+          <path d="M344 170 L574 170" marker-end="url(#s6cAr)"/>
+          <path d="M344 260 L574 260" marker-end="url(#s6cAr)"/>
+          <!-- no arrows -->
+          <path d="M160 110 L160 138" marker-end="url(#s6cAr)"/>
+          <path d="M160 200 L160 228" marker-end="url(#s6cAr)"/>
+          <path d="M160 290 L160 318" stroke="#B4530A" marker-end="url(#s6cAr)"/>
+        </g>
+
+        <text class="s6cL" x="104" y="76">Do I need a money forecast</text>
+        <text class="s6cL" x="104" y="94">per customer, for next year?</text>
+        <text class="s6cL" x="104" y="166">Do I need a probability that</text>
+        <text class="s6cL" x="104" y="184">this customer is leaving?</text>
+        <text class="s6cL" x="104" y="256">Do I suspect groups in the data</text>
+        <text class="s6cL" x="104" y="274">that I have not drawn?</text>
+
+        <text class="s6cV" x="215" y="352" text-anchor="middle">RFM is enough</text>
+        <text class="s6cS" x="215" y="366" text-anchor="middle" style="fill:#FFFFFF">three digits, eight actions, one holdout</text>
+
+        <text class="s6cA" x="459" y="72" text-anchor="middle">YES</text>
+        <text class="s6cA" x="459" y="162" text-anchor="middle">YES</text>
+        <text class="s6cA" x="459" y="252" text-anchor="middle">YES</text>
+        <text class="s6cA" x="174" y="128">NO</text>
+        <text class="s6cA" x="174" y="218">NO</text>
+        <text class="s6cB" x="174" y="308">NO, USUALLY</text>
+
+        <text class="s6cL" x="594" y="76">Lifetime value</text>
+        <text class="s6cS" x="594" y="94">BG/NBD + Gamma-Gamma, retention a6</text>
+        <text class="s6cL" x="594" y="166">Churn model</text>
+        <text class="s6cS" x="594" y="184">a classifier with a label, retention a7</text>
+        <text class="s6cL" x="594" y="256">Clustering</text>
+        <text class="s6cS" x="594" y="274">k-means on the raw three, Unsupervised</text>
+
+        <text class="s6cS" x="594" y="124">wants R, F and tenure per customer</text>
+        <text class="s6cS" x="594" y="214">wants a definition of "left", then R, F, M</text>
+        <text class="s6cS" x="594" y="304">wants the three columns scaled, not scored</text>
+
+        <text class="s6cN" x="30" y="392">Each handoff takes the RFM table as its input. None of them replaces the ten-field spec; they each add fields to it.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the tangerine box is the common exit, and on a 97 percent one-time-buyer base it is also the honest one</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Three questions RFM cannot answer, and one it usually can<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>"What is this customer worth over the next year?"</strong> is a forecast, and RFM has no time axis in its output. The buy-till-you-die family, BG/NBD for how many purchases and Gamma-Gamma for how much each one is worth, answers it, and it takes recency, frequency and tenure per customer at the snapshot as its inputs. It is built in the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a6-clv-buy-till-you-die.html">analyst session 6</a>.</p>
+        <p><strong>"Which customers are about to leave?"</strong> is a probability per person, and it needs a label: a definition of "left" that can be checked on past customers. RFM's "quiet" corner is a heuristic for this, not a model of it. The churn model in the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a7-churn-prediction.html">analyst session 7</a> is the tool, and R, F and M are usually three of its strongest features.</p>
+        <p><strong>"Are there natural groups I have not drawn?"</strong> is the one question the eight corners cannot answer by construction, because the corners were drawn first. Clustering lets the data propose the groups, and the <a href="https://phoebefu6.github.io/learn-unsupervised-with-phoebe/">Unsupervised Learning</a> course uses the three-number RFM portrait as exactly those features.</p>
+        <p><strong>And the one it usually can:</strong> "who do I message this month, and with what". For a shop with one channel and a monthly send, three digits and eight actions are the whole model, and reaching for anything heavier is a way of avoiding the holdout question from session 5. Say so plainly in field 6 of the spec: "RFM is enough, revisit when the question changes".</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What each handoff needs from the RFM table<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Lifetime value</strong> wants three columns per customer measured at the snapshot: recency (in the buy-till-you-die convention, the age of the customer at her last purchase), frequency as repeat purchases, and tenure, the time from first purchase to the snapshot. Tenure is not in the standard RFM table, so the handoff means adding one aggregation, <code>first=("order_purchase_timestamp", "min")</code>, to the session 1 pipeline. Everything else transfers as is, including the frozen snapshot, which the model needs for exactly the same reason RFM does.</p>
+        <p><strong>Clustering</strong> wants the three raw columns, not the scores. The 0 and 1 digits are the answer to a question already asked; feeding them to k-means asks the algorithm to rediscover the corners you drew. Feed it R, F and M scaled, usually log-transformed first because M and F are heavily right-skewed on any retail base, and let it propose groups the taxonomy has no name for. Then compare its clusters against the eight corners with the same crosstab from Part 1.</p>
+        <p><strong>A churn model</strong> wants a label before it wants features. The label is the part RFM cannot provide: "did not buy within N days after the snapshot" is one honest definition, and it requires a later snapshot to exist. The dated files from Part 1 are therefore also the training data for the handoff, which is another reason to save every one of them.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>A lifetime-value model on a base that mostly bought once.</strong> On Olist 97.0 percent of the 93,358 customers have exactly one delivered order, and the 2,801 repeat buyers hold 5.6 percent of revenue. A buy-till-you-die model learns the repeat rhythm of a base from the customers who have one, and here that is 2,801 people out of 93,358. The model will fit; its forecast for the other 90,557 will lean almost entirely on the population prior, because each of them has contributed one event. That is not a reason never to build it. It is the reason the handoff decision should be made after looking at the frequency column, and why "RFM is enough" is the honest exit for most marketplaces with this shape.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-4">
+    <div class="section-kicker">
+      <span class="klabel">Part 4 · the final scorecard</span>
+      <h2>Eight checks before the table leaves the notebook</h2>
+      <span class="tag concept">4 min live</span>
+    </div>
+    <p class="lede">Sessions 1 to 3 asked halfway questions about definitions. This is the ship gate: eight things that are either true of the table in front of you or not, and a table that fails any one of them is a table someone will act on for the wrong reason. Score the table you have, not the one you intend to build.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched gate with two posts and a barrier arm, marked ship. Beside it a column of eight check boxes with ticks: snapshot is a literal with its reason, the person id is the person, the cut is written down with why, the bought-once share of the top group has been checked, every action has a holdout, one dated file per run, the empty-room count of the taxonomy is known, and the spec has a named owner. The last box, the owner, is drawn in tangerine.">
+        <defs>
+          <filter id="s6dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="73" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s6dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s6dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s6dH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s6dL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s6dS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s6dB { font: 800 12px Inter, sans-serif; fill: #8A3E06; }
+          .s6dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .s6dN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s6dH" x="30" y="26">THE SHIP GATE</text>
+        <text class="s6dS" x="150" y="26">eight ticks open it, seven do not</text>
+
+        <g filter="url(#s6dSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- ground -->
+          <path d="M30 306 L290 306" stroke="#CBD5EE"/>
+          <!-- posts -->
+          <rect x="60" y="86" width="16" height="220" rx="3" transform="rotate(-0.6 68 196)" fill="url(#s6dHc)"/>
+          <rect x="244" y="86" width="16" height="220" rx="3" transform="rotate(0.5 252 196)" fill="url(#s6dHc)"/>
+          <!-- lintel -->
+          <rect x="52" y="66" width="216" height="22" rx="4" transform="rotate(-0.4 160 77)" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <!-- barrier arm, hand placed -->
+          <rect x="78" y="186" width="164" height="12" rx="6" transform="rotate(-3 160 192)" fill="#FDEEDF" stroke="#B4530A"/>
+          <circle cx="82" cy="192" r="7" fill="#FFFFFF" stroke="#B4530A"/>
+          <!-- the eight tick boxes -->
+          <rect x="330" y="58" width="20" height="20" rx="4" transform="rotate(-2 340 68)" fill="#FFFFFF"/>
+          <rect x="330" y="92" width="20" height="20" rx="4" transform="rotate(1.5 340 102)" fill="#FFFFFF"/>
+          <rect x="330" y="126" width="20" height="20" rx="4" transform="rotate(-1 340 136)" fill="#FFFFFF"/>
+          <rect x="330" y="160" width="20" height="20" rx="4" transform="rotate(2 340 170)" fill="#FFFFFF"/>
+          <rect x="330" y="194" width="20" height="20" rx="4" transform="rotate(-1.5 340 204)" fill="#FFFFFF"/>
+          <rect x="330" y="228" width="20" height="20" rx="4" transform="rotate(1 340 238)" fill="#FFFFFF"/>
+          <rect x="330" y="262" width="20" height="20" rx="4" transform="rotate(-2 340 272)" fill="#FFFFFF"/>
+          <rect x="330" y="296" width="20" height="20" rx="4" transform="rotate(1.5 340 306)" fill="#FDEEDF" stroke="#B4530A"/>
+          <!-- ticks -->
+          <path d="M334 68 L339 74 L348 61"/>
+          <path d="M334 102 L339 108 L348 95"/>
+          <path d="M334 136 L339 142 L348 129"/>
+          <path d="M334 170 L339 176 L348 163"/>
+          <path d="M334 204 L339 210 L348 197"/>
+          <path d="M334 238 L339 244 L348 231"/>
+          <path d="M334 272 L339 278 L348 265"/>
+          <path d="M334 306 L339 312 L348 299" stroke="#B4530A"/>
+          <!-- eight ticks to the gate -->
+          <path d="M320 192 L272 192" stroke="#4F5B7A" marker-end="url(#s6dAr)"/>
+        </g>
+
+        <text class="s6dW" x="160" y="82" text-anchor="middle">SHIP</text>
+        <text class="s6dS" x="160" y="230" text-anchor="middle">the arm lifts on 8 of 8</text>
+        <text class="s6dS" x="160" y="246" text-anchor="middle">7 of 8 is a table with a</text>
+        <text class="s6dS" x="160" y="262" text-anchor="middle">reason to be wrong built in</text>
+
+        <text class="s6dL" x="362" y="73">Snapshot date is a literal in the code, with its reason</text>
+        <text class="s6dL" x="362" y="107">The person id is the person, not the checkout</text>
+        <text class="s6dL" x="362" y="141">The cut is written down, and why that cut</text>
+        <text class="s6dL" x="362" y="175">Bought-once share of the top group has been checked</text>
+        <text class="s6dL" x="362" y="209">Every action has a holdout behind it</text>
+        <text class="s6dL" x="362" y="243">One dated file per run, none overwritten</text>
+        <text class="s6dL" x="362" y="277">The taxonomy's empty-room count is known</text>
+        <text class="s6dB" x="362" y="311">The spec has a named owner</text>
+
+        <text class="s6dN" x="30" y="344">The owner is tangerine because it is the check that keeps the other seven true next quarter, when nobody in tonight's room is running the code.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - seven of these are about the table; the eighth is about who will still be looking at it in six months</figcaption>
+    </figure>
+
+    <div class="scorecard" data-title="The RFM ship gate" data-msgs="Sixteen of sixteen. The table can be rebuilt by somebody else from the spec alone; it ships.|Close, and not yet. Any row under 2 is a decision the next analyst will make differently; write it down before shipping.|Half the gate is open. The rows at 0 are usually the snapshot rule and the owner; those two take an hour and they are the ones that cost the most when missing.|Do not ship this table yet. Go back to the session each low row names, and write the spec field before touching the code again." data-foot="Score every row 0 for not yet, 1 for partly, 2 for solid. This gate is strict: anything under 16 of 16 does not ship, because a partly-written snapshot rule is the same as no rule to the analyst who inherits the table. A row at 0 or 1 is the next thing to write, and it names which session to go back to.">
+      <div class="sc-row"><div class="sc-q">The snapshot date is a literal in the code, with the reason it was chosen in a comment beside it, and nothing in the pipeline computes "today" from the data or the clock. <em>Session 1. On Olist the last timestamp is 17 October 2018 and the honest snapshot is 1 September, because the 20 orders dated later are all undelivered. A computed maximum would have made every customer 47 days staler than the data supports, and would move again on the next export.</em></div></div>
+      <div class="sc-row"><div class="sc-q">The person id column is the person, and I have checked its cardinality against the order count rather than trusting the column name. <em>Session 1. Olist carries customer_id, one per order, 99,441 of them, and customer_unique_id, 96,096. Group by the first and frequency is 1 for everyone by construction; group by the second and 2,801 repeat buyers appear.</em></div></div>
+      <div class="sc-row"><div class="sc-q">The cut is written down as a literal rule, with the reason for choosing it, and if the knife moves each run the run prints the knife's value. <em>Sessions 2 and 3. Mean split, median split, thirds, quintiles or a merchant threshold each produce a different set of "best" customers from the same people. The choice is legitimate; the silence about it is not.</em></div></div>
+      <div class="sc-row"><div class="sc-q">I have printed the share of the top group who bought exactly once, and I can say the number out loud before anyone calls them Champions. <em>Session 3. Replicating two vendor defaults on the Olist population put 13.9 and 16.1 percent of customers in the top group, and 91.0 and 92.1 percent of them had bought exactly once. The mean-split top group is 1.28 percent and none of them bought once.</em></div></div>
+      <div class="sc-row"><div class="sc-q">Every action in the action table has a holdout share written next to it, and the holdout is drawn inside the group, not from the whole base. <em>Session 5. Without a held-out slice of the same group there is no way to tell the message's effect from the group's own reorder rate, and the win-back audience is the group where the two are most easily confused.</em></div></div>
+      <div class="sc-row"><div class="sc-q">Every run writes a new file with its snapshot date in the name, the previous file is never overwritten, and the two most recent can be joined on the person id. <em>Session 6. The migration crosstab in Part 1 only exists if both photographs still exist. A file called rfm.csv is a table with no history and therefore no drift to read.</em></div></div>
+      <div class="sc-row"><div class="sc-q">I know how many of the taxonomy's rooms are empty or nearly empty on my base, and the action table does not assign budget to a room with nobody in it. <em>Sessions 1 and 3. Replicating Putler's eleven segments on the Olist population filled 7 of 11, because averaging frequency and monetary quintiles never reaches the corner values when 97 percent of the frequency column is ties. With the mean split, General potential is 0.52 percent and General retain 0.42 percent of customers.</em></div></div>
+      <div class="sc-row"><div class="sc-q">The ten-field spec names one owner, that person has agreed to it, and the next snapshot date is in their calendar. <em>Session 6. Seven of these checks describe the table tonight. The eighth is the only one that keeps them true after tonight, and it is the one most often left blank because it is not a technical question.</em></div></div>
+    </div>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The empty rooms, counted.</strong> Row seven exists because of a specific replication. Putler's eleven-segment map, run on the 93,358 Olist customers with rank quintiles, produced 7 non-empty segments: New, Promising, Can't lose and Lost held nobody, because averaging the frequency and monetary quintiles never reaches the corner values when 97 percent of frequency is a single tied value. An action table copied from the vendor's page would have assigned a message, a budget line and a KPI to four rooms with no one in them. The check takes one line, <code>value_counts()</code> on the group column, and it belongs in the gate because the taxonomy's poster never shows the counts.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Two snapshots and the one-page spec</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">Seven steps in pandas. The September table is the one from session 1. The June table is session 1's homework: the same six steps with <code>SNAPSHOT = datetime(2018, 6, 1)</code>, saved as <code>rfm_2018-06-01.csv</code>. Only the September figures below are quoted as measured; wherever a line depends on your June table, the comment says so, and your numbers will differ from the person next to you if any of the ten fields differs.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The session 1 pipeline drawn as six boxes in a row, load orders, freeze the clock, R F M, the knife, groups and actions, dated save, with a return arrow looping from the last box back under to the first, labelled every cadence, same code, new date. Beneath the loop a stack of dated files grows: rfm_2018-06-01.csv, rfm_2018-09-01.csv, and a dashed sheet for the next snapshot.">
+        <defs>
+          <filter id="s6eSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="79" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s6eHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s6eAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s6eH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s6eL { font: 700 11.5px Inter, sans-serif; fill: #14213D; }
+          .s6eS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s6eB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s6eW { font: 800 11.5px Inter, sans-serif; fill: #FFFFFF; }
+          .s6eN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s6eH" x="30" y="26">THE PIPELINE, NOW A LOOP</text>
+        <text class="s6eS" x="230" y="26">session 1's six steps, run again every cadence, each run leaving a dated file behind</text>
+
+        <g filter="url(#s6eSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- six boxes -->
+          <rect x="30" y="56" width="120" height="50" rx="8" transform="rotate(-0.5 90 81)" fill="#FFFFFF"/>
+          <rect x="170" y="56" width="120" height="50" rx="8" transform="rotate(0.4 230 81)" fill="#FDEEDF" stroke="#B4530A"/>
+          <rect x="310" y="56" width="120" height="50" rx="8" transform="rotate(-0.4 370 81)" fill="#EEF3FC"/>
+          <rect x="450" y="56" width="120" height="50" rx="8" transform="rotate(0.5 510 81)" fill="#EEF3FC"/>
+          <rect x="590" y="56" width="120" height="50" rx="8" transform="rotate(-0.3 650 81)" fill="#EEF3FC"/>
+          <rect x="730" y="56" width="120" height="50" rx="8" transform="rotate(0.4 790 81)" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <!-- forward arrows -->
+          <path d="M152 81 L166 81" marker-end="url(#s6eAr)"/>
+          <path d="M292 81 L306 81" marker-end="url(#s6eAr)"/>
+          <path d="M432 81 L446 81" marker-end="url(#s6eAr)"/>
+          <path d="M572 81 L586 81" marker-end="url(#s6eAr)"/>
+          <path d="M712 81 L726 81" marker-end="url(#s6eAr)"/>
+          <!-- the return loop -->
+          <path d="M790 108 L790 176 L90 176 L90 112" stroke="#1D4ED8" marker-end="url(#s6eAr)"/>
+          <!-- drop from the save box into the stack -->
+          <path d="M760 108 L760 236 L560 236" stroke="#4F5B7A" stroke-dasharray="5 5" marker-end="url(#s6eAr)"/>
+          <!-- the growing file stack -->
+          <rect x="380" y="214" width="150" height="24" rx="3" transform="rotate(-1 455 226)" fill="#FFFFFF"/>
+          <rect x="386" y="240" width="150" height="24" rx="3" transform="rotate(0.8 461 252)" fill="url(#s6eHc)"/>
+          <rect x="392" y="266" width="150" height="24" rx="3" transform="rotate(-0.6 467 278)" fill="#FFFFFF" stroke="#4F5B7A" stroke-dasharray="4 4"/>
+          <!-- a small calendar as the cadence anchor -->
+          <rect x="230" y="196" width="48" height="44" rx="4" transform="rotate(-2 254 218)" fill="#FFFFFF"/>
+          <path d="M230 208 L278 208" />
+          <path d="M240 190 L240 200 M268 190 L268 200"/>
+          <circle cx="254" cy="226" r="5" fill="#B4530A" stroke="#B4530A"/>
+        </g>
+
+        <text class="s6eL" x="42" y="78">1 · load orders</text>
+        <text class="s6eS" x="42" y="94">delivered only</text>
+        <text class="s6eB" x="182" y="78">2 · freeze the clock</text>
+        <text class="s6eS" x="182" y="94">a literal, with its rule</text>
+        <text class="s6eL" x="322" y="78">3 · R, F, M</text>
+        <text class="s6eS" x="322" y="94">one row per person</text>
+        <text class="s6eL" x="462" y="78">4 · the knife</text>
+        <text class="s6eS" x="462" y="94">as written in field 6</text>
+        <text class="s6eL" x="602" y="78">5 · groups, actions</text>
+        <text class="s6eS" x="602" y="94">holdout per group</text>
+        <text class="s6eW" x="742" y="78">6 · dated save</text>
+        <text class="s6eW" x="742" y="94">rfm_DATE.csv</text>
+
+        <text class="s6eS" x="440" y="166" text-anchor="middle">every cadence: same code, new date, compare with the last file before acting</text>
+        <text class="s6eS" x="254" y="258" text-anchor="middle">next run</text>
+        <text class="s6eS" x="254" y="272" text-anchor="middle">in the calendar</text>
+
+        <text class="s6eL" x="560" y="232">rfm_2018-06-01.csv</text>
+        <text class="s6eL" x="560" y="258">rfm_2018-09-01.csv</text>
+        <text class="s6eS" x="560" y="284">the next snapshot, not yet taken</text>
+
+        <text class="s6eN" x="30" y="312">The loop is the model. A table that ran once is a slide; a table that runs every cadence, with its files kept, is a system.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - box 2 is tangerine because it is the one box whose contents must change by hand every time the loop comes round</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Load the two dated tables.</strong> The September file is session 1's output. The June file is your homework from session 1, the same pipeline with the snapshot moved back three months. If you do not have it yet, build it now; it takes the six steps and one changed literal.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · two photographs</span>import pandas as pd
+import json, re
+from datetime import datetime
+
+# session 1 homework: rerun the session 1 pipeline with
+#   SNAPSHOT = datetime(2018, 6, 1)   and save as rfm_2018-06-01.csv
+june = pd.read_csv("rfm_2018-06-01.csv")
+sept = pd.read_csv("rfm_2018-09-01.csv")
+
+print(len(june), len(sept))    # your June count, then 93358</div>
+      </div>
+      <div class="step">
+        <p><strong>Compare the knives.</strong> With a mean split, the line between "high spend" and "low spend" is the mean of M in each table. Print both. If they differ, some of the group movement you are about to see is the line moving, not the customers.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · where the knife sat, each time</span>print("knife on M, June:", june["M"].mean().round(2))   # your June table
+print("knife on M, Sept:", sept["M"].mean().round(2))   # 165.20
+print("median M,   Sept:", sept["M"].median().round(2)) # 107.78
+
+# the knife on F and R moved too; print them the same way
+print(june["F"].mean().round(3), sept["F"].mean().round(3))   # ..., 1.033
+print(june["R"].mean().round(1), sept["R"].mean().round(1))   # ..., 239.5</div>
+      </div>
+      <div class="step">
+        <p><strong>Group sizes side by side.</strong> Shares, not counts, because the September base is larger. Read the Key groups first; on a marketplace that acquires fast, they shrink as a share even when nobody leaves them.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · shares, side by side</span>sizes = pd.concat(
+    [june["group"].value_counts(normalize=True).mul(100).round(2),
+     sept["group"].value_counts(normalize=True).mul(100).round(2)],
+    axis=1, keys=["june_pct", "sept_pct"]).fillna(0)
+sizes["shift"] = (sizes["sept_pct"] - sizes["june_pct"]).round(2)
+print(sizes.sort_values("sept_pct", ascending=False))
+# sept_pct: General develop 37.88 · Low value 31.91 · Key develop 15.10
+#           Key potential 12.11 · High value 1.28 · Key win-back 0.79 ...
+# june_pct and shift: your June table decides these</div>
+      </div>
+      <div class="step">
+        <p><strong>Join on the person and cross-tabulate.</strong> One line. Customers who did not exist in June appear as "new". How to read the off-diagonal cells, and the persona version of the same table, is taught in the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">analyst session 4</a>; here the one cell to look at is the June Key win-back row.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · the migration crosstab</span>both = sept[["customer_unique_id", "group"]].merge(
+    june[["customer_unique_id", "group"]],
+    on="customer_unique_id", how="left", suffixes=("_sept", "_june"))
+both["group_june"] = both["group_june"].fillna("new since June")
+
+moves = pd.crosstab(both["group_june"], both["group_sept"])
+print(moves)
+print(moves.loc["Key win-back"])   # the row that costs money if nobody reads it</div>
+      </div>
+      <div class="step">
+        <p><strong>The ten-field spec as a dictionary.</strong> Literal values only. Field 6 carries the policy from Part 1 as well as the cut. Field 10 is a name, not a team.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · rfm_spec.json</span>SNAPSHOT = datetime(2018, 9, 1)
+
+spec = {
+    "person_id":      "customer_unique_id",
+    "orders_counted": "order_status == 'delivered'",
+    "spend":          {"column": "payment_value", "aggregate": "total per customer"},
+    "window":         "all time",
+    "snapshot":       {"date": SNAPSHOT.date().isoformat(),
+                       "rule": "first day after the last complete month"},
+    "cut":            {"rule": "mean split on R, F, M",
+                       "knife_policy": "recomputed each snapshot, value printed",
+                       "why": "skewed M; median considered, see session 2 notes"},
+    "taxonomy":       {"111": "High value", "101": "Key develop",
+                       "011": "Key win-back", "001": "Key potential",
+                       "110": "General potential", "100": "General develop",
+                       "010": "General retain", "000": "Low value"},
+    "holdout_share":  0.10,
+    "cadence":        "monthly, first business day",
+    "owner":          "a named person, not a team",
+}
+with open("rfm_spec.json", "w") as f:
+    json.dump(spec, f, indent=2)</div>
+      </div>
+      <div class="step">
+        <p><strong>A check that fails loudly.</strong> Two assertions the gate cares about most: the snapshot in the script is a literal, not a computed maximum, and the person id named in the spec is actually a column in the table. Run it before every save.</p>
+        <div class="prompt-box good"><span class="label">★ Step 6 · check_spec</span>def check_spec(spec, table, script_path):
+    src = open(script_path).read()
+    literal = re.search(r"SNAPSHOT\s*=\s*datetime\(\s*\d{4}\s*,\s*\d{1,2}\s*,\s*\d{1,2}\s*\)", src)
+    assert literal, "snapshot is not a literal in the code"
+    assert ".max()" not in src.split("SNAPSHOT")[1].split("\n")[0], \
+        "snapshot is computed from the data"
+    assert spec["person_id"] in table.columns, \
+        f"person id {spec['person_id']} is not a column"
+    assert table[spec["person_id"]].is_unique, "one row per person, or it is not RFM"
+    assert 0 &lt; spec["holdout_share"] &lt; 1, "holdout share must be a fraction"
+    assert spec["owner"] and "team" not in spec["owner"].lower(), "owner must be a person"
+    return True
+
+check_spec(spec, sept, "rfm_build.py")</div>
+      </div>
+      <div class="step">
+        <p><strong>The dated save.</strong> The table and the crosstab both carry the snapshot in their names. Nothing is overwritten; the stack at the bottom of the figure grows by one every cadence.</p>
+        <div class="prompt-box good"><span class="label">★ Step 7 · one more photograph on the pile</span>stamp = SNAPSHOT.strftime("%Y-%m-%d")
+sept.to_csv(f"rfm_{stamp}.csv", index=False)
+moves.to_csv(f"rfm_moves_2018-06-01_to_{stamp}.csv")
+print("saved", f"rfm_{stamp}.csv", "knife on M:", sept["M"].mean().round(2))  # 165.20</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Put the check in the same file as the build.</strong> A check that lives in a separate notebook is a check nobody runs. <code>check_spec</code> goes at the bottom of <code>rfm_build.py</code>, before the save, so the file refuses to write a table whose snapshot has quietly become <code>.max()</code>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>After the last session</h2>
+      <span class="tag exercise">45 min</span>
+    </div>
+    <ol>
+      <li><strong>Write the ten-field spec for your own table,</strong> as a JSON file next to the code, with literal values in every field. If a field makes you hesitate, that hesitation is the decision the table has been making silently.</li>
+      <li><strong>Schedule the next snapshot.</strong> A date in the calendar, the cadence from field 9, and the reminder addressed to the owner in field 10. Then run the check from step 6 against the current script and fix whatever it refuses.</li>
+      <li><strong>Decide the handoff question honestly.</strong> Look at your frequency column first. If most of your base bought once, write "RFM is enough, revisit when the question changes" in the spec and mean it. If you have real repeat behaviour and the question is money next year, the retention course's analyst session 6 is the next build.</li>
+      <li><strong>Send the spec to one colleague and ask them to rebuild the table from it alone.</strong> No notebook, no call, just the page. If their group counts match yours, the spec is finished. If they do not, the difference is a missing field, and finding it is the whole point.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and session 6 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Between the June and September snapshots, the share of customers in Key win-back changed. Why can that number not be read as "customers moved" without more information?</p>
+      <button class="qopt" type="button">A · Because the two tables have different numbers of customers, so shares cannot be compared</button>
+      <button class="qopt" type="button">B · Because Key win-back is too small a group for its share to mean anything</button>
+      <button class="qopt" type="button">C · Because with a mean split the knife is recomputed each snapshot, so some of the change is the line moving rather than the people; freezing the threshold keeps groups comparable at the cost of drifting from the current base, recomputing keeps them honest to the base at the cost of comparability, and the spec has to say which one is running</button>
+      <button class="qopt" type="button">D · Because the crosstab must be built before shares can be compared</button>
+      <p class="qwhy">Three things drift between snapshots: the knife, the group sizes and the individuals. The knife is the one people forget, and on Olist it is especially mobile because the mean spend of R$ 165.20 sits well above the median of R$ 107.78, so a few large baskets move the line for everyone. Neither policy is wrong; not knowing which one you run is.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · A shop with one channel and a monthly send asks "which customers are about to leave?" and, separately, "who do I message this month?" Which model answers which?</p>
+      <button class="qopt" type="button">A · The first needs a churn model, because it is a probability per customer that requires a definition of "left" checkable on past data; the second is usually answered by RFM alone, three digits and eight actions with a holdout, and reaching for a heavier model there is a way of avoiding the holdout question</button>
+      <button class="qopt" type="button">B · Both need clustering, because segments should always come from the data</button>
+      <button class="qopt" type="button">C · Both need a lifetime-value model, because value is the only thing worth predicting</button>
+      <button class="qopt" type="button">D · Neither can be answered without first collecting engagement data</button>
+      <p class="qwhy">RFM answers "who, right now, by three coordinates". Money next year is lifetime value, leaving is a churn model, undrawn groups is clustering, and each takes the RFM table as an input. For most shops with a monthly send the honest exit from the decision tree is the tangerine box, and on a 97 percent one-time-buyer base a lifetime-value model has 2,801 repeat buyers' worth of rhythm to learn from.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · Two analysts rebuild the RFM table from the same spec and get different group counts. The spec has no window field. Which of them made the mistake?</p>
+      <button class="qopt" type="button">A · The one whose counts differ from the original notebook</button>
+      <button class="qopt" type="button">B · Neither; one counted frequency over all time and the other over the trailing twelve months, both are legitimate readings of a spec that does not say, and the mistake is the missing field, which is why every one of the ten has to be a literal value rather than an adjective</button>
+      <button class="qopt" type="button">C · The one who used the trailing twelve months, because RFM is always computed over all time</button>
+      <button class="qopt" type="button">D · Both, because they should have agreed the window in a meeting first</button>
+      <p class="qwhy">A missing field is a decision the table makes silently, and two people will make it two ways. The fix is never a meeting; it is a tenth line on the page. Once the spec is a file under version control, the window becomes a diff someone reviews before the run, not a surprise someone explains after it.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The frozen snapshot and one dated file per run</span><span class="note">Standard practice. The same frozen-history discipline the retention course applies to cohort tables, at <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">analyst session 4</a>; the Olist ragged edge, 20 undelivered orders after August 2018, measured in this build</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The migration crosstab between two snapshots</span><span class="note">Owned by the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">analyst session 4</a>; described in one paragraph here and linked, not rebuilt</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">BG/NBD and Gamma-Gamma as the lifetime-value handoff</span><span class="note">Named with their inputs, recency, frequency and tenure per customer at the snapshot, and linked to the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a6-clv-buy-till-you-die.html">analyst session 6</a>; not taught here</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The Olist mean versus median spend</span><span class="note">R$ 165.20 against R$ 107.78, and 29.3 percent above the mean, recomputed on 93,358 customers from the public Kaggle dataset in this build; the 7 non-empty of 11 Putler segments replicated on the same population</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The ten-field RFM spec</span><span class="note">Practice, with no external source; the ten fields are the six decisions of session 1 plus the cut, the taxonomy and actions, the holdout and the cadence that sessions 2 to 5 added</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Session 6 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>A photograph with a date on it</b><span>Recompute on a declared cadence; save every run as rfm_YYYY-MM-DD.csv; never overwrite.</span></div>
+      <div class="cheat-item"><b>Three things drift</b><span>The knife, the group sizes, the individuals. The knife is the one people forget.</span></div>
+      <div class="cheat-item"><b>Freeze or move the knife</b><span>Frozen keeps groups comparable; moving keeps them honest to the base. Write down which, print its value.</span></div>
+      <div class="cheat-item"><b>Ten fields, one page, no adjectives</b><span>Person id, orders counted, spend, window, snapshot + rule, cut + why, taxonomy + actions, holdout, cadence, owner.</span></div>
+      <div class="cheat-item"><b>Three handoffs, one usual exit</b><span>Money next year: CLV. Leaving: churn model. Undrawn groups: clustering. Monthly send, one channel: RFM is enough.</span></div>
+      <div class="cheat-item"><b>The gate is 8 of 8</b><span>Literal snapshot, real person id, written cut, bought-once share checked, holdout per action, dated files, empty rooms counted, named owner.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Where next</span>
+    <p>You have a table that knows its date, a spec that lets someone else rebuild it, and a gate it has to clear every cadence. When the question changes from "who, right now" to "how much, next year", the retention course's <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a6-clv-buy-till-you-die.html">analyst session 6</a> builds lifetime value on the same three columns plus tenure, and its <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a7-churn-prediction.html">analyst session 7</a> turns "quiet" into a probability. When the question is whether the eight corners are the right shapes at all, <a href="https://phoebefu6.github.io/learn-unsupervised-with-phoebe/">Unsupervised Learning</a> lets the data draw its own groups from the raw R, F and M. And the whole shelf, with every course that shares a dataset with this one, is at the <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe hub</a>.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Session 6 of 6 · learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="05-from-segment-to-action.html">← Prev: From segment to action, and proving it</a> &nbsp;·&nbsp; <a href="../index.html">Course home</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

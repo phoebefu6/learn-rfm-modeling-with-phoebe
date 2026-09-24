@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Session 4 of 6. RFM assumes the purchase table describes the customer. On Taobao, Douyin and Pinduoduo it describes almost nobody. Three platforms each break one letter; the fixes are replace an axis, redefine an axis, or add one.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Beyond purchase - learn rfm modeling with phoebe">
+<meta property="og:description" content="Session 4 of 6. Engagement in place of spend, two recency clocks for a live room, and a referral axis the order table cannot see. Build an engagement RFM on an events table.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/courses/04-beyond-purchase.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Beyond purchase - learn rfm modeling with phoebe">
+<meta name="twitter:description" content="Session 4 of 6. RFE, room loyalty, the referral axis: replace, redefine or add.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Session 4 · Beyond purchase - learn rfm modeling with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-rfm-modeling-with-phoebe</a> / Session 4 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn RFM Modeling with Phoebe · Session 4 of 6</div>
+    <h1>Beyond <span class="accent">purchase</span></h1>
+    <p class="sub">RFM assumes the purchase table describes the customer. On a marketplace like Olist that is nearly true: everyone in the file bought at least once. On a platform where most people browse, watch or share and never buy, the purchase table describes almost nobody, and an RFM built on it is a segmentation of the minority who happened to check out. Tonight three real platforms each break one of the three letters, and each one needs a different fix: replace an axis, redefine an axis, or add one. Knowing which move a platform needs is the skill; the pandas is the easy part.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Core</span>
+      <span class="chip audience">Analysts, growth and platform teams</span>
+      <span class="chip audience">Python, pandas</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Three platforms where the order table is the wrong table</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: an engagement RFM on an events table</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Sessions 1 to 3 moved the knife on one order table and watched who was called best. Every one of those cuts shared a silent assumption: that the people worth segmenting are the people in the order table. A shopping platform where nearly everyone in a given week only looked, a live room where the loyal regulars watch every night and buy twice a year, a team-purchase app where the most valuable customer is the one who brings two friends. In each of those, a purchase RFM does not score the interesting people low. It gives them no row. This session is about noticing which letter is empty, and choosing between three repairs that are not interchangeable.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = run the code yourself</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A working engagement RFM built on an events table instead of an orders table, with two recency clocks and a weighted engagement score whose weights are written down as a decision. A three-way rule for any platform: replace a letter when nobody has it, redefine a letter when it counts the wrong thing, add a letter when the behaviour is genuinely new. And the discipline to say "no primary source states that" when a number everyone repeats has no floor under it.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers engagement in place of spend, RFE</span>
+      <h2>When the missing letter is the one nobody has</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">Taobao's UserBehavior dataset is nine days of one platform, 25 November to 3 December 2017: about 100 million rows from 987,994 users on 4,162,024 items, and every row is one of four things a person did, a page view (pv), a favourite (fav), an add to cart (cart) or a purchase (buy). Published analyses of it report that page views dominate and purchases are a low single-digit share of rows. Build a purchase RFM on that and most of the 987,994 users have no row at all. Not a low score. No row.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 374" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn funnel of Taobao's four behaviours: page views as the wide hatched top, favourites, add to cart, and purchases as a thin tangerine sliver at the bottom. An arrow from the sliver feeds a sketched purchase RFM table with a dashed empty box beneath it for everyone who never bought. On the right, an RFE triangle whose corners are R, F and E, with E replacing M and the weights pv 1, fav 2, cart 3, buy 5 noted as one common choice.">
+        <defs>
+          <filter id="s4aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="43" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s4aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s4aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s4aH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s4aL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s4aS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s4aB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s4aE { font: 800 16px Inter, sans-serif; fill: #8A3E06; }
+          .s4aN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s4aH" x="30" y="26">FOUR BEHAVIOURS, ONE THIN SLIVER</text>
+        <text class="s4aS" x="290" y="26">Taobao UserBehavior: pv, fav, cart, buy over nine days in 2017</text>
+        <text class="s4aH" x="706" y="26">RFE: E REPLACES M</text>
+
+        <g filter="url(#s4aSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- funnel, four layers -->
+          <path d="M60 60 L300 60 L272 128 L88 128 Z" fill="url(#s4aHc)"/>
+          <path d="M88 134 L272 134 L250 190 L110 190 Z" fill="#EEF3FC"/>
+          <path d="M110 196 L250 196 L232 240 L128 240 Z" fill="#FFFFFF"/>
+          <path d="M128 246 L232 246 L226 258 L134 258 Z" fill="#B4530A" stroke="#B4530A"/>
+          <!-- the sliver feeds the table -->
+          <path d="M240 252 C300 252 400 262 452 262" marker-end="url(#s4aAr)"/>
+          <!-- purchase RFM table -->
+          <rect x="460" y="224" width="150" height="76" rx="6" transform="rotate(-0.6 535 262)" fill="#FFFFFF"/>
+          <path d="M460 246 L610 246 M510 224 L510 246 M560 224 L560 246"/>
+          <!-- the rows that do not exist -->
+          <rect x="460" y="310" width="180" height="30" rx="6" stroke="#CBD5EE" stroke-dasharray="6 5"/>
+          <!-- RFE triangle -->
+          <path d="M770 80 L700 230 L850 230 Z" fill="#EEF3FC"/>
+          <circle cx="770" cy="80" r="6" fill="#FFFFFF"/>
+          <circle cx="700" cy="230" r="6" fill="#FFFFFF"/>
+          <circle cx="850" cy="230" r="9" fill="#B4530A" stroke="#B4530A"/>
+        </g>
+
+        <text class="s4aL" x="316" y="98">pv · page views</text>
+        <text class="s4aS" x="316" y="114">most of the rows</text>
+        <text class="s4aL" x="316" y="166">fav · favourites</text>
+        <text class="s4aL" x="316" y="222">cart · add to cart</text>
+        <text class="s4aB" x="60" y="282">buy · a low single-digit share</text>
+        <text class="s4aS" x="60" y="298">published analyses, not recomputed</text>
+
+        <text class="s4aH" x="460" y="214">PURCHASE RFM</text>
+        <text class="s4aL" x="485" y="240" text-anchor="middle">R</text>
+        <text class="s4aL" x="535" y="240" text-anchor="middle">F</text>
+        <text class="s4aL" x="585" y="240" text-anchor="middle">M</text>
+        <text class="s4aS" x="535" y="278" text-anchor="middle">buyers only</text>
+        <text class="s4aS" x="550" y="330" text-anchor="middle">never bought: no row</text>
+
+        <text class="s4aL" x="770" y="68" text-anchor="middle">R</text>
+        <text class="s4aL" x="692" y="250" text-anchor="middle">F</text>
+        <text class="s4aE" x="854" y="256" text-anchor="middle">E</text>
+        <text class="s4aS" x="770" y="170" text-anchor="middle">engagement</text>
+        <text class="s4aS" x="770" y="186" text-anchor="middle">replaces spend</text>
+        <text class="s4aS" x="775" y="278" text-anchor="middle">E = 1·pv + 2·fav + 3·cart + 5·buy</text>
+        <text class="s4aB" x="775" y="294" text-anchor="middle">one common choice, not a fact</text>
+
+        <text class="s4aN" x="30" y="366">Replace, do not add. When the letter nobody has is M, a fourth axis would be as empty as the third.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the purchase table reads only from the sliver, and the dashed box is where most of the platform's users live</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Replace, do not add, when the missing letter is the one nobody has<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>On a platform like this the letter that is empty is M. Most users have never spent anything, so a monetary column is zero for nearly everyone and the knife, wherever you put it, sorts almost the whole base onto one side. The tempting repair is to keep M and bolt an engagement axis on beside it. That gives you four letters, of which one is still empty, and sixteen corners of which eight hold almost nobody.</p>
+        <p>The cleaner repair is <strong>RFE</strong>: keep R and F, and put E where M was. R becomes days since the last action of any kind. F becomes the count of actions, or of sessions if the events carry a session id. E is an engagement score: a weighted count of what the person did, where a purchase is worth more than a page view because it costs the person more. One common choice of weights is <code>pv 1, fav 2, cart 3, buy 5</code>. Those numbers are a decision, not a measurement. Nobody has shown that a cart is worth exactly three page views; someone decided that ordering felt right and wrote it down. That is fine, as long as it is written down and can be argued with.</p>
+        <p>The test for "replace" is simple: <strong>if the letter you are about to add would be empty for most of the base, you are not adding, you are replacing, and you should say so.</strong> Part 3 shows the opposite case, where the old letters are all still full and a genuinely new behaviour earns a fourth column.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Two recencies: last action and last purchase, and why a platform keeps both<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Replacing M with E does not mean forgetting purchase. It means purchase recency and action recency become two different columns, and they answer two different questions. <code>R_action</code>, days since anything happened, tells you whether the person is still around. <code>R_buy</code>, days since the last purchase and missing for anyone who never bought, tells you whether they have ever crossed the line and how long ago. A user with <code>R_action</code> 1 and <code>R_buy</code> missing is alive and has never converted: an onboarding problem. A user with <code>R_action</code> 40 and <code>R_buy</code> 41 bought once and left the same day: a different problem entirely.</p>
+        <p>Keep both. Segment on <code>R_action</code>, because it is defined for everyone, and carry <code>R_buy</code> as a column you read when you choose the action. The build-along computes both, and the missing values in the second are the point, not a data-quality problem to fill.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>A dataset that is mostly looking.</strong> The Tianchi page for UserBehavior gives the shape: nine days, about 100 million rows, 987,994 users, 4,162,024 items, four behaviours. The split between those behaviours is not restated here as a recomputed figure, because the 3.4 GB file sits behind a login and was not downloaded for this build; the "page views dominate, purchases are a low single-digit share" statement is what published analyses of it report, and it is cited as that. The honest limit matters for the lesson: even without the exact split, a platform where a buy is a rare row is a platform where a purchase RFM segments the exception and ignores the rule.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers live commerce and room loyalty</span>
+      <h2>The room regular the order table cannot see</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Douyin sells through live rooms. The 索象集团 and 中国直播产业研究院 white paper on Douyin live commerce (2025) puts 2024 Douyin e-commerce GMV above 3 trillion yuan with live scenes over 58 percent of sales, and splits the live side into 店播, a brand broadcasting from its own room, at 41 percent, against 达播, influencer rooms, at 38 percent for 2024. CBNData (2025) reports 店播 revenue at around 70 percent of live revenue and a shelf / 店播 / 达播 mix of roughly 4:3:3. The two reports do not agree, and their denominators are not the same; both are quoted here by name and neither is reconciled. What matters for RFM is what a brand room does to the letter F.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 388" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched phone showing a live room with a host, a LIVE tag and a buy button. Two clocks beside it: R_watch, the last session in the room, and R_buy, the last order, which is missing for the regular who never buys. On the right a two-by-two grid of watch frequency against spend; the high-watch, zero-spend cell is hatched in tangerine and labelled as having no row in a purchase RFM.">
+        <defs>
+          <filter id="s4bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="47" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s4bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s4bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s4bH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s4bL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s4bS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s4bB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s4bW { font: 800 11px Inter, sans-serif; fill: #FFFFFF; }
+          .s4bA { font: 700 11px Inter, sans-serif; fill: #1D4ED8; letter-spacing: .05em; }
+          .s4bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s4bH" x="30" y="26">ONE CUSTOMER, TWO CLOCKS</text>
+        <text class="s4bS" x="240" y="26">F = sessions attended + orders; M stays GMV; R has two clocks</text>
+
+        <g filter="url(#s4bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- phone -->
+          <rect x="50" y="56" width="150" height="270" rx="16" transform="rotate(-1 125 191)" fill="#FFFFFF"/>
+          <rect x="62" y="76" width="126" height="210" rx="4" fill="#EEF3FC"/>
+          <rect x="70" y="84" width="40" height="16" rx="3" fill="#B4530A" stroke="#B4530A"/>
+          <!-- host -->
+          <circle cx="125" cy="150" r="18"/>
+          <path d="M96 206 C102 178 148 178 154 206"/>
+          <!-- chat and the buy button -->
+          <rect x="70" y="222" width="84" height="12" rx="6" fill="#FFFFFF"/>
+          <rect x="70" y="240" width="60" height="12" rx="6" fill="#FFFFFF"/>
+          <rect x="126" y="260" width="54" height="18" rx="4" fill="#FDEEDF" stroke="#B4530A"/>
+          <circle cx="125" cy="306" r="8"/>
+          <!-- two clocks -->
+          <circle cx="290" cy="120" r="26" fill="#EEF3FC"/>
+          <path d="M290 120 L290 102 M290 120 L302 128"/>
+          <circle cx="290" cy="236" r="26" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M290 236 L290 218 M290 236 L278 248" stroke="#B4530A"/>
+          <path d="M206 130 C236 130 246 120 258 120" marker-end="url(#s4bAr)"/>
+          <path d="M206 226 C236 226 246 236 258 236" marker-end="url(#s4bAr)"/>
+          <!-- the grid -->
+          <rect x="650" y="92" width="100" height="100" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M650 122 L680 92 M650 152 L710 92 M650 182 L740 92 M670 192 L750 112 M700 192 L750 142 M730 192 L750 172" stroke="#B4530A" stroke-width="1" opacity=".4"/>
+          <rect x="760" y="92" width="100" height="100" fill="#FFFFFF"/>
+          <rect x="650" y="202" width="100" height="100" fill="#FFFFFF"/>
+          <rect x="760" y="202" width="100" height="100" fill="#FFFFFF"/>
+        </g>
+
+        <text class="s4bW" x="90" y="96" text-anchor="middle">LIVE</text>
+        <text class="s4bB" x="153" y="273" text-anchor="middle">buy</text>
+        <text class="s4bS" x="125" y="346" text-anchor="middle">a brand's own room</text>
+
+        <text class="s4bH" x="330" y="112">R_watch · last session in the room</text>
+        <text class="s4bS" x="330" y="128">resets every night she shows up</text>
+        <text class="s4bB" x="330" y="228">R_buy · last order from the room</text>
+        <text class="s4bS" x="330" y="244">missing for the regular who never buys</text>
+
+        <text class="s4bH" x="600" y="60">THE CELL A PURCHASE RFM CANNOT SEE</text>
+        <text class="s4bS" x="700" y="84" text-anchor="middle">zero spend</text>
+        <text class="s4bS" x="810" y="84" text-anchor="middle">some spend</text>
+        <text class="s4bS" x="644" y="146" text-anchor="end">high</text>
+        <text class="s4bS" x="644" y="256" text-anchor="end">low</text>
+        <text class="s4bA" x="602" y="197" text-anchor="middle" transform="rotate(-90 602 197)">WATCH FREQUENCY</text>
+        <text class="s4bA" x="755" y="322" text-anchor="middle">SPEND</text>
+
+        <text class="s4bL" x="660" y="128">watches often</text>
+        <text class="s4bB" x="660" y="146">never buys</text>
+        <text class="s4bS" x="660" y="164">no row in RFM</text>
+        <text class="s4bL" x="770" y="128">watches often</text>
+        <text class="s4bS" x="770" y="146">and buys</text>
+        <text class="s4bS" x="770" y="164">the room's core</text>
+        <text class="s4bL" x="660" y="238">drops in</text>
+        <text class="s4bS" x="660" y="256">never buys</text>
+        <text class="s4bS" x="660" y="274">a passer-by</text>
+        <text class="s4bL" x="770" y="238">rarely watches</text>
+        <text class="s4bS" x="770" y="256">buys anyway</text>
+        <text class="s4bS" x="770" y="274">a shelf buyer</text>
+
+        <text class="s4bN" x="30" y="378">Redefine F as sessions plus orders and the hatched cell appears. Purchase RFM gives it no row, not a low score.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the hatched cell is the audience a brand room operator most wants to name, and the order table has never heard of them</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Two clocks, one customer<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A brand room is not a shop with a video on it. It runs at a fixed hour, the same faces come back, and the thing a regular does most is watch. So the letter that breaks is not M this time, it is <strong>F</strong>. Counting orders makes the nightly regular who buys twice a year look like a two-time buyer, indistinguishable from someone who found the room through a shelf search and never came back. The repair is not to replace F but to <strong>redefine</strong> it: frequency becomes sessions attended in the room plus orders placed, so attendance counts as the loyalty it is.</p>
+        <p>Recency splits into two clocks. <code>R_watch</code> is days since the last session attended, defined for everyone who has ever been in the room. <code>R_buy</code> is days since the last order, and missing for anyone who never bought. Monetary stays what it always was, the person's GMV in the room, because on a live platform it is the one letter that still means what it says.</p>
+        <p>The segment this exposes is the one a 店播 operator cares about most: <strong>high watch frequency, zero spend</strong>. In a purchase RFM that person does not have a low score, they have no row. Under the redefined F they are a named group, and session 5 gives them an action and a holdout.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>店播 against 达播: whose customer is it<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The white paper's split between 店播 and 达播 is not just a market-share table, it is a question about who owns the RFM row. In a 店播 room the brand runs the broadcast, the regular's loyalty is to the brand, and every session she attends is a data point the brand may keep and act on. In a 达播 room the loyalty is to the host. The brand buys a slot, the sale is real, but the room regular is the host's customer, and a "frequency" built on attendance in a host's room is measuring a relationship the brand does not have. <strong>The RFM row belongs to the room owner, and only in 店播 is that the brand.</strong></p>
+        <p>This is why a brand that sells through both channels should build the redefined RFM on its own room only, and treat 达播 orders as acquisition events feeding the purchase side, not as frequency. Mixing them inflates F with sessions the brand never hosted.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>What the reports say, and what they do not.</strong> The 索象集团 and 中国直播产业研究院 white paper (2025): 2024 Douyin e-commerce GMV over 3 trillion yuan, live scenes over 58 percent of sales, 店播 41 percent against 达播 38 percent in 2024. CBNData (2025): 店播 revenue around 70 percent of live revenue, shelf / 店播 / 达播 roughly 4:3:3. Read those two 店播 figures side by side and they do not match; one is a share of all sales and the other a share of live revenue, and the methods behind each are the reports' own. Neither report, and no other primary source found for this build, publishes a repeat-purchase rate for live rooms. Any "复购率" figure you meet for Douyin rooms is a vendor or press claim, and none is stated here as fact.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the referral axis</span>
+      <h2>The customer who is a channel</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Pinduoduo's team purchase is described in PDD Holdings' Form 20-F: buyers "share product information on social networks, and invite their friends, family and social contacts to form shopping teams to enjoy the more attractive prices available under the team purchase option". The lower price is the reward for the share. That makes the invitation a behaviour with a direct commercial value, and a purchase RFM has no column for it. Here the old letters are all still full, so the move is not to replace one. It is to add one.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 508" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The eight-corner RFM cube from session 1, with a fourth axis I for invitations drawn as a thick tangerine arrow out of the page from the origin corner. To the right, one buyer invites two friends who together earn a team-price tag; the buyer's I equals 2. An annotation reads RFM-I: sixteen corners, or keep eight and flag I separately, and notes that a low-M, high-I customer is an acquisition channel the order table cannot see.">
+        <defs>
+          <filter id="s4cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s4cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".45"/></pattern>
+          <marker id="s4cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s4cH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s4cC { font: 800 13px Inter, sans-serif; fill: #1E3A8A; }
+          .s4cS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s4cB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s4cV { font: 800 18px Inter, sans-serif; fill: #1E3A8A; }
+          .s4cA { font: 700 11px Inter, sans-serif; fill: #1D4ED8; letter-spacing: .05em; }
+          .s4cN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s4cH" x="30" y="26">EIGHT CORNERS GROW A FOURTH AXIS</text>
+        <text class="s4cS" x="290" y="26">R, F, M from session 1; I counts invitations or teams initiated</text>
+
+        <g filter="url(#s4cSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- back face -->
+          <path d="M200 90 L400 90 L400 290 L200 290 Z" stroke="#4F5B7A" stroke-dasharray="6 5"/>
+          <!-- front face, the pile -->
+          <path d="M130 150 L330 150 L330 350 L130 350 Z" fill="url(#s4cHc)"/>
+          <path d="M130 150 L200 90 M330 150 L400 90 M330 350 L400 290 M130 350 L200 290"/>
+          <!-- eight corners -->
+          <circle cx="130" cy="150" r="5" fill="#FFFFFF"/>
+          <circle cx="330" cy="150" r="5" fill="#FFFFFF"/>
+          <circle cx="130" cy="350" r="5" fill="#FFFFFF"/>
+          <circle cx="330" cy="350" r="5" fill="#FFFFFF"/>
+          <circle cx="200" cy="90" r="5" fill="#FFFFFF"/>
+          <circle cx="400" cy="90" r="5" fill="#FFFFFF"/>
+          <circle cx="200" cy="290" r="5" fill="#FFFFFF"/>
+          <circle cx="400" cy="290" r="5" fill="#FFFFFF"/>
+          <!-- the three old axes -->
+          <path d="M130 366 L330 366" stroke="#1D4ED8" marker-end="url(#s4cAr)"/>
+          <path d="M116 350 L116 150" stroke="#1D4ED8" marker-end="url(#s4cAr)"/>
+          <path d="M340 362 L404 306" stroke="#1D4ED8" marker-end="url(#s4cAr)"/>
+          <!-- the fourth axis, out of the page -->
+          <path d="M118 362 L46 434" stroke="#B4530A" stroke-width="3"/>
+          <path d="M46 434 L50 414 M46 434 L66 430" stroke="#B4530A" stroke-width="3"/>
+          <!-- one buyer, two friends -->
+          <circle cx="580" cy="130" r="16"/>
+          <path d="M550 182 C556 156 604 156 610 182"/>
+          <circle cx="700" cy="100" r="13"/>
+          <path d="M676 142 C680 122 720 122 724 142"/>
+          <circle cx="700" cy="190" r="13"/>
+          <path d="M676 232 C680 212 720 212 724 232"/>
+          <path d="M616 150 C650 140 660 112 676 108" marker-end="url(#s4cAr)"/>
+          <path d="M616 158 C650 168 660 194 676 196" marker-end="url(#s4cAr)"/>
+          <!-- the team price tag -->
+          <rect x="760" y="130" width="96" height="40" rx="6" transform="rotate(2 808 150)" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M730 106 C748 118 754 136 758 142" stroke="#B4530A"/>
+          <path d="M730 196 C748 184 754 164 758 158" stroke="#B4530A"/>
+        </g>
+
+        <text class="s4cA" x="230" y="384" text-anchor="middle">R · MORE RECENT</text>
+        <text class="s4cA" x="106" y="250" text-anchor="middle" transform="rotate(-90 106 250)">F · MORE OFTEN</text>
+        <text class="s4cA" x="412" y="300">M · BIGGER SPEND</text>
+        <text class="s4cC" x="110" y="346" text-anchor="end">000</text>
+        <text class="s4cC" x="410" y="86">111</text>
+        <text class="s4cS" x="438" y="86">from session 1</text>
+        <text class="s4cB" x="30" y="458">I · INVITATIONS</text>
+        <text class="s4cS" x="30" y="474">the axis out of the page</text>
+
+        <text class="s4cS" x="580" y="206" text-anchor="middle">one buyer</text>
+        <text class="s4cV" x="580" y="232" text-anchor="middle">I = 2</text>
+        <text class="s4cS" x="700" y="74" text-anchor="middle">friend</text>
+        <text class="s4cS" x="700" y="254" text-anchor="middle">friend</text>
+        <text class="s4cB" x="808" y="155" text-anchor="middle">team price</text>
+        <text class="s4cS" x="808" y="190" text-anchor="middle">reward for sharing</text>
+
+        <text class="s4cH" x="548" y="300">RFM-I: sixteen corners,</text>
+        <text class="s4cH" x="548" y="318">or keep eight and flag I separately</text>
+        <text class="s4cS" x="548" y="340">low M, high I is an acquisition channel,</text>
+        <text class="s4cS" x="548" y="356">a customer the order table cannot see</text>
+        <text class="s4cB" x="548" y="380">ADD, do not replace: M is full on Pinduoduo</text>
+
+        <text class="s4cN" x="30" y="500">Add an axis when the behaviour is new. Replace one when the old letter is empty. Never both by reflex.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the tangerine arrow is the only axis that does not come from the order table, and the buyer with I = 2 is worth more than her basket says</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Add an axis when the behaviour is new, replace one when the old letter is empty<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>On Pinduoduo every buyer has an order, so R, F and M are all defined and all mean what they say. What the order table misses is a fourth thing the platform is built on: the invitation. A customer who buys a small basket but forms three teams a month has brought the platform more new buyers than a customer with a large basket and no shares, and in a three-letter RFM the two are indistinguishable or, worse, the sharer scores lower.</p>
+        <p>So the move is <strong>RFM-I</strong>: add I, a count of invitations sent or teams initiated in the window. Now the customer with low M and high I has a name, <strong>acquisition channel</strong>, and an action that is nothing like the action for a low-M non-sharer. The distinction between this and Part 1 is the whole session: <strong>there, the letter you would add is empty for almost everyone, so you replace. Here, the letters you already have are full and the new one is too, so you add.</strong> Confusing the two either buries a real behaviour inside a score or multiplies your corners by two for nothing.</p>
+        <p>On disclosure: PDD Holdings' 20-F describes the mechanism in the words quoted above but no longer discloses an active-buyer count. The 882 million figure that circulates for 2023 is a secondary number and is not used here.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Sixteen corners is too many to act on: flag, do not multiply<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A fourth binary axis doubles the corners to sixteen, and sixteen groups is more than any team writes distinct actions for. The alternative that survives in practice is to keep the eight-corner code from session 1 exactly as it was and carry I as a <strong>flag beside it</strong>: a "sharer" column set when I clears its own knife. Every one of the eight groups then has a sharer and a non-sharer variant, and the operator chooses which groups the flag changes the action for (usually the low-M ones, where the referral is the value) and ignores it elsewhere.</p>
+        <p>The same logic applies to any new axis. A second dimension that changes the action in two groups and nothing in six is a flag, not a corner. Multiply corners only when the new letter changes the action nearly everywhere, and be honest that it rarely does.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The team price is the reward for the share.</strong> That is the mechanism in PDD Holdings' own filing: a buyer shares, contacts join, and the team earns "the more attractive prices available under the team purchase option". The discount is not a loyalty gesture, it is payment for acquisition, and the buyer who shares is doing a marketing job. Any behaviour a platform pays for is a behaviour worth a column, because the platform has already decided it has value; the analyst's job is only to count it. On a platform with no such mechanic, an I column would be zero for everyone and the Part 1 rule applies instead.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-4">
+    <div class="section-kicker">
+      <span class="klabel">Part 4 · covers weighting</span>
+      <h2>Does R weigh the same as M?</h2>
+      <span class="tag concept">3 min live</span>
+    </div>
+    <p class="lede">Every RFM tutorial eventually asks whether the three letters should count equally, and most then hand you a set of weights as if it had been measured. Hughes (1994) scored the three in sequence and equally: sort by R into fifths, each fifth by F, each of those by M, no letter heavier than another. Stone (1995) is widely cited for proposing unequal weights, but the weights could not be read at source for this build, so no canonical numbers are given here. Vendor content for content apps proposes yet another ordering, engagement and frequency over recency for heavy users. Three answers, none of them measured on your customers.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 386" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched balance scale with a block marked R on the left pan and blocks marked F and M on the right pan, a tangerine question mark above the pivot, and the labels w_R, w_F and w_M each set to a question mark. Beneath it, Hughes 1994 scored equally in sequence and Stone 1995 weights are often quoted but were not read at source. On the right, three cards: equal weights, recency-heavy and engagement-heavy, each with the situation it fits, and a note that a holdout answers the question and a citation does not.">
+        <defs>
+          <filter id="s4dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s4dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s4dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s4dH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s4dL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s4dS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s4dB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s4dQ { font: 800 20px Inter, sans-serif; fill: #8A3E06; }
+          .s4dN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s4dH" x="30" y="26">HOW MUCH DOES EACH LETTER WEIGH?</text>
+        <text class="s4dS" x="290" y="26">three weights, one business judgement, no canonical numbers</text>
+
+        <g filter="url(#s4dSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the scale -->
+          <path d="M180 300 L300 300"/>
+          <path d="M240 300 L240 130"/>
+          <circle cx="240" cy="130" r="6" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <path d="M96 140 L384 120"/>
+          <!-- left pan, R -->
+          <path d="M104 139 L104 206 M144 137 L144 206"/>
+          <path d="M96 206 Q124 228 152 206"/>
+          <rect x="106" y="178" width="36" height="28" rx="3" transform="rotate(-2 124 192)" fill="#EEF3FC"/>
+          <!-- right pan, F and M -->
+          <path d="M336 123 L336 190 M376 121 L376 190"/>
+          <path d="M328 190 Q356 212 384 190"/>
+          <rect x="338" y="134" width="36" height="28" rx="3" transform="rotate(1.5 356 148)" fill="#EEF3FC"/>
+          <rect x="338" y="162" width="36" height="28" rx="3" transform="rotate(-1 356 176)" fill="#EEF3FC"/>
+          <!-- the question -->
+          <circle cx="240" cy="84" r="20" fill="#FDEEDF" stroke="#B4530A"/>
+          <!-- three starting points -->
+          <rect x="480" y="76" width="370" height="56" rx="8" transform="rotate(0.4 665 104)" fill="#FFFFFF" stroke="#CBD5EE"/>
+          <rect x="480" y="142" width="370" height="56" rx="8" transform="rotate(-0.4 665 170)" fill="#FFFFFF" stroke="#CBD5EE"/>
+          <rect x="480" y="208" width="370" height="56" rx="8" transform="rotate(0.3 665 236)" fill="#FFFFFF" stroke="#CBD5EE"/>
+        </g>
+
+        <text class="s4dL" x="124" y="197" text-anchor="middle">R</text>
+        <text class="s4dL" x="356" y="153" text-anchor="middle">M</text>
+        <text class="s4dL" x="356" y="181" text-anchor="middle">F</text>
+        <text class="s4dQ" x="240" y="91" text-anchor="middle">?</text>
+        <text class="s4dB" x="124" y="250" text-anchor="middle">w_R = ?</text>
+        <text class="s4dB" x="356" y="236" text-anchor="middle">w_F = ?   w_M = ?</text>
+        <text class="s4dS" x="240" y="330" text-anchor="middle">Hughes 1994: scored equally, in sequence</text>
+        <text class="s4dS" x="240" y="346" text-anchor="middle">Stone 1995: weights often quoted, not read at source</text>
+
+        <text class="s4dH" x="480" y="60">THREE STARTING POINTS</text>
+        <text class="s4dH" x="494" y="98">Equal weights</text>
+        <text class="s4dS" x="494" y="116">one order table, all three letters filled</text>
+        <text class="s4dH" x="494" y="164">Recency-heavy</text>
+        <text class="s4dS" x="494" y="182">perishable or seasonal buying: quiet means gone</text>
+        <text class="s4dH" x="494" y="230">Engagement-heavy</text>
+        <text class="s4dS" x="494" y="248">a content app: heavy users over recent ones</text>
+        <text class="s4dB" x="480" y="292">which fits yours? a holdout answers, a citation does not</text>
+
+        <text class="s4dN" x="30" y="378">A weight is a hypothesis about your customers. Write it down, then let the session 5 holdout say if it held.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the only thing that settles the question mark is a test on your own base, never a number inherited from a slide</figcaption>
+    </figure>
+
+    <table class="clean">
+      <tr><th>Weighting</th><th>What it says</th><th>The situation it fits</th></tr>
+      <tr><td><strong>Equal</strong></td><td>R, F and M matter the same; Hughes's sequential scoring in effect</td><td>An order table where every letter is filled and nobody has a strong prior. The honest default</td></tr>
+      <tr><td><strong>Recency-heavy</strong></td><td>A quiet customer is a lost customer, whatever they spent</td><td>Perishable, seasonal or subscription-like buying, where the gap since the last order predicts the next one</td></tr>
+      <tr><td><strong>Engagement-heavy</strong></td><td>How much and how often beats how lately, especially on E</td><td>Content and platform apps with heavy users; proposed in vendor content, not measured in a source read here</td></tr>
+    </table>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Weights are a business judgement: state them, then test them<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>There is no measured answer to how much recency should weigh against spend, and the literature does not pretend otherwise once you read it rather than quote it. Hughes weighted nothing. Stone is cited for weights that could not be verified at source here. Vendors propose weights that suit the product they sell. What all three have in common is that the weights <strong>encode a belief about which behaviour predicts the next purchase</strong>, and a belief about your customers is something you can test.</p>
+        <p>So the working rule: write the weights down as a dictionary with a one-line reason each, apply them, and hold out a slice of every segment when you act on it. Session 5 builds that holdout. If the recency-heavy weighting produces a segment that responds and the equal weighting does not, you have learned something about your base that no citation could have told you. If both respond the same, the weights did not matter and the simpler one wins.</p>
+      </div>
+    </details>
+
+    <div class="tryrow" data-fn="wordcount" data-multiline="1" data-title="Write your weights, with a reason each" data-hint="For the events your product records: each behaviour, its weight, and one line on why it is worth that much more than a page view. If you cannot write the reason, the weight is inherited, not chosen." data-seed="" data-cta="Count it"></div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>An engagement RFM on an events table, in pandas</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">Seven steps on a <strong>constructed</strong> events table shaped like Taobao's UserBehavior: four columns, four behaviours, nine days. It is generated with a seed, so it runs anywhere, and it is not the real dataset; the share of each behaviour is a stated choice in the code, not the platform's. Your numbers will differ from your neighbour's and neither of you should copy one from a slide. What transfers is the shape of the pipeline: one table swapped, one column replaced, everything after the knife unchanged.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 292" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The build-along as a hand-drawn pipeline: an events table of user_id, item_id, behavior and timestamp, with the orders table set aside as a dashed outline, flows through a snapshot clock into one row per user with two recencies and two frequencies, then into a tangerine E box that replaces M, through the knife into a two-by-two-by-two code and a comparison with a purchase-only RFM.">
+        <defs>
+          <filter id="s4eSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="61" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s4eHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s4eAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s4eH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s4eL { font: 700 11.5px Inter, sans-serif; fill: #14213D; }
+          .s4eS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s4eB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s4eW { font: 800 11.5px Inter, sans-serif; fill: #FFFFFF; }
+          .s4eN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s4eH" x="30" y="26">THE PIPELINE, SEVEN STEPS, ONE TABLE SWAPPED</text>
+
+        <g filter="url(#s4eSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the events table -->
+          <rect x="30" y="66" width="140" height="110" rx="3" transform="rotate(-1.5 100 121)" fill="#FFFFFF"/>
+          <rect x="30" y="66" width="140" height="18" rx="3" transform="rotate(-1.5 100 121)" fill="url(#s4eHc)"/>
+          <!-- the orders table, set aside -->
+          <rect x="40" y="200" width="110" height="36" rx="3" transform="rotate(1.5 95 218)" stroke="#CBD5EE" stroke-dasharray="5 4"/>
+          <!-- snapshot -->
+          <circle cx="236" cy="120" r="22" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M236 120 L236 104 M236 120 L246 128" stroke="#B4530A"/>
+          <!-- one row per user -->
+          <rect x="296" y="88" width="160" height="64" rx="8" transform="rotate(0.5 376 120)" fill="#EEF3FC"/>
+          <!-- E replaces M -->
+          <rect x="486" y="88" width="134" height="64" rx="8" transform="rotate(-0.5 553 120)" fill="#B4530A" stroke="#B4530A"/>
+          <!-- knife -->
+          <path d="M646 84 L646 158" stroke="#B4530A" stroke-width="3"/>
+          <path d="M638 90 L654 90" stroke="#B4530A"/>
+          <!-- code and comparison -->
+          <rect x="676" y="88" width="174" height="64" rx="8" transform="rotate(0.4 763 120)" fill="#FFFFFF"/>
+          <!-- arrows -->
+          <path d="M176 120 L206 120" marker-end="url(#s4eAr)"/>
+          <path d="M262 120 L288 120" marker-end="url(#s4eAr)"/>
+          <path d="M462 120 L478 120" marker-end="url(#s4eAr)"/>
+          <path d="M624 120 L634 120" marker-end="url(#s4eAr)"/>
+          <path d="M658 120 L668 120" marker-end="url(#s4eAr)"/>
+        </g>
+
+        <text class="s4eL" x="40" y="100">1 · events</text>
+        <text class="s4eS" x="40" y="118">user_id · item_id</text>
+        <text class="s4eS" x="40" y="134">behavior · timestamp</text>
+        <text class="s4eS" x="40" y="150">pv fav cart buy</text>
+        <text class="s4eS" x="40" y="166">constructed, seeded</text>
+        <text class="s4eS" x="95" y="222" text-anchor="middle">orders</text>
+        <text class="s4eS" x="40" y="254">orders table, set aside tonight</text>
+        <text class="s4eB" x="236" y="64" text-anchor="middle">2 · SNAPSHOT</text>
+        <text class="s4eS" x="236" y="160" text-anchor="middle">a literal, day after</text>
+        <text class="s4eL" x="308" y="108">3 · one row per user</text>
+        <text class="s4eS" x="308" y="124">R_action, R_buy</text>
+        <text class="s4eS" x="308" y="140">F_actions, F_buys</text>
+        <text class="s4eW" x="498" y="108">4 · E, weighted</text>
+        <text class="s4eW" x="498" y="124">sum over actions</text>
+        <text class="s4eW" x="498" y="140">replaces M</text>
+        <text class="s4eS" x="553" y="176" text-anchor="middle">5 · print zero-buy share</text>
+        <text class="s4eB" x="646" y="76" text-anchor="middle">6 · knife · median</text>
+        <text class="s4eL" x="688" y="108">6 · 2x2x2 · eight codes</text>
+        <text class="s4eS" x="688" y="124">on R_action, F_actions, E</text>
+        <text class="s4eS" x="688" y="140">7 · vs purchase-only RFM</text>
+
+        <text class="s4eN" x="30" y="284">Same pipeline as session 1: events in place of orders, E in place of M. Everything after the knife is unchanged.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the dashed orders table is the one every RFM tutorial starts from, and tonight it is the wrong table</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Generate a constructed events table.</strong> Four columns, four behaviours, nine days, one seed. The behaviour shares in <code>P</code> are a choice made to look roughly like a browse-heavy platform; they are not Taobao's split and should not be quoted as one. If you have a real events export, load it here instead and skip the generator.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · events, constructed</span>import numpy as np
+import pandas as pd
+from datetime import datetime
+
+rng = np.random.default_rng(20171203)
+N_USERS, N_EVENTS = 20_000, 400_000
+BEHAVIOURS = ["pv", "fav", "cart", "buy"]
+P = [0.90, 0.03, 0.05, 0.02]   # constructed shares, a choice, not the dataset's
+
+start = pd.Timestamp("2017-11-25")
+events = pd.DataFrame({
+    "user_id":   rng.integers(1, N_USERS + 1, N_EVENTS),
+    "item_id":   rng.integers(1, 200_001, N_EVENTS),
+    "behavior":  rng.choice(BEHAVIOURS, N_EVENTS, p=P),
+    "timestamp": start + pd.to_timedelta(rng.integers(0, 9 * 86400, N_EVENTS), unit="s"),
+})
+print(events.shape)                                   # (400000, 4)
+print(events["behavior"].value_counts(normalize=True).round(3))</div>
+      </div>
+      <div class="step">
+        <p><strong>Freeze the clock.</strong> The window ends on 3 December 2017, so the snapshot is the first day after it, as a literal with the reason beside it. Same rule as session 1: the end of the last complete period, never <code>max()</code>.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · the snapshot</span># the nine-day window runs 2017-11-25 to 2017-12-03; snapshot is the day after
+SNAPSHOT = datetime(2017, 12, 4)
+events = events[events["timestamp"] &lt; SNAPSHOT]</div>
+      </div>
+      <div class="step">
+        <p><strong>One row per user, with two recencies and two frequencies.</strong> <code>R_action</code> and <code>F_actions</code> are defined for everyone. <code>R_buy</code> is missing for anyone who never bought, and that missingness is information, so it is left as <code>NaN</code> rather than filled.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · R_action, R_buy, F_actions, F_buys</span>buys = events[events["behavior"] == "buy"]
+
+per_user = events.groupby("user_id").agg(
+    last_action=("timestamp", "max"),
+    F_actions=("timestamp", "size"))
+per_buy = buys.groupby("user_id").agg(
+    last_buy=("timestamp", "max"),
+    F_buys=("timestamp", "size"))
+
+rfe = per_user.join(per_buy, how="left")
+rfe["F_buys"]   = rfe["F_buys"].fillna(0).astype(int)
+rfe["R_action"] = (SNAPSHOT - rfe["last_action"]).dt.days
+rfe["R_buy"]    = (SNAPSHOT - rfe["last_buy"]).dt.days   # NaN if never bought</div>
+      </div>
+      <div class="step">
+        <p><strong>E, the weighted sum.</strong> The weights are a dictionary at the top of the file, one common choice, with the reason for each written next to it. Change them and E changes; that is the point of having them in one place.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · E replaces M</span>WEIGHTS = {"pv": 1,     # looked
+           "fav": 2,    # wanted to find it again
+           "cart": 3,   # nearly bought
+           "buy": 5}    # bought; a decision, not a measurement
+
+events["w"] = events["behavior"].map(WEIGHTS)
+rfe["E"] = events.groupby("user_id")["w"].sum()</div>
+      </div>
+      <div class="step">
+        <p><strong>How many users a purchase table would never see.</strong> Print the share with zero buys. Do not write the number into a slide before you have run it; on the constructed data it follows from <code>P</code>, and on your real data it is the single most important fact about your base.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · the zero-buy share</span>zero_buy = (rfe["F_buys"] == 0).mean()
+print(f"users with zero buys: {zero_buy:.1%}")   # your number will differ; do not copy one</div>
+      </div>
+      <div class="step">
+        <p><strong>The knife, then the eight codes.</strong> Median tonight, because E and F_actions are as skewed as any spend column; swap in <code>.mean()</code> and watch the shares move, as they did in session 2. Recency is reversed, the other two read the normal way, and the eight codes are the same eight from session 1.</p>
+        <div class="prompt-box good"><span class="label">★ Step 6 · 2x2x2 on R_action, F_actions, E</span>knife = rfe[["R_action", "F_actions", "E"]].median()   # or .mean(); say which
+
+rfe["r"] = (rfe["R_action"]  &lt; knife["R_action"]).astype(int)   # reversed
+rfe["f"] = (rfe["F_actions"] &gt; knife["F_actions"]).astype(int)
+rfe["e"] = (rfe["E"]         &gt; knife["E"]).astype(int)
+rfe["code"] = rfe["r"].astype(str) + rfe["f"].astype(str) + rfe["e"].astype(str)
+
+print(rfe["code"].value_counts(normalize=True).round(3))   # eight rows, yours</div>
+      </div>
+      <div class="step">
+        <p><strong>Compare with a purchase-only RFM.</strong> Keep only users with a purchase and count what was dropped. Every dropped row is a person who looked, saved or carted and never bought: the audience Part 1 said the order table has no row for.</p>
+        <div class="prompt-box good"><span class="label">★ Step 7 · what the purchase table drops</span>rfm_purchase = rfe.dropna(subset=["R_buy"])
+dropped = len(rfe) - len(rfm_purchase)
+
+print(f"purchase-only RFM keeps {len(rfm_purchase)} of {len(rfe)} users, drops {dropped}")
+print(f"that is {dropped / len(rfe):.1%} of the base with no row at all")
+# on the constructed table this follows from P; on yours it is the finding</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Save the weights with the table.</strong> <code>rfe_2017-12-04_w1-2-3-5.csv</code>, not <code>rfe.csv</code>. A segment table built on E is only comparable with another one if both the snapshot and the weights are on the label, and session 6 will compare two of them.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before session 5</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Find the event table behind your own product.</strong> Not the orders table: the one that records views, saves, sessions, shares, whatever your users actually do. Write down its columns and how many rows it holds against the orders table.</li>
+      <li><strong>List the behaviours it records.</strong> For each one, note roughly what share of users have ever done it. The letter that is empty for most of your base is the one you are about to decide on.</li>
+      <li><strong>Decide, per letter, replace or add.</strong> If the letter you want to add would be empty for most users, you are replacing an old one; say which. If all three old letters are full and the new behaviour is too, add it as a flag beside the eight codes.</li>
+      <li><strong>Write the weights down with a reason each,</strong> as a dictionary with a comment per line. Bring them: session 5 turns one segment into an action and a holdout, and the holdout is how a weight stops being an opinion.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and session 4 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Taobao needs E in place of M; Pinduoduo needs I beside R, F and M. What decides whether a letter is replaced or added?</p>
+      <button class="qopt" type="button">A · How many rows the dataset has; large datasets can afford a fourth axis</button>
+      <button class="qopt" type="button">B · Whether the platform is Chinese or Western; the taxonomies differ by market</button>
+      <button class="qopt" type="button">C · Whether the old letter is empty. On a browse-heavy platform M is zero for most users, so keeping it and adding E leaves an axis that sorts everyone onto one side: replace. On Pinduoduo R, F and M are all filled and invitations are a new behaviour that is also filled: add, or flag</button>
+      <button class="qopt" type="button">D · Whether the analyst prefers eight or sixteen groups</button>
+      <p class="qwhy">The test is about the base, not the analyst. If the letter you would add would be empty for most people, you are not adding, you are replacing, and you should say so. If the old letters are full and the new one is too, add it, and in practice carry it as a flag beside the eight codes rather than doubling the corners.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · A brand room's most loyal viewer watches every night and has never bought. Why does a purchase-only RFM fail to flag her?</p>
+      <button class="qopt" type="button">A · She has no order, so she has no row. RFM does not score her low; it never sees her. Only when F is redefined as sessions attended plus orders, with R_watch as a clock defined for everyone, does she appear as high frequency, zero spend</button>
+      <button class="qopt" type="button">B · Because her recency is too high and she is filtered out as lapsed</button>
+      <button class="qopt" type="button">C · Because live-room orders are recorded in a different currency</button>
+      <button class="qopt" type="button">D · Because RFM caps frequency at the number of orders in the window</button>
+      <p class="qwhy">The difference between a low score and no row is the whole point. A purchase RFM is a segmentation of buyers; the people it drops are not at the bottom of the table, they are absent from it, and no knife placement brings them back. Redefining F and adding a watch clock does.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">3 · Two industry reports on Douyin live commerce are quoted by name, but no repeat-purchase rate for live rooms is stated. Why?</p>
+      <button class="qopt" type="button">A · Because repeat purchase is not a meaningful metric for live commerce</button>
+      <button class="qopt" type="button">B · Because the white paper's figure and CBNData's disagree, so the average was taken instead</button>
+      <button class="qopt" type="button">C · Because Douyin publishes it only in Chinese</button>
+      <button class="qopt" type="button">D · Because no primary source found for this build publishes one. The reports give GMV, the live share and the 店播 against 达播 split, each attributed; every "复购率" figure circulating is a vendor or press claim, and a number with no floor under it is taught as an absence, not filled in</button>
+      <p class="qwhy">The professional norm is to attribute every figure to a named report and to say plainly when a widely repeated number has no primary source. The two reports are quoted with their own denominators and are not reconciled; the missing repeat rate is left missing.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Taobao UserBehavior, the dataset's shape</span><span class="note">Tianchi dataset 649: 2017-11-25 to 2017-12-03, about 100 million rows, 987,994 users, 4,162,024 items, behaviours pv / fav / cart / buy; counts taken from the dataset page</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The behaviour split, page views dominant</span><span class="note">Cited to published analyses of the dataset, not recomputed; the 3.4 GB file is login-walled and was not downloaded for this build</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Douyin live commerce figures</span><span class="note">索象集团 and 中国直播产业研究院 white paper (2025) for GMV, live share and the 店播 / 达播 split; CBNData (2025) for the 70 percent and 4:3:3 figures; each attributed, the two not reconciled; no repeat-purchase rate exists in a primary source and none is claimed</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Pinduoduo team purchase mechanics</span><span class="note">Quoted from PDD Holdings' Form 20-F; active-buyer counts are no longer disclosed there and the secondary 882 million figure is not used</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Stone 1995 on weighting R, F and M</span><span class="note">Widely cited for unequal weights; not read at source in this build, so no canonical weights are given and weighting is taught as a live disagreement</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Hughes 1994, equal sequential scoring</span><span class="note">Described from secondary summaries of Strategic Database Marketing; the book itself was not opened, as stated in session 1</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Session 4 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>No row, not a low score</b><span>A purchase RFM segments buyers. Everyone who never bought is absent, and no knife brings them back.</span></div>
+      <div class="cheat-item"><b>Replace when the letter is empty</b><span>Browse-heavy platform: M is zero for most, so E takes its place. RFE, not RFME.</span></div>
+      <div class="cheat-item"><b>Redefine when it counts the wrong thing</b><span>Live room: F = sessions attended + orders. Two clocks, R_watch for everyone, R_buy where it exists.</span></div>
+      <div class="cheat-item"><b>Add when the behaviour is new</b><span>Team purchase: I for invitations. Low M, high I = acquisition channel. Flag it beside the eight codes.</span></div>
+      <div class="cheat-item"><b>Weights are a decision</b><span>pv 1, fav 2, cart 3, buy 5 is one common choice. Write yours down with a reason each; test them in session 5.</span></div>
+      <div class="cheat-item"><b>Attribute, and say what is missing</b><span>Two Douyin reports, quoted by name, not reconciled. No primary repeat-purchase rate exists, so none is stated.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can now build a segment on an order table, an events table or a live room, and you know which letter each one broke. Session 5 does the thing all of this was for: it turns one segment into one action, holds out a slice of the audience that gets nothing, and reads the difference. The Douyin room regular with high watch frequency and zero spend gets her message, the Klaviyo defaults get theirs, the 300-customer 私域 shop gets its own, and each one is judged against the people who were left alone. That is the modern version of Hughes's test mailing, and it is the only way a weight, a knife or a segment name ever stops being an opinion.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Session 4 of 6 · learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="03-the-rfm-bench.html">← Prev: The RFM bench</a> &nbsp;·&nbsp; <a href="05-from-segment-to-action.html">Next: From segment to action, and proving it →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Session 3 of 6. Four thousand real customers, six ways of cutting recency, frequency and monetary value, every segment share and revenue share computed in your browser. Two vendor defaults call 13 to 16 percent of them Champions; nine in ten of those bought once.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="The RFM bench - learn rfm modeling with phoebe">
+<meta property="og:description" content="Session 3 of 6. Same people, six knives. The cut decides who is called best and who gets the win-back message, and one total score hides 80 codes.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/courses/03-the-rfm-bench.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The RFM bench - learn rfm modeling with phoebe">
+<meta name="twitter:description" content="Session 3 of 6. Six cuts on 4,000 real customers, counted live.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Session 3 · The RFM bench - learn rfm modeling with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-rfm-modeling-with-phoebe</a> / Session 3 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn RFM Modeling with Phoebe · Session 3 of 6</div>
+    <h1>The RFM <span class="accent">bench</span></h1>
+    <p class="sub">Sessions 1 and 2 argued that the knife decides the segment. Tonight the argument is replaced by a count. Four thousand real customers, sampled from the 93,358 you built, sit in this page. Six ways of cutting them are computed in front of you: two eight-group splits, Klaviyo's published rule, quintiles into Putler's eleven, a merchant's own thresholds, and the tempting simplification of adding the three scores into one number. For each, the page counts how many people the cut calls its best, how many of those bought exactly once, who lands in the win-back audience, and what a message to that audience would return on a response model the widget prints in full. The people never change. Only the knife does.</p>
+    <div class="chip-row">
+      <span class="chip level">🔴 Bench night</span>
+      <span class="chip audience">Bring your session 2 numbers</span>
+      <span class="chip audience">No code tonight, all clicking</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:3">3-14 · How to read the bench</span>
+      <span class="a3" style="flex:6">14-40 · The six cuts, in order</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">A bench is a fixed set of people and a fixed set of questions, so that when two cuts give two answers the only thing that differed was the cut. The people are real: 4,000 rows drawn with a seeded generator from the Olist table of session 1, each carrying its recency in days, its count of delivered orders and its total payments. The questions are the four that decide whether an RFM project pays: who is called best, whether they deserve it, who gets the win-back message, and what that message returns.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">measured = counted from the 4,000 rows</span>
+      <span class="pill">modelled = from the stated response model</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> The measured answer to "how many of our Champions bought once" under six cuts, the two-column habit of reading yield per message and total side by side, and the reason one total score is not a simplification but a blindfold.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers what the bench measures</span>
+      <h2>Four questions, two kinds of number</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">Every readout on the bench carries a small tag. <strong>measured</strong> means the number was counted from the rows and would be the same in any spreadsheet. <strong>modelled</strong> means it depends on assumptions the widget states, and would change if you changed them. Reading the tag before the number is the whole skill.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The bench sketched as a workbench: a hatched pile of 4,000 customers on the left, six labelled knives in a rack, and four readout dials on the right. The first three dials are stamped measured: top group share, share of the top group who bought once, win-back audience and its repeat-buyer share. The fourth dial is stamped modelled: yield per message and total, computed from a printed response model.">
+        <defs>
+          <filter id="s3aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s3aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s3aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s3aH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s3aL { font: 600 11.5px Inter, sans-serif; fill: #14213D; }
+          .s3aS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s3aB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s3aC { font: 800 11px Inter, sans-serif; fill: #1E3A8A; }
+          .s3aN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s3aH" x="30" y="26">THE BENCH: FIXED PEOPLE, SIX KNIVES, FOUR DIALS</text>
+
+        <g filter="url(#s3aSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the pile -->
+          <path d="M40 232 C60 160 120 130 170 150 C210 165 230 200 236 232 Z" fill="url(#s3aHc)"/>
+          <!-- bench top -->
+          <path d="M30 246 L850 246" stroke-width="3"/>
+          <path d="M60 246 L60 290 M820 246 L820 290"/>
+          <!-- knife rack -->
+          <rect x="280" y="70" width="230" height="150" rx="6" transform="rotate(-0.5 395 145)" fill="#FFFFFF"/>
+          <path d="M300 96 L300 200 M336 96 L336 200 M372 96 L372 200 M408 96 L408 200 M444 96 L444 200" stroke="#4F5B7A"/>
+          <path d="M480 96 L480 200" stroke="#B4530A" stroke-width="3"/>
+          <path d="M292 100 L308 100 M328 100 L344 100 M364 100 L380 100 M400 100 L416 100 M436 100 L452 100" stroke="#4F5B7A"/>
+          <path d="M472 100 L488 100" stroke="#B4530A"/>
+          <!-- arrow pile to rack -->
+          <path d="M240 190 C256 170 262 150 272 140" marker-end="url(#s3aAr)"/>
+          <!-- dials -->
+          <circle cx="600" cy="120" r="30" fill="#EEF3FC"/>
+          <circle cx="690" cy="120" r="30" fill="#EEF3FC"/>
+          <circle cx="780" cy="120" r="30" fill="#EEF3FC"/>
+          <circle cx="690" cy="206" r="30" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M600 120 L618 104 M690 120 L672 104 M780 120 L796 130" stroke="#1E3A8A"/>
+          <path d="M690 206 L706 190" stroke="#B4530A"/>
+          <!-- arrow rack to dials -->
+          <path d="M516 140 L560 140" marker-end="url(#s3aAr)"/>
+        </g>
+
+        <text class="s3aL" x="138" y="258" text-anchor="middle">4,000 real customers</text>
+        <text class="s3aS" x="138" y="274" text-anchor="middle">a seeded sample of the 93,358</text>
+        <text class="s3aS" x="300" y="84" text-anchor="middle">mean</text>
+        <text class="s3aS" x="336" y="84" text-anchor="middle">median</text>
+        <text class="s3aS" x="372" y="84" text-anchor="middle">Klaviyo</text>
+        <text class="s3aS" x="408" y="84" text-anchor="middle">Putler</text>
+        <text class="s3aS" x="444" y="84" text-anchor="middle">threshold</text>
+        <text class="s3aB" x="480" y="84" text-anchor="middle">sum</text>
+        <text class="s3aS" x="395" y="236" text-anchor="middle">six ways of cutting the same three columns</text>
+
+        <text class="s3aC" x="600" y="70" text-anchor="middle">MEASURED</text>
+        <text class="s3aL" x="600" y="166" text-anchor="middle">top group</text>
+        <text class="s3aS" x="600" y="180" text-anchor="middle">share, revenue</text>
+        <text class="s3aC" x="690" y="70" text-anchor="middle">MEASURED</text>
+        <text class="s3aL" x="690" y="166" text-anchor="middle">bought once</text>
+        <text class="s3aS" x="690" y="180" text-anchor="middle">inside the top group</text>
+        <text class="s3aC" x="780" y="70" text-anchor="middle">MEASURED</text>
+        <text class="s3aL" x="780" y="166" text-anchor="middle">win-back audience</text>
+        <text class="s3aS" x="780" y="180" text-anchor="middle">size, repeat share</text>
+        <text class="s3aB" x="600" y="210" text-anchor="middle">MODELLED</text>
+        <text class="s3aS" x="600" y="226" text-anchor="middle">five stated</text>
+        <text class="s3aS" x="600" y="240" text-anchor="middle">assumptions</text>
+        <text class="s3aL" x="780" y="210" text-anchor="middle">yield</text>
+        <text class="s3aS" x="780" y="226" text-anchor="middle">per message, total</text>
+
+        <text class="s3aN" x="30" y="312">Three dials would read the same in any spreadsheet. The fourth would move if you changed the model, and the widget prints the model.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the tangerine knife is the anti-lever, and the tangerine dial is the one whose number you must read the tag on first</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The three measured dials, and why "bought once" is the one to watch<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Top group share and revenue share.</strong> How many people the cut calls its best, and how much of the money they hold. A top group that is 16 percent of customers and 27 percent of revenue looks healthy until you read the next dial.</p>
+        <p><strong>Bought once, inside the top group.</strong> The share of the "best" customers who have exactly one delivered order. A Champion who bought once is a first-time buyer wearing a badge, and every action aimed at Champions, early access, a loyalty tier, a personal note, is being spent on someone the shop has met once. On a base where 97 percent buy once, this dial is where the cuts separate.</p>
+        <p><strong>Win-back audience, and its repeat share.</strong> How many people the cut would put on the win-back list, and what fraction of them have ever bought twice. A win-back message assumes a relationship to win back. Sent to a one-time buyer it is an acquisition message with a discount attached.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The modelled dial, and the five numbers under it<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Yield needs a response model, and no dataset carries one. The bench states five numbers and uses nothing else: a lapsed one-time buyer reorders on their own 1.0 percent of the time and a message lifts that by 15 percent; a lapsed repeat buyer reorders 4.0 percent of the time and a message lifts that by 50 percent; a message costs R$ 0.30; one in ten of every audience is held out and never messaged; the reactivation order is worth that customer's own average order from the data. Net yield is incremental revenue minus message cost, and per-message yield divides that by the messaged count.</p>
+        <p>Change any of the five and the yields change. What does not change is their <strong>ordering</strong> across cuts, because that follows from the measured repeat share of each audience: an audience that is 100 percent repeat buyers responds on the repeat rates, an audience that is 2.4 percent repeat buyers responds almost entirely on the one-time rates. The pages that quote a yield quote it as "on the stated model", and the only thing they claim from it is the order.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="bench">
+    <div class="section-kicker">
+      <span class="klabel">Build-along · the bench</span>
+      <h2>Six cuts, computed in front of you</h2>
+      <span class="tag demo">★ 26 min · the main event</span>
+    </div>
+    <p class="lede">Work down the six in order. For each, read the verdict line, then the six readouts, then the segment table underneath. Say out loud what changed and what did not before moving to the next. The last one is the anti-lever: it is the simplification everyone reaches for, and the bench shows what it costs.</p>
+
+    <div id="rfm-bench"></div>
+
+    <div class="callout tip">
+      <p><strong>Read it in this order.</strong> Top group, then bought once, then the win-back audience and its repeat share, then the two yields with their tags. The first cut is the eight-group taxonomy at the mean, exactly what session 1 built, and it is worth sitting with how small its top corner is before looking at what the vendor rules do to the same people.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers what the six cuts find</span>
+      <h2>Same people, six answers</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">The bench above computes these live; the numbers here are the ones it produces on the 4,000 rows, written down so they can be argued with after class. On the full 93,358 the shares move by fractions of a point and the ordering does not move at all.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Six horizontal bars, one per cut, showing the share of customers each cut calls its top group: mean split 0.97 percent, median split 1.40 percent, threshold 0.70 percent, Klaviyo 13.30 percent, Putler 15.90 percent, one total score 7.98 percent. Each bar is annotated with the share of that top group who bought exactly once: 0 percent for the first three, 89.9, 91.5 and 83.1 percent for the last three.">
+        <defs>
+          <filter id="s3bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s3bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <pattern id="s3bHt" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#B4530A" stroke-width="1" opacity=".6"/></pattern>
+        </defs>
+        <style>
+          .s3bH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s3bL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s3bS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s3bB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s3bV { font: 800 13px Inter, sans-serif; fill: #1E3A8A; }
+          .s3bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s3bH" x="30" y="26">WHO EACH CUT CALLS ITS BEST</text>
+        <text class="s3bS" x="270" y="26">bar = share of 4,000 customers in the top group · hatching = the part of it that bought exactly once</text>
+
+        <g filter="url(#s3bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M230 48 L230 300" stroke="#CBD5EE"/>
+          <!-- scale: 600px = 20% -->
+          <rect x="230" y="60" width="29" height="26" rx="3" fill="url(#s3bHc)"/>
+          <rect x="230" y="100" width="42" height="26" rx="3" fill="url(#s3bHc)"/>
+          <rect x="230" y="140" width="21" height="26" rx="3" fill="url(#s3bHc)"/>
+          <rect x="230" y="180" width="399" height="26" rx="3" fill="url(#s3bHt)"/>
+          <rect x="230" y="180" width="40" height="26" rx="3" fill="url(#s3bHc)"/>
+          <rect x="230" y="220" width="477" height="26" rx="3" fill="url(#s3bHt)"/>
+          <rect x="230" y="220" width="41" height="26" rx="3" fill="url(#s3bHc)"/>
+          <rect x="230" y="260" width="239" height="26" rx="3" fill="url(#s3bHt)"/>
+          <rect x="230" y="260" width="40" height="26" rx="3" fill="url(#s3bHc)"/>
+          <!-- a small knife doodle -->
+          <path d="M40 300 L40 330 M34 304 L46 304" stroke="#4F5B7A"/>
+        </g>
+
+        <text class="s3bL" x="220" y="78" text-anchor="end">Mean split, eight</text>
+        <text class="s3bV" x="268" y="78">0.97%</text>
+        <text class="s3bS" x="330" y="78">none of them bought once</text>
+        <text class="s3bL" x="220" y="118" text-anchor="end">Median split, eight</text>
+        <text class="s3bV" x="281" y="118">1.40%</text>
+        <text class="s3bS" x="343" y="118">none bought once</text>
+        <text class="s3bL" x="220" y="158" text-anchor="end">Merchant thresholds</text>
+        <text class="s3bV" x="260" y="158">0.70%</text>
+        <text class="s3bS" x="322" y="158">none bought once</text>
+        <text class="s3bL" x="220" y="198" text-anchor="end">Klaviyo's six</text>
+        <text class="s3bV" x="638" y="198">13.30%</text>
+        <text class="s3bB" x="700" y="198">89.9% bought once</text>
+        <text class="s3bL" x="220" y="238" text-anchor="end">Quintiles into Putler</text>
+        <text class="s3bV" x="716" y="238">15.90%</text>
+        <text class="s3bB" x="716" y="254">91.5% bought once</text>
+        <text class="s3bL" x="220" y="278" text-anchor="end">One total score</text>
+        <text class="s3bV" x="478" y="278">7.98%</text>
+        <text class="s3bB" x="540" y="278">83.1% bought once</text>
+
+        <text class="s3bS" x="56" y="318">the blue sliver in each hatched bar is the part that has ever bought twice</text>
+        <text class="s3bN" x="30" y="346">Same 4,000 people. The cut, not the customers, decided whether the shop has 39 Champions or 636.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - three cuts produce a small top group entirely of repeat buyers; three produce a large one that is mostly first-time buyers with a badge</figcaption>
+    </figure>
+
+    <table class="clean">
+      <tr><th>Cut</th><th>Groups</th><th>Top group</th><th>Bought once</th><th>Win-back audience</th><th>Repeat buyers in it</th><th>Yield per message *</th><th>Net total *</th></tr>
+      <tr><td>Mean split, eight</td><td>8</td><td>0.97% · 2.4% of revenue</td><td><strong>0%</strong></td><td>33</td><td><strong>100%</strong></td><td><strong>R$ 3.46</strong></td><td>R$ 103</td></tr>
+      <tr><td>Median split, eight</td><td>8</td><td>1.40% · 2.6%</td><td>0%</td><td>50</td><td>100%</td><td>R$ 2.84</td><td><strong>R$ 128</strong></td></tr>
+      <tr><td>Klaviyo's rule, six</td><td>6</td><td>13.30% · 23.6%</td><td><strong>89.9%</strong></td><td>630</td><td>3.7%</td><td>R$ 0.15</td><td>R$ 83</td></tr>
+      <tr><td>Quintiles into Putler's eleven</td><td>7 of 11</td><td>15.90% · 27.0%</td><td><strong>91.5%</strong></td><td>767</td><td>2.4%</td><td><strong>R$ 0.02</strong></td><td>R$ 13</td></tr>
+      <tr><td>Merchant thresholds</td><td>7</td><td>0.70% · 1.3%</td><td>0%</td><td>24</td><td>100%</td><td>R$ 2.44</td><td>R$ 53</td></tr>
+      <tr><td><strong>One total score</strong></td><td>3</td><td>7.98% · 18.5%</td><td>83.1%</td><td><strong>2,555</strong></td><td>2.5%</td><td>R$ 0.02</td><td>R$ 53</td></tr>
+    </table>
+    <p class="mono" style="margin-top:6px">* modelled, on the response model the widget prints. The other six columns are counted.</p>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Finding 1: the cut decides who is called best<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Two vendor defaults call 13 and 16 percent of a base where 97 percent bought once Champions, and nine in ten of those Champions bought exactly once. The three splits that put the knife somewhere the base can actually clear produce a top group of about 1 percent, none of whom bought once. Same people. A Champions tier funded on the first kind of cut spends most of its budget welcoming first-time buyers with a loyalty programme.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Finding 2: fifths on a tied column are a lottery<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>In the 4,000, frequency is 3,883 ones. Ranking them into fifths gives 800 identical one-time buyers a frequency score of 1 and 683 identical one-time buyers a score of 5, in row order. Averaged with the spend score, enough of them reach the Champions corner to fill it. This is not a flaw in Putler's map or Klaviyo's rule; it is what any equal-count bin does to a column that is almost all one value, and the "fix" for the duplicate-edge error does it silently. Session 2 has the population version: 18,672 against 15,871.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Finding 3: the win-back audiences differ by a factor of 77, and the two yield columns disagree<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Thirty-three people under the mean split, all repeat buyers. Two thousand five hundred and fifty-five under one total score, one in forty a repeat buyer. On the stated model the per-message yield runs from R$ 3.46 down to R$ 0.02, and that ordering is robust because it tracks the measured repeat share. But the <strong>total</strong> column ranks the cuts differently: the median split's 50-person audience returns R$ 128 against the mean split's R$ 103, because it is larger and still all repeat buyers. Neither column is "the" answer. Per message tells you how well the cut found the right people; total tells you how many of them there were to find.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The honest dip: Putler's eleven produced seven<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Four of Putler's segments are empty on this base: New, Promising, Can't lose and Lost. The map reaches those corners through a combined frequency-and-monetary score of 1 or 4 to 5 at a given recency, and averaging two quintile scores on a base where the frequency score is a lottery and the spend score is skewed never quite lands there. This is not a defect in the bench and it is not a defect in the map. It is a measurement: a taxonomy written for a repeat-purchase business has four rooms that a one-time-buyer marketplace never fills, and the shop that adopts it will carry four empty segments in its dashboard forever.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the anti-lever</span>
+      <h2>One total score is a blindfold, not a simplification</h2>
+      <span class="tag concept">4 min live</span>
+    </div>
+    <p class="lede">Adding the three scores into one number feels like a cleanup. Three columns become one, the dashboard gets a single ranking, and a threshold on it defines the audience. The bench counts what the addition throws away.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two customers sketched side by side. One is code 5-1-1: bought yesterday, once, a small basket. The other is code 1-5-1: frequent, small baskets, gone for a year. Both arrows lead into the same box labelled sum equals 7. Below, the middle band of the total score is shown holding 80 different codes and 2,555 people, of whom one in forty is a repeat buyer.">
+        <defs>
+          <filter id="s3cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="61" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s3cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s3cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s3cH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s3cL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s3cS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s3cB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s3cV { font: 800 18px Inter, sans-serif; fill: #1E3A8A; }
+          .s3cW { font: 800 14px Inter, sans-serif; fill: #FFFFFF; }
+          .s3cN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s3cH" x="30" y="26">TWO DIFFERENT PEOPLE, ONE NUMBER</text>
+
+        <g filter="url(#s3cSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- person A -->
+          <circle cx="90" cy="86" r="15"/>
+          <path d="M62 136 C68 112 112 112 118 136"/>
+          <rect x="140" y="64" width="150" height="70" rx="8" transform="rotate(-0.7 215 99)" fill="#EEF3FC"/>
+          <!-- person B -->
+          <circle cx="90" cy="206" r="15"/>
+          <path d="M62 256 C68 232 112 232 118 256"/>
+          <rect x="140" y="184" width="150" height="70" rx="8" transform="rotate(0.6 215 219)" fill="#EEF3FC"/>
+          <!-- arrows into the sum box -->
+          <path d="M296 100 C340 100 360 146 400 150" marker-end="url(#s3cAr)"/>
+          <path d="M296 220 C340 220 360 174 400 170" marker-end="url(#s3cAr)"/>
+          <!-- sum box -->
+          <rect x="410" y="126" width="120" height="68" rx="10" fill="#B4530A" stroke="#B4530A"/>
+          <!-- the band -->
+          <rect x="590" y="70" width="260" height="184" rx="8" transform="rotate(0.4 720 162)" fill="url(#s3cHc)"/>
+          <path d="M536 160 L582 160" marker-end="url(#s3cAr)"/>
+        </g>
+
+        <text class="s3cL" x="152" y="86">code 5 · 1 · 1</text>
+        <text class="s3cS" x="152" y="104">bought yesterday, once, small</text>
+        <text class="s3cS" x="152" y="120">a first-time buyer</text>
+        <text class="s3cL" x="152" y="206">code 1 · 5 · 1</text>
+        <text class="s3cS" x="152" y="224">frequent, small baskets, gone a year</text>
+        <text class="s3cS" x="152" y="240">the win-back case itself</text>
+        <text class="s3cW" x="470" y="156" text-anchor="middle">sum = 7</text>
+        <text class="s3cS" x="470" y="176" text-anchor="middle" fill="#FDEEDF">same band</text>
+
+        <text class="s3cB" x="720" y="96" text-anchor="middle">THE MIDDLE BAND, 8 TO 12</text>
+        <text class="s3cV" x="720" y="130" text-anchor="middle">80 codes</text>
+        <text class="s3cS" x="720" y="148" text-anchor="middle">hidden inside one number</text>
+        <text class="s3cV" x="720" y="184" text-anchor="middle">2,555 people</text>
+        <text class="s3cS" x="720" y="202" text-anchor="middle">1 in 40 has ever bought twice</text>
+        <text class="s3cS" x="720" y="232" text-anchor="middle">R$ 0.02 per message, on the model</text>
+
+        <text class="s3cN" x="30" y="286">125 codes become 13 sums. Nineteen different codes share the sum 9. The message that fits one of them is noise to the others.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the two people on the left need opposite messages, and the total score cannot tell them apart</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why addition is the wrong operation<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The three digits are not three measurements of one thing. Recency says whether the relationship is alive, frequency says whether it is a habit, monetary says what it is worth. Adding them treats a day of recency as interchangeable with an order of frequency, and the sum forgets which was which. A 5-1-1 and a 1-5-1 both score 7; the first wants an onboarding message and the second wants a win-back, and a campaign built on the band sends both the same thing.</p>
+        <p>The bench's count is the argument: <strong>80 of the 125 codes fall into the middle band.</strong> Any audience defined on that band is a mixture whose composition nobody chose. The eight-group taxonomy of session 1 keeps three bits and eight names; it is already the simplification, and it is the smallest one that still tells the two people apart.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>When a single score is fine, and it is not this<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A single ranking earns its place when the action is the same for everyone and only the order matters: who to call first from a list where every call is the same call. RFM's whole purpose is that the action differs by corner, so a ranking that forgets the corner has removed the thing the model was for. If a dashboard needs one number, show the code and sort by recency within it; that keeps the corner visible and still gives a list.</p>
+        <p>The honest nuance: a weighted sum with recency weighted heavily is closer to defensible, because recency dominates response in most direct-marketing tests. Session 4 covers weighting. Even then, the weights are a business judgement to be tested, not a simplification to be assumed.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>A dashboard with one RFM score per customer</strong> is a common request because it sorts. It also sorts a customer who bought yesterday for the first time above a four-order regular who has been gone six months, if the newcomer's basket was bigger, and a growth team reading the top of that list as "our best" will thank first-time buyers for their loyalty while the regulars leave unnoticed. The fix costs nothing: keep the three digits in the export and let the sort be on recency within the code.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before session 4</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Run the bench's six cuts on your own table</strong> with the session 2 helper, and fill the same eight-column table. Circle the cut your tooling uses.</li>
+      <li><strong>Change the response model in your head.</strong> Double the one-time-buyer lift. Does the per-message ordering change? It should not, and being able to say why in one sentence is the point.</li>
+      <li><strong>Count the empty rooms.</strong> Under the taxonomy your tool uses, how many segments hold fewer than 1 percent of customers? Each one is a dashboard tile that will never mean anything.</li>
+      <li><strong>Bring the events table,</strong> not the order table, if your product has one. Session 4 is about the platforms where the order table describes almost nobody.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and session 3 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Under quintiles into Putler's eleven, 15.9 percent of the 4,000 are Champions and 91.5 percent of them bought exactly once. What produced that?</p>
+      <button class="qopt" type="button">A · The sample is biased toward big first-time baskets</button>
+      <button class="qopt" type="button">B · Putler's map is wrong about what a Champion is</button>
+      <button class="qopt" type="button">C · Frequency is 97 percent ones, so ranking it into fifths gives identical one-time buyers scores from 1 to 5 by row order; averaged with spend, enough of them reach the Champions corner to fill it. The cut, not the customers, made them Champions</button>
+      <button class="qopt" type="button">D · The snapshot date was set too late</button>
+      <p class="qwhy">Equal-count bins on a column that is almost all one value are a lottery, and the duplicate-edge "fix" runs it silently. The map is a taxonomy for a repeat-purchase business applied to a base that does not have one; neither is wrong, the combination is.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · The median split returns the largest total (R$ 128) while the mean split returns the highest yield per message (R$ 3.46). Which cut is better?</p>
+      <button class="qopt" type="button">A · Neither column settles it. Per message measures how well the cut found the right people; total measures how many there were to find. Both audiences are 100 percent repeat buyers, the median's is simply larger, and the choice depends on whether the budget is per contact or per campaign</button>
+      <button class="qopt" type="button">B · The median split, because total revenue is what the business banks</button>
+      <button class="qopt" type="button">C · The mean split, because per-message yield is the efficiency metric</button>
+      <button class="qopt" type="button">D · The quintile cut, because it has the largest audience with positive total</button>
+      <p class="qwhy">The two-number habit exists because a single number hides the trade-off. D is the trap the bench is built to expose: a large audience with a positive total can still be R$ 0.02 a message, which is a campaign that barely covers its own cost.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · Why is one total score called a blindfold rather than a simplification?</p>
+      <button class="qopt" type="button">A · Because three numbers are always better than one</button>
+      <button class="qopt" type="button">B · Because a 5-1-1 first-time buyer and a 1-5-1 lapsed regular both sum to 7, need opposite messages, and the sum cannot tell them apart; on the bench 80 of the 125 codes land in one band whose composition nobody chose</button>
+      <button class="qopt" type="button">C · Because the sum is always lower than the highest digit</button>
+      <button class="qopt" type="button">D · Because vendors do not support it</button>
+      <p class="qwhy">RFM exists because the action differs by corner. A ranking that forgets the corner has removed the thing the model was for. Where one list is genuinely needed, sort by recency within the code so the corner stays visible.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Every share, count and revenue figure on the bench</span><span class="note">Computed in the browser from a seeded 4,000-row sample of the Olist customer table built in session 1; verified against an independent pandas run before any page quoted it</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Klaviyo's six-group rule and Putler's eleven-segment map</span><span class="note">Thresholds and code lists quoted from their published pages; tie handling for a 97 percent tied column is documented by neither, so the replication uses the pandas rank convention and says so</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The two yield figures</span><span class="note">Modelled on five stated assumptions printed under the bench; only their ordering is claimed, because it follows from the measured repeat share</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">How often the vendor defaults mislabel on other bases</span><span class="note">Not claimed. Olist is a one-time-buyer marketplace; a subscription or grocery base would give different shares under every cut, and only the mechanism transfers</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Read the tag before the number</b><span>measured = counted from rows; modelled = depends on stated assumptions.</span></div>
+      <div class="cheat-item"><b>"Bought once" inside the top group</b><span>The dial where cuts separate: 0 percent or 90 percent on the same people.</span></div>
+      <div class="cheat-item"><b>Fifths on a tied column</b><span>A lottery by row order. 800 identical people scored 1, 683 scored 5.</span></div>
+      <div class="cheat-item"><b>Two yield columns, always</b><span>Per message says how well; total says how many. They can rank cuts differently.</span></div>
+      <div class="cheat-item"><b>One total score</b><span>80 of 125 codes in one band. 5-1-1 and 1-5-1 both sum to 7.</span></div>
+      <div class="cheat-item"><b>Empty rooms are a measurement</b><span>Putler's eleven produced seven here. A taxonomy built for repeat purchase has rooms a one-time base never fills.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>Everything so far assumed the order table describes the customer. On Taobao roughly 98 percent of the rows are browsing, favouriting and carting, not buying; in a Douyin live room the loyal regular may watch twenty streams and never order; on Pinduoduo the customer who matters most may be the one who invited three friends. Session 4 replaces, redefines and adds letters to RFM for the platforms where the purchase table is the wrong table, and names which move fits which case.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Session 3 of 6 · learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="02-the-cut-decides-the-segment.html">← Prev: The cut decides the segment</a> &nbsp;·&nbsp; <a href="04-beyond-purchase.html">Next: Beyond purchase →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/rfm-sample.js?v=1"></script>
+<script src="../assets/rfm-live.js?v=1"></script>
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

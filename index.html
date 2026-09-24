@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Six sessions on RFM as a decision system: where the knife goes between high and low, what each cut does to a real base where 97 percent bought once, which dimension to swap or add on platforms where most people never buy, how to turn a segment into an action and prove it worked. Python build-alongs on real public data. Free, by Phoebe Fu.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Learn RFM Modeling with Phoebe">
+<meta property="og:description" content="Same 4,000 real customers, six ways to cut them. Two vendor defaults call 13 to 16 percent of them Champions; nine in ten of those Champions bought exactly once.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Learn RFM Modeling with Phoebe">
+<meta name="twitter:description" content="A bench that puts 4,000 real customers through six cuts, every share counted in your browser. The knife decides who is called best.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Learn RFM Modeling with Phoebe</title>
+<link rel="stylesheet" href="assets/style.css?v=1">
+<style>
+
+  .stats-row { display: flex; gap: 2.4rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .stat b { display: block; font-size: 2.1rem; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: .72rem; opacity: .85; text-transform: uppercase; letter-spacing: .09em; font-weight: 600; }
+
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .course-card {
+    border: 1px solid var(--hairline);
+    border-top: 4px solid var(--diff, var(--indigo));
+    border-radius: var(--radius);
+    padding: 1.2rem 1.3rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: #fff;
+    transition: box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+    position: relative;
+  }
+  .course-card:hover { border-color: var(--indigo-soft); border-top-color: var(--diff, var(--indigo)); box-shadow: 0 8px 28px rgba(var(--shadow-rgb),.16); transform: translateY(-3px); }
+  .course-card .cicon { font-size: 1.7rem; line-height: 1; }
+  .course-card .cnum { font-size: .72rem; font-weight: 700; color: var(--indigo); text-transform: uppercase; letter-spacing: .1em; }
+  .course-card h3 { font-size: 1.05rem; font-weight: 800; line-height: 1.3; }
+  .course-card p { font-size: .85rem; color: var(--muted); flex: 1; }
+  .course-card .meta { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+  .diff-legend { display: flex; gap: 1rem; margin-top: 1.6rem; font-size: .74rem; color: var(--muted); font-weight: 600; flex-wrap: wrap; }
+  .diff-legend i { display: inline-block; width: .85rem; height: .35rem; border-radius: 999px; margin-right: .35rem; vertical-align: middle; }
+
+  .paths { margin-top: 2.6rem; }
+  .paths h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+  .paths .plede { color: var(--muted); font-size: .92rem; margin-bottom: .8rem; }
+  .path { display: flex; gap: .55rem; align-items: center; padding: .75rem 0; border-bottom: .5px solid var(--hairline); flex-wrap: wrap; }
+  .path:last-child { border-bottom: none; }
+  .path b { min-width: 15.5rem; font-size: .9rem; }
+  .path .pstep { background: var(--indigo-50); color: var(--indigo); border-radius: 999px; padding: .16rem .68rem; font-weight: 700; font-size: .8rem; text-decoration: none; transition: all .12s ease; }
+  .path .pstep:hover { background: var(--indigo); color: #fff; }
+  .path .parr { color: var(--faint); font-weight: 700; }
+
+  .mm-section { margin-top: 1.6rem; }
+  .mm-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .2rem; }
+  .mm-section .mm-lede { color: var(--muted); font-size: .92rem; margin-bottom: .4rem; }
+  .mm-wrap { border: 1px solid var(--hairline); border-radius: var(--radius); background: linear-gradient(180deg,#fff,var(--indigo-50)); padding: .6rem; overflow-x: auto; }
+  .mm-svg { width: 100%; height: auto; display: block; max-width: 60rem; margin: 0 auto; min-width: 34rem; }
+  .mm-link { cursor: pointer; text-decoration: none; }
+  .mm-node rect { transition: opacity .15s ease, filter .15s ease; }
+  .mm-node text { pointer-events: none; }
+  .mm-link:hover .mm-node rect { filter: brightness(1.06); }
+  .mm-edge { transition: opacity .15s ease; }
+
+  .not-this { border: 1px solid var(--hairline); border-left: 4px solid var(--clay); border-radius: var(--radius); background: #fff; padding: 1.1rem 1.3rem; margin-top: 1.2rem; }
+  .not-this h3 { font-size: .95rem; font-weight: 800; margin-bottom: .5rem; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn with Phoebe · Data &amp; Analytics</div>
+    <h1>Learn <span class="accent">RFM Modeling</span> with Phoebe</h1>
+    <p class="sub">Every customer can be described with three numbers: how long since they last bought, how often they have bought, how much they have spent. That is RFM, the oldest segmentation still in daily use, and it is cheap, honest and needs nothing but an order table. It is also a chain of small decisions that most tutorials make silently, and the biggest of them is where the knife goes between high and low. On 93,358 real marketplace customers, of whom 97 percent bought exactly once, the share called "best" runs from 1 percent to 16 percent depending on nothing but that knife, and under two popular vendor defaults nine in ten of the "best" bought once. Six sessions on RFM as a decision system: the cut, the dimensions, the action, the proof, and keeping it alive.</p>
+    <div class="stats-row">
+      <div class="stat"><b data-count="6">6</b><span>sessions</span></div>
+      <div class="stat"><b data-count="93358">93,358</b><span>real customers</span></div>
+      <div class="stat"><b data-count="97">97</b><span>percent bought once</span></div>
+      <div class="stat"><b data-count="6">6</b><span>cuts on the bench</span></div>
+      <div class="stat"><b data-count="45">45</b><span>min per session</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section">
+    <div class="paths" style="margin-top:0">
+      <h2>The six sessions 🎯 <span style="font-size:.85rem;font-weight:600;color:var(--muted)">· from raw orders to a model somebody can defend</span></h2>
+      <p class="plede">The running data is the public <strong>Olist</strong> marketplace dataset: 99,441 real orders, recomputed here into one row per customer. Four more cases join it where the purchase table alone runs out: Taobao browsing behaviour, Douyin live rooms, Pinduoduo team purchase, and a small WeChat community shop.</p>
+    </div>
+
+    <div class="course-grid">
+      <a class="course-card" href="courses/01-three-numbers-and-a-snapshot.html" style="--diff:#FBBF24">
+        <span class="cicon">🧾</span>
+        <span class="cnum">Session 1 · core</span>
+        <h3>Three numbers and a snapshot date</h3>
+        <p>R, F and M defined precisely, the six decisions hiding inside them, the clock that has to be frozen before any of the three exists, and the eight-group taxonomy read as a mechanism. Build-along on 93,358 real customers.</p>
+        <span class="meta"><span class="pill amber">▶ Start here</span></span>
+      </a>
+      <a class="course-card" href="courses/02-the-cut-decides-the-segment.html" style="--diff:#FBBF24">
+        <span class="cicon">🔪</span>
+        <span class="cnum">Session 2 · core</span>
+        <h3>The cut decides the segment</h3>
+        <p>Mean, median, thirds, fifths and merchant thresholds on the same skewed pile. Why fifths on a column that is 97 percent ties become a lottery, and what a tiny community shop does to every one of them.</p>
+        <span class="meta"><span class="pill">same people, five knives</span></span>
+      </a>
+      <a class="course-card" href="courses/03-the-rfm-bench.html" style="--diff:#F87171">
+        <span class="cicon">🎛️</span>
+        <span class="cnum">Session 3 · bench night</span>
+        <h3>The RFM bench</h3>
+        <p>4,000 real customers, six cuts, every segment share and revenue share counted in your browser. Two vendor defaults call 13 to 16 percent of them Champions; nine in ten of those bought once. Plus the one-total-score trap.</p>
+        <span class="meta"><span class="pill amber">★ the bench</span></span>
+      </a>
+      <a class="course-card" href="courses/04-beyond-purchase.html" style="--diff:#FBBF24">
+        <span class="cicon">📡</span>
+        <span class="cnum">Session 4 · core</span>
+        <h3>Beyond purchase</h3>
+        <p>When 98 percent of the rows are not purchases. Engagement in place of spend on Taobao, live-room loyalty as a frequency on Douyin, and the referral axis Pinduoduo's team purchase adds. Which axis replaces M and which one adds.</p>
+        <span class="meta"><span class="pill">RFE, rooms, referrals</span></span>
+      </a>
+      <a class="course-card" href="courses/05-from-segment-to-action.html" style="--diff:#FBBF24">
+        <span class="cicon">📨</span>
+        <span class="cnum">Session 5 · core</span>
+        <h3>From segment to action, and proving it</h3>
+        <p>The action table per group, the tool defaults that quietly decide it for you, and the holdout that tells a lift from a coincidence. Why "message everyone in win-back" is the most expensive sentence in RFM.</p>
+        <span class="meta"><span class="pill">the holdout gate</span></span>
+      </a>
+      <a class="course-card" href="courses/06-keep-it-alive.html" style="--diff:#FBBF24">
+        <span class="cicon">🔁</span>
+        <span class="cnum">Session 6 · core</span>
+        <h3>Keep it alive</h3>
+        <p>Recompute on a cadence, watch groups drift between snapshots, write the one-page RFM spec, and know when the model has done its job and should hand off to lifetime value or to clustering. Final scorecard.</p>
+        <span class="meta"><span class="pill amber">🔒 final scorecard</span></span>
+      </a>
+    </div>
+
+    <div class="diff-legend">
+      <span><i style="background:#FBBF24"></i>core</span>
+      <span><i style="background:#F87171"></i>bench night</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="paths" style="margin-top:0">
+      <h2>Your passport 🎫</h2>
+      <p class="plede">Clear all three quiz questions in a session and it gets stamped. Six stamps means you can take an order table, build a defensible RFM model on it, choose the cut on purpose, and prove whether the action it drove did anything. Stamps live in this browser only.</p>
+    </div>
+    <div class="pp-strip"></div>
+  </section>
+
+  <section class="section">
+    <div class="not-this">
+      <h3>What this is not, so you land in the right place 🧭</h3>
+      <table class="clean">
+        <tr><th>If your question is</th><th>Go here instead</th></tr>
+        <tr><td>How do I build quintile scores with pd.qcut, name four personas, and track who moved between two snapshots?</td><td><a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">Customer Retention, analyst session 4 ↗</a></td></tr>
+        <tr><td>Can I let the data find the segments instead of drawing the lines myself?</td><td><a href="https://phoebefu6.github.io/learn-unsupervised-with-phoebe/">Unsupervised Learning ↗</a></td></tr>
+        <tr><td>What is each customer worth over the next year, in money?</td><td><a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a6-clv-buy-till-you-die.html">Customer Retention, analyst session 6 ↗</a></td></tr>
+        <tr><td>How do I read GMV, conversion and the funnel on an online store?</td><td><a href="https://phoebefu6.github.io/learn-ecommerce-metrics-with-phoebe/">Ecommerce Metrics ↗</a></td></tr>
+        <tr><td>How do I design the test that proves a campaign worked, properly?</td><td><a href="https://phoebefu6.github.io/learn-experimentation-with-phoebe/">Experimentation ↗</a></td></tr>
+        <tr><td><strong>I have an order table and I want to segment customers I can act on, and know why each landed where it did.</strong></td><td><strong>you are in the right place</strong></td></tr>
+      </table>
+      <p style="margin-top:.7rem;font-size:.86rem;color:var(--muted)"><strong>RFM as a decision system.</strong> Where the knife goes, what it does to real skewed data, which dimension to swap when the purchase table is the wrong table, and how to prove the action worked. The mechanics of quintile scoring are taught once, in the retention course, and linked from here rather than repeated.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="paths">
+      <h2>Choose your path 🗺️</h2>
+      <p class="plede">Three doors into the same conviction: the segment is a product of the cut, and the action is only worth what a holdout says it is.</p>
+      <div class="path"><b>🧾 I have an order table and a Monday deadline</b>
+        <a class="pstep" href="courses/01-three-numbers-and-a-snapshot.html">1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/02-the-cut-decides-the-segment.html">2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/05-from-segment-to-action.html">5</a>
+        <span style="font-size:.82rem;color:var(--muted)">build it, choose the knife on purpose, ship an action with a holdout</span>
+      </div>
+      <div class="path"><b>📡 Most of my users never buy</b>
+        <a class="pstep" href="courses/01-three-numbers-and-a-snapshot.html">1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/04-beyond-purchase.html">4</a>
+        <span style="font-size:.82rem;color:var(--muted)">the three numbers, then the dimension that replaces or joins them on a platform</span>
+      </div>
+      <div class="path"><b>🎯 The whole model</b>
+        <a class="pstep" href="courses/01-three-numbers-and-a-snapshot.html">1</a><span class="parr">→</span>
+        <a class="pstep" href="courses/02-the-cut-decides-the-segment.html">2</a><span class="parr">→</span>
+        <a class="pstep" href="courses/03-the-rfm-bench.html">3</a><span class="parr">→</span>
+        <a class="pstep" href="courses/04-beyond-purchase.html">4</a><span class="parr">→</span>
+        <a class="pstep" href="courses/05-from-segment-to-action.html">5</a><span class="parr">→</span>
+        <a class="pstep" href="courses/06-keep-it-alive.html">6</a>
+        <span style="font-size:.82rem;color:var(--muted)">from raw orders to a model with a date on it, an action table, and a proof</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="paths" style="margin-top:0">
+      <h2>What is honest here 🧾</h2>
+      <p class="plede">The numeric spine is real public data, recomputed for these pages. Where a case rests on a vendor claim or a press figure, the page says which, and where nothing citable exists, the page says that instead.</p>
+    </div>
+    <table class="clean">
+      <tr><th>Claim</th><th>Status</th></tr>
+      <tr><td>Every Olist figure: 97 percent one-time buyers, the eight-group shares, what each cut calls Champions</td><td><strong>Really computed</strong> from the public Brazilian E-Commerce dataset by Olist (CC BY-NC-SA 4.0), delivered orders, snapshot 1 September 2018</td></tr>
+      <tr><td>Every share and revenue figure on the bench</td><td><strong>Really computed</strong> in your browser from a seeded sample of 4,000 of those customers</td></tr>
+      <tr><td>The two campaign-yield figures on the bench</td><td><strong>Modelled.</strong> A five-number response model printed in full on the widget; the pages claim only the ordering, because it follows from the measured repeat-buyer share</td></tr>
+      <tr><td>Klaviyo's and Putler's segment rules</td><td><strong>Quoted from their published help pages,</strong> then replicated on Olist with the standard pandas tie rule; the replication is a property of that rule on this base, not a claim about either product's live output</td></tr>
+      <tr><td>Taobao: most rows are browsing, not buying</td><td><strong>Dataset counts from Tianchi's own page;</strong> the behaviour split is cited to published analyses and not recomputed here</td></tr>
+      <tr><td>Douyin live commerce figures</td><td><strong>From two named industry reports,</strong> each figure attributed; no primary repeat-purchase figure exists and none is stated as fact</td></tr>
+      <tr><td>Pinduoduo team purchase</td><td><strong>Mechanics quoted from PDD Holdings' annual filing;</strong> buyer counts are no longer disclosed there and the page says so</td></tr>
+      <tr><td>The WeChat community shop</td><td><strong>Invented,</strong> 300 customers, built to show what small N does to each cut</td></tr>
+      <tr><td>"RFM in use since 1961"</td><td><strong>Not claimed.</strong> The date travels without a citation; Hughes 1994 is the citable anchor</td></tr>
+    </table>
+  </section>
+
+  <section class="section mm-section">
+    <h2>The knowledge map 🧠</h2>
+    <p class="mm-lede">The whole model at a glance - hover a session to spotlight its concepts, click any node to jump in.</p>
+    <div class="mm-wrap"><div id="mindmap"></div></div>
+  </section>
+
+  <footer class="pagefoot">
+    <span>learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span>Neighbours on the shelf: <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/">Customer Retention ↗</a> &nbsp;·&nbsp; <a href="https://phoebefu6.github.io/learn-ecommerce-metrics-with-phoebe/">Ecommerce Metrics ↗</a> &nbsp;·&nbsp; <a href="https://phoebefu6.github.io/learn-unsupervised-with-phoebe/">Unsupervised Learning ↗</a></span>
+  </footer>
+
+</main>
+
+<script>
+window.MINDMAP_DATA = {
+  title: "RFM\nModeling",
+  centerColor: "#1E3A8A",
+  sessions: [
+    { label: "Three numbers and\na snapshot date", href: "courses/01-three-numbers-and-a-snapshot.html", color: "#FBBF24",
+      concepts: [
+        { label: "Six decisions inside R, F, M", href: "courses/01-three-numbers-and-a-snapshot.html" },
+        { label: "The frozen clock", href: "courses/01-three-numbers-and-a-snapshot.html" },
+        { label: "Eight corners of one box", href: "courses/01-three-numbers-and-a-snapshot.html" } ] },
+    { label: "The cut decides\nthe segment", href: "courses/02-the-cut-decides-the-segment.html", color: "#FBBF24",
+      concepts: [
+        { label: "Mean, median, thirds, fifths", href: "courses/02-the-cut-decides-the-segment.html" },
+        { label: "97 percent ties, one lottery", href: "courses/02-the-cut-decides-the-segment.html" },
+        { label: "Small N breaks every cut", href: "courses/02-the-cut-decides-the-segment.html" } ] },
+    { label: "The RFM\nbench", href: "courses/03-the-rfm-bench.html", color: "#F87171",
+      concepts: [
+        { label: "Same people, six knives", href: "courses/03-the-rfm-bench.html" },
+        { label: "Champions who bought once", href: "courses/03-the-rfm-bench.html" },
+        { label: "One total score hides 80 codes", href: "courses/03-the-rfm-bench.html" } ] },
+    { label: "Beyond\npurchase", href: "courses/04-beyond-purchase.html", color: "#FBBF24",
+      concepts: [
+        { label: "Engagement in place of spend", href: "courses/04-beyond-purchase.html" },
+        { label: "Live-room loyalty as frequency", href: "courses/04-beyond-purchase.html" },
+        { label: "The referral axis", href: "courses/04-beyond-purchase.html" } ] },
+    { label: "From segment to\naction, and proving it", href: "courses/05-from-segment-to-action.html", color: "#FBBF24",
+      concepts: [
+        { label: "One action per corner", href: "courses/05-from-segment-to-action.html" },
+        { label: "The tool decides your cut", href: "courses/05-from-segment-to-action.html" },
+        { label: "The holdout gate", href: "courses/05-from-segment-to-action.html" } ] },
+    { label: "Keep it\nalive", href: "courses/06-keep-it-alive.html", color: "#FBBF24",
+      concepts: [
+        { label: "Cadence and drift", href: "courses/06-keep-it-alive.html" },
+        { label: "The one-page RFM spec", href: "courses/06-keep-it-alive.html" },
+        { label: "When to hand off", href: "courses/06-keep-it-alive.html" } ] }
+  ]
+};
+</script>
+<script src="assets/mindmap.js?v=1"></script>
+<script src="assets/app.js?v=2"></script>
+</body>
+</html>

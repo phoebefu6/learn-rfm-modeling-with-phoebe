@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Session 5 of 6. One action per corner of the eight-group taxonomy, the vendor cut you must read before trusting its segment names, the holdout that turns attributed revenue into a lift, and the trap of messaging everyone in win-back. Built on 93,358 real customers.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="From segment to action, and proving it - learn rfm modeling with phoebe">
+<meta property="og:description" content="Session 5 of 6. A segment is only worth the action it drives, and an action is only worth what a holdout says it added. Actions, channels, caps, and the one number that pays for the message.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/courses/05-from-segment-to-action.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="From segment to action, and proving it - learn rfm modeling with phoebe">
+<meta name="twitter:description" content="Session 5 of 6. One action per corner, the holdout gate, and why message everyone in win-back is the most expensive sentence in RFM.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Session 5 · From segment to action, and proving it - learn rfm modeling with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-rfm-modeling-with-phoebe</a> / Session 5 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn RFM Modeling with Phoebe · Session 5 of 6</div>
+    <h1>From segment to action, <span class="accent">and proving it</span></h1>
+    <p class="sub">A segment is only worth the action it drives, and an action is only worth what a holdout says it added. "Message everyone in win-back" is the most expensive sentence in RFM, because which people are in win-back was decided by the knife in session 2, and on the bench in session 3 that audience ran from 33 people to 2,555 on the same customers. Tonight we give each of the eight corners one action, one channel and a frequency cap, read a vendor's cut before trusting its segment names, hold out a tenth of the audience so the lift can be measured, and write the campaign spec before a single message goes out.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Core</span>
+      <span class="chip audience">CRM, growth and lifecycle teams</span>
+      <span class="chip audience">Python, pandas</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · One action per corner, and the holdout</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: the campaign spec with a holdout</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Four sessions in, you have a table with a three-digit code on every customer and you know that the code depends on where the knife went. The temptation now is to export the win-back group to the email tool and press send. Every step of that is a decision with a price: which action fits the corner, through which channel, how often, to how many, and how you will know afterwards whether it did anything. The last question is the one most RFM projects never ask, and it is the one that decides whether the segmentation was worth building.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = run the code yourself</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> An action table that reads each corner's definition backwards into a first move, a channel and a cap; the habit of opening a vendor's docs to find its cut before funding anything aimed at its "Champions"; a seeded holdout on your own win-back audience; and a one-page campaign spec with the measurement written into it before the send, so that the result is a lift and not a story.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers the action table</span>
+      <h2>One action per corner, and a cap on each</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Each of the eight codes is a sentence about a customer: recent or not, once or often, big or small. Read the sentence backwards and it tells you the first move. A customer who is frequent and big but quiet does not need a discount, she needs a reason and a question. A customer who is recent, once and small needs the second order and nothing expensive. Give every corner exactly one action, one channel, and a frequency cap, and write the three down together.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 416" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Eight sketched boxes on the left, one per RFM corner from 111 High value to 000 Low value, each with its first action and a channel plus frequency cap. Arrows run to four channel doodles on the right: a phone for a human touch, a letter for email or DM, a shop counter for checkout offers, and a crossed-out megaphone for no contact. The Key win-back arrow is drawn in tangerine and goes to the letter.">
+        <defs>
+          <filter id="s5aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="51" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s5aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s5aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s5aH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s5aC { font: 800 13px Inter, sans-serif; fill: #1E3A8A; }
+          .s5aL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s5aS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s5aB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s5aN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s5aH" x="30" y="26">ONE ACTION PER CORNER</text>
+        <text class="s5aS" x="210" y="26">the action, then the channel and a frequency cap, read off the code</text>
+
+        <g filter="url(#s5aSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- eight corner boxes -->
+          <rect x="30" y="52" width="200" height="30" rx="6" transform="rotate(-0.5 130 67)" fill="#EEF3FC"/>
+          <rect x="30" y="94" width="200" height="30" rx="6" transform="rotate(0.4 130 109)" fill="#FFFFFF"/>
+          <rect x="30" y="136" width="200" height="30" rx="6" transform="rotate(-0.6 130 151)" fill="#FDEEDF" stroke="#B4530A"/>
+          <rect x="30" y="178" width="200" height="30" rx="6" transform="rotate(0.5 130 193)" fill="#FFFFFF"/>
+          <rect x="30" y="220" width="200" height="30" rx="6" transform="rotate(-0.4 130 235)" fill="#FFFFFF"/>
+          <rect x="30" y="262" width="200" height="30" rx="6" transform="rotate(0.6 130 277)" fill="#FFFFFF"/>
+          <rect x="30" y="304" width="200" height="30" rx="6" transform="rotate(-0.5 130 319)" fill="#FFFFFF"/>
+          <rect x="30" y="346" width="200" height="30" rx="6" transform="rotate(0.4 130 361)" fill="url(#s5aHc)"/>
+          <!-- arrows to channels -->
+          <path d="M516 67 C560 67 570 67 606 67" marker-end="url(#s5aAr)"/>
+          <path d="M516 109 C560 109 570 193 606 193" marker-end="url(#s5aAr)"/>
+          <path d="M516 151 C560 151 570 193 606 193" stroke="#B4530A" stroke-width="2.5" marker-end="url(#s5aAr)"/>
+          <path d="M516 193 C560 193 570 193 606 193" marker-end="url(#s5aAr)"/>
+          <path d="M516 235 C560 235 570 277 606 277" marker-end="url(#s5aAr)"/>
+          <path d="M516 277 C560 277 570 193 606 193" marker-end="url(#s5aAr)"/>
+          <path d="M516 319 C560 319 570 193 606 193" marker-end="url(#s5aAr)"/>
+          <path d="M516 361 C560 361 570 361 606 361" marker-end="url(#s5aAr)"/>
+          <!-- phone -->
+          <rect x="628" y="47" width="24" height="40" rx="4" transform="rotate(3 640 67)" fill="#FFFFFF"/>
+          <path d="M636 53 L644 53"/>
+          <!-- letter -->
+          <rect x="616" y="178" width="48" height="30" rx="2" transform="rotate(-2 640 193)" fill="#FFFFFF"/>
+          <path d="M616 178 L640 196 L664 178"/>
+          <!-- shop counter with a clerk -->
+          <rect x="614" y="270" width="52" height="20" rx="2" transform="rotate(1 640 280)" fill="#EEF3FC"/>
+          <rect x="620" y="258" width="14" height="12" rx="1" fill="#FFFFFF"/>
+          <circle cx="652" cy="254" r="5" fill="#FFFFFF"/>
+          <path d="M644 270 C646 262 658 262 660 270"/>
+          <!-- megaphone, crossed out -->
+          <path d="M620 353 L646 343 L646 379 L620 369 Z" fill="url(#s5aHc)"/>
+          <path d="M628 369 L628 380"/>
+          <path d="M612 341 L654 383 M654 341 L612 383" stroke-width="2.5"/>
+        </g>
+
+        <text class="s5aC" x="42" y="72">111</text>
+        <text class="s5aL" x="78" y="72">High value</text>
+        <text class="s5aL" x="250" y="65">Protect</text>
+        <text class="s5aS" x="250" y="79">early access, a human touch, no unneeded discount</text>
+
+        <text class="s5aC" x="42" y="114">101</text>
+        <text class="s5aL" x="78" y="114">Key develop</text>
+        <text class="s5aL" x="250" y="107">Get the second order</text>
+        <text class="s5aS" x="250" y="121">email cross-sell · cap 2 a month</text>
+
+        <text class="s5aC" x="42" y="156">011</text>
+        <text class="s5aB" x="78" y="156">Key win-back</text>
+        <text class="s5aL" x="250" y="149">Win back, and ask why they left</text>
+        <text class="s5aS" x="250" y="163">email, a relevant new arrival · 1 send, then stop</text>
+
+        <text class="s5aC" x="42" y="198">001</text>
+        <text class="s5aL" x="78" y="198">Key potential</text>
+        <text class="s5aL" x="250" y="191">Reactivate cheaply, then let go</text>
+        <text class="s5aS" x="250" y="205">one email · cap 1</text>
+
+        <text class="s5aC" x="42" y="240">110</text>
+        <text class="s5aL" x="78" y="240">General potential</text>
+        <text class="s5aL" x="250" y="233">Raise the basket</text>
+        <text class="s5aS" x="250" y="247">at checkout: bundles, a shipping threshold</text>
+
+        <text class="s5aC" x="42" y="282">100</text>
+        <text class="s5aL" x="78" y="282">General develop</text>
+        <text class="s5aL" x="250" y="275">Onboard to order two</text>
+        <text class="s5aS" x="250" y="289">email series · cap 3 in 30 days</text>
+
+        <text class="s5aC" x="42" y="324">010</text>
+        <text class="s5aL" x="78" y="324">General retain</text>
+        <text class="s5aL" x="250" y="317">Light touch, content not spend</text>
+        <text class="s5aS" x="250" y="331">newsletter · cap 1 a month</text>
+
+        <text class="s5aC" x="42" y="366">000</text>
+        <text class="s5aL" x="78" y="366">Low value</text>
+        <text class="s5aL" x="250" y="359">Deprioritise</text>
+        <text class="s5aS" x="250" y="373">no contact · cap 0</text>
+
+        <text class="s5aL" x="684" y="71">a human call or a note</text>
+        <text class="s5aL" x="684" y="197">email or DM</text>
+        <text class="s5aL" x="684" y="284">at the checkout</text>
+        <text class="s5aL" x="684" y="365">no contact</text>
+
+        <text class="s5aN" x="30" y="404">The caps are illustrative and yours to set. What is not optional is that every corner has one, beside its action.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - most corners route to the letter, which is why the cap column matters more than the channel column</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The action is the segment's definition read backwards<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Start from what the code says is missing. <strong>111 High value</strong> is missing nothing, so the action is to protect: early access, a human touch at the moments that matter, and never a discount they did not need, because a discount to someone who was going to buy anyway is margin given away. <strong>101 Key develop</strong> is recent and big but only once, so the whole job is the second order: a category cross-sell, a reason to return before the memory of the first order fades. <strong>011 Key win-back</strong> is frequent and big and gone quiet, so win back with a relevant new arrival rather than a blanket coupon, and ask why they left, because the answer is worth more than the order.</p>
+        <p><strong>001 Key potential</strong>, one big order long ago, gets one cheap reactivation attempt and then release; the corner is 12.1 percent of Olist customers and 26.6 percent of revenue, which is exactly why a blanket effort is tempting and exactly why it must be capped. <strong>110 General potential</strong>, recent and frequent with small baskets, wants the basket raised at the checkout with bundles and a free-shipping threshold, not a message. <strong>100 General develop</strong>, the biggest corner on Olist at 37.9 percent, is onboarding to the second order at low unit cost. <strong>010 General retain</strong> gets content and no spend. <strong>000 Low value</strong> is deprioritised, and "deprioritised" means the cap is zero, written down, so nobody adds them to a blast later.</p>
+        <p>Then extend every row with two more columns: <strong>the channel</strong> and <strong>the frequency cap</strong>. The channel follows the action (a human touch is a call or a handwritten note, onboarding is a short series, basket-raising is on-site). The cap is the promise you make to the customer's attention, and it is the column that turns an action table into an operating rule, because without it every corner drifts toward the email tool.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Putler's action column, quoted<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The eleven-group map that most tutorials copy comes with its own action column, and it is worth reading beside the eight-corner table above because it says the same things at a finer grain. Quoted from putler.com/rfm-analysis, in short form:</p>
+        <table class="clean">
+          <tr><th>Putler segment</th><th>Suggested action</th></tr>
+          <tr><td>Champions</td><td>Reward them; they can be early adopters of new products</td></tr>
+          <tr><td>Loyal customers</td><td>Upsell higher-value products; ask for reviews</td></tr>
+          <tr><td>Potential loyalist</td><td>Offer membership or a loyalty programme</td></tr>
+          <tr><td>New customers</td><td>Onboarding support, early success</td></tr>
+          <tr><td>Promising</td><td>Brand awareness, free trials</td></tr>
+          <tr><td>Needs attention</td><td>Limited-time offers based on past purchases</td></tr>
+          <tr><td>About to sleep</td><td>Share valuable resources, popular products</td></tr>
+          <tr><td>At risk</td><td>Personalised reconnect, offer renewals</td></tr>
+          <tr><td>Can't lose them</td><td>Win back via renewals or newer products; talk to them</td></tr>
+          <tr><td>Hibernating</td><td>Other relevant products and special discounts</td></tr>
+          <tr><td>Lost</td><td>Revive with a reach-out campaign, or ignore</td></tr>
+        </table>
+        <p>Notice what is missing from both tables: a channel and a cap. Vendor action columns tell you what to say and never how often, because the vendor is paid per message. Add the two columns yourself.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>A Douyin brand room and its old customers.</strong> Live commerce on Douyin is now mostly brands broadcasting from their own rooms: the 2025 white paper from 索象集团 and 中国直播产业研究院 puts 2024 Douyin GMV above 3 trillion yuan, live streaming above 58 percent of sales, and 店播 (brand self-broadcast) at 41 percent against 达播 (creator-hosted) at 38 percent; CBNData's 2025 read puts 店播 at about 70 percent of live revenue. An operator running a brand room therefore owns a returning audience and can act on it: a returning viewer who bought twice and has gone quiet is a win-back corner, and the room's own schedule is the channel. What no primary source publishes is the repeat-purchase rate of any of these rooms, so any 复购率 figure you meet in a deck is a vendor or press claim and should be labelled as one. The mechanism transfers; the rate must be measured in your own room.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the tool decides your cut</span>
+      <h2>Read the cut before the name</h2>
+      <span class="tag concept">4 min live</span>
+    </div>
+    <p class="lede">If the segment came out of a marketing platform, somebody else chose the knife, and the name on the group tells you nothing about who is in it until you have read their rule. The rules are usually published. Klaviyo's help centre states its recency thresholds and its use of thirds; Putler publishes its score ranges. Read them, then check one thing on your own data before spending a cent on the top group: how many of its members bought exactly once.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 364" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched dial labelled with Klaviyo's published recency thresholds: score 3 within 180 days, 2 within 365, else 1, with frequency and monetary by thirds beneath. A hand reaches toward the dial. Two panels on the right show what the vendor cuts call Champions on Olist: Klaviyo's six 13.9 percent of customers, of whom 91.0 percent bought once; Putler's eleven 16.1 percent, of whom 92.1 percent bought once.">
+        <defs>
+          <filter id="s5bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s5bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s5bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s5bH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s5bL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s5bS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s5bB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s5bV { font: 800 20px Inter, sans-serif; fill: #1E3A8A; }
+          .s5bT { font: 800 16px Inter, sans-serif; fill: #8A3E06; }
+          .s5bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s5bH" x="30" y="26">THE TOOL'S DIAL</text>
+        <text class="s5bS" x="150" y="26">Klaviyo's published recency thresholds, and what its top group holds on Olist</text>
+
+        <g filter="url(#s5bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- dial -->
+          <circle cx="230" cy="180" r="80" fill="#FFFFFF"/>
+          <circle cx="230" cy="180" r="6" fill="#14213D"/>
+          <path d="M161 140 L171 146 M230 100 L230 112 M299 140 L289 146"/>
+          <path d="M230 180 L190 111" stroke="#B4530A" stroke-width="3"/>
+          <!-- arc of the three zones -->
+          <path d="M150 226 A92 92 0 0 1 230 88" stroke="#1D4ED8" stroke-dasharray="4 4"/>
+          <path d="M230 88 A92 92 0 0 1 310 226" stroke="#CBD5EE" stroke-dasharray="4 4"/>
+          <!-- hand reaching in from the lower right -->
+          <path d="M450 298 C410 290 366 276 328 258"/>
+          <ellipse cx="318" cy="250" rx="13" ry="9" transform="rotate(-40 318 250)" fill="#FFFFFF"/>
+          <path d="M308 240 L302 232 M314 236 L310 226"/>
+          <!-- two panels -->
+          <rect x="520" y="70" width="330" height="100" rx="8" transform="rotate(-0.5 685 120)" fill="#EEF3FC"/>
+          <rect x="520" y="190" width="330" height="100" rx="8" transform="rotate(0.4 685 240)" fill="#EEF3FC"/>
+        </g>
+
+        <text class="s5bL" x="30" y="134">3 · under 180 days</text>
+        <text class="s5bL" x="230" y="84" text-anchor="middle">2 · under 365 days</text>
+        <text class="s5bL" x="310" y="134">1 · older than that</text>
+        <text class="s5bS" x="230" y="284" text-anchor="middle">F and M: thirds by rank</text>
+        <text class="s5bS" x="230" y="300" text-anchor="middle">six groups from listed code sets</text>
+        <text class="s5bB" x="340" y="318">read this before the name</text>
+
+        <text class="s5bH" x="536" y="92">KLAVIYO'S SIX, ON OLIST</text>
+        <text class="s5bV" x="536" y="126">13.9%</text>
+        <text class="s5bS" x="606" y="126">of customers called Champions</text>
+        <text class="s5bT" x="536" y="156">91.0%</text>
+        <text class="s5bB" x="596" y="156">of those Champions bought exactly once</text>
+
+        <text class="s5bH" x="536" y="212">PUTLER'S ELEVEN, ON OLIST</text>
+        <text class="s5bV" x="536" y="246">16.1%</text>
+        <text class="s5bS" x="606" y="246">of customers called Champions</text>
+        <text class="s5bT" x="536" y="276">92.1%</text>
+        <text class="s5bB" x="596" y="276">of those Champions bought exactly once</text>
+
+        <text class="s5bN" x="30" y="340">93,358 customers, ties broken with rank(method="first"), the convention every tutorial fix uses.</text>
+        <text class="s5bN" x="30" y="356">A property of that convention on this base, not a claim about either product's live output.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - two published rules, two Champions groups of 13.9 and 16.1 percent, and nine in ten of both bought once</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Read the cut before the name<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Klaviyo's published rule</strong> (help centre article 17797937793179): recency scores 3 for a last order within 180 days, 2 within 365 days, otherwise 1; frequency and monetary are split into thirds; six named groups are assembled from listed sets of three-digit codes. <strong>Putler's rule</strong> (putler.com/rfm-analysis): quintile scores 1 to 5 on each of R, F and M, frequency and monetary averaged, and eleven segments defined by published score ranges.</p>
+        <p>Run both on Olist's 93,358 customers and the top groups are large. Klaviyo's map calls <strong>13.9 percent</strong> of customers Champions, and <strong>91.0 percent</strong> of those Champions bought exactly once. Putler's calls <strong>16.1 percent</strong> Champions, of whom <strong>92.1 percent</strong> bought once. Neither rule is broken. On a base where 97 percent of customers bought once, a frequency column split into thirds or fifths has to put most of the identical one-time buyers somewhere, and the pandas <code>rank(method="first")</code> convention that every tutorial uses to get past the duplicate-edge error assigns them by row order. One replication note applies to both: neither product documents its tie handling for a column that is 97 percent ties, so these are properties of that convention on this base, not claims about either product's live output.</p>
+        <p>The professional norm that follows: <strong>before funding anything aimed at a tool's top group, compute the share of that group who bought exactly once on your own data.</strong> If it is nine in ten, the group is not "your best customers", it is "recent single big baskets with a lottery ticket", and the right action is Key develop's second-order push rather than High value's protect. The name on the group did not tell you that. The cut did.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What the six-group and eleven-group maps agree on: recency dominates<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Put the two vendor maps side by side and one structural agreement stands out: <strong>the recency score does most of the sorting.</strong> Klaviyo scores recency on calendar thresholds (180 and 365 days) and only then splits the other two columns into thirds, so a customer's recency band decides which third of the map she can land in at all. Putler averages F and M into a single second axis and reads the map as recency against that average, so recency is one of only two axes and the one not diluted by averaging. On Olist the effect is visible in the population shares: Klaviyo's "Recent" group is 21.6 percent, Putler's "Loyal" 31.6 percent and "Potential loyalist" 24.3 percent, all bands of recent buyers with modest F and M.</p>
+        <p>That is a defensible design choice for a message-sending tool, because recency is the one column that predicts whether a message will be opened. It is a poor design choice for deciding who is worth a discount, because a recent one-time buyer and a recent ten-time buyer land in the same band under both maps. The eight-corner taxonomy keeps frequency as its own digit for exactly this reason, and it is why the 101 and 111 corners get different actions even though most tools would put them in one group.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the holdout</span>
+      <h2>The lift is a difference, never a rate</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">Some of the people you message would have bought again anyway. A report that counts every reorder in the messaged group as the campaign's revenue is counting those people twice: once as customers, once as a result. The only way to know how many is to hold some of the audience back, message the rest, and measure both groups over the same window. Hughes's test mailing in 1994 was this step. Holding out a random tenth is the modern version.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 334" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two sketched groups of people drawn from the same audience: nine figures under a letter icon are messaged, one figure under an empty dashed box is held out. To the right, two bars for the reorder rate in each group over the same window; the gap between the top of the held-out bar and the top of the treated bar is filled in tangerine and labelled the lift, the only number that pays for the message. Bar heights are illustrative.">
+        <defs>
+          <filter id="s5cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="57" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s5cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s5cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s5cH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s5cL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s5cS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s5cB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s5cN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s5cH" x="30" y="26">THE HOLDOUT</text>
+        <text class="s5cS" x="130" y="26">same audience, same window, one group never hears from you</text>
+
+        <g filter="url(#s5cSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- letter over the treated group -->
+          <rect x="126" y="46" width="48" height="30" rx="2" transform="rotate(-2 150 61)" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M126 46 L150 64 L174 46" stroke="#B4530A"/>
+          <!-- nine treated people -->
+          <circle cx="100" cy="112" r="8"/><path d="M88 140 C90 126 110 126 112 140"/>
+          <circle cx="150" cy="112" r="8"/><path d="M138 140 C140 126 160 126 162 140"/>
+          <circle cx="200" cy="112" r="8"/><path d="M188 140 C190 126 210 126 212 140"/>
+          <circle cx="100" cy="164" r="8"/><path d="M88 192 C90 178 110 178 112 192"/>
+          <circle cx="150" cy="164" r="8"/><path d="M138 192 C140 178 160 178 162 192"/>
+          <circle cx="200" cy="164" r="8"/><path d="M188 192 C190 178 210 178 212 192"/>
+          <circle cx="100" cy="216" r="8"/><path d="M88 244 C90 230 110 230 112 244"/>
+          <circle cx="150" cy="216" r="8"/><path d="M138 244 C140 230 160 230 162 244"/>
+          <circle cx="200" cy="216" r="8"/><path d="M188 244 C190 230 210 230 212 244"/>
+          <!-- empty box over the held-out group -->
+          <rect x="356" y="46" width="48" height="30" rx="2" transform="rotate(1.5 380 61)" stroke="#CBD5EE" stroke-dasharray="5 4"/>
+          <!-- one held-out person -->
+          <circle cx="380" cy="164" r="8" fill="url(#s5cHc)"/><path d="M368 192 C370 178 390 178 392 192"/>
+          <!-- the split line -->
+          <path d="M290 46 L290 250" stroke="#CBD5EE" stroke-dasharray="6 5"/>
+          <!-- bars -->
+          <path d="M540 250 L790 250"/>
+          <rect x="570" y="180" width="64" height="70" transform="rotate(-0.5 602 215)" fill="#C3D3F5"/>
+          <rect x="690" y="200" width="64" height="50" transform="rotate(0.5 722 225)" fill="url(#s5cHc)"/>
+          <rect x="570" y="180" width="64" height="20" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M634 200 L690 200" stroke="#B4530A" stroke-dasharray="4 3"/>
+          <path d="M540 190 L562 190" stroke="#B4530A" marker-end="url(#s5cAr)"/>
+        </g>
+
+        <text class="s5cL" x="150" y="270" text-anchor="middle">treated · nine in ten</text>
+        <text class="s5cS" x="150" y="286" text-anchor="middle">get the message</text>
+        <text class="s5cL" x="380" y="270" text-anchor="middle">held out · one in ten</text>
+        <text class="s5cS" x="380" y="286" text-anchor="middle">never messaged, same window</text>
+
+        <text class="s5cH" x="540" y="66">REORDER RATE IN THE WINDOW</text>
+        <text class="s5cS" x="540" y="82">illustrative heights, your numbers will differ</text>
+        <text class="s5cB" x="540" y="136">THE LIFT, the only number that pays for the message</text>
+        <text class="s5cS" x="540" y="152">rate(treated) minus rate(held out)</text>
+        <text class="s5cS" x="602" y="268" text-anchor="middle">treated</text>
+        <text class="s5cS" x="722" y="268" text-anchor="middle">held out</text>
+        <text class="s5cS" x="722" y="284" text-anchor="middle">the organic rate</text>
+
+        <text class="s5cN" x="30" y="326">Attributed revenue counts every treated reorder. The held-out group says how many would have happened anyway.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the hatched bar is what happens with no message, and everything below the tangerine gap was going to happen regardless</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The lift is a difference, never a rate<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The procedure has four lines. <strong>One:</strong> take the audience the segment defines and mark a random tenth <em>held out</em>, with a seed, before anyone sees the list. <strong>Two:</strong> message the other nine tenths and never message the tenth, for the whole window. <strong>Three:</strong> after the window (say 90 days from the send), compute the reorder rate in each group. <strong>Four:</strong> the lift is the treated rate minus the held-out rate, and incremental orders are the lift times the treated count.</p>
+        <p>What the held-out rate exposes is the <strong>organic reorder</strong>: the share of this audience that buys again with no message at all. Every one of those, in the treated group, will show up in the platform's "attributed revenue" because the platform attributes any purchase after a send to the send. Revenue that would have happened anyway is the organic rate times the treated count, and it is not the campaign's. Vendor content occasionally concedes the point; one vendor-side blog puts the organic share of win-back revenue attributed under Klaviyo's methodology at 15 to 22 percent. That is a vendor or press claim, not checked at source here, and the honest reading is not the number but the admission: the attribution model itself says some of what it attributes was not caused.</p>
+        <p>The same sheet must carry <strong>contact cost</strong> and the <strong>frequency cap</strong> from Part 1. Net incremental is incremental revenue minus the cost of every message sent, including the ones to people who would have bought anyway, and the cap is what stops the cost line from being paid twice a week. A lift that does not clear the cost is a campaign that lost money while reporting a positive attributed number, and that is a common outcome, not a rare one.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>How big a holdout: a tenth is a convention, the real answer is the smallest group that can still show a difference<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Ten percent is a habit inherited from the direct-mail test cell, and it is a reasonable habit on a large audience. It is the wrong habit on a small one. On the session 3 bench, the mean-split win-back corner is 33 people; a tenth of that is 3, and three people cannot show a difference in reorder rate against thirty. The right question is: what is the smallest held-out group that could still show the lift I am hoping for, at the reorder rates I expect? That is a sample-size calculation, and it depends on the organic rate, the lift you would act on, and how sure you need to be.</p>
+        <p>Two consequences for RFM practice. First, the holdout share should be <em>decided per audience</em>, and for a small corner it may need to be a third or a half, or the corner may need to be pooled with a neighbour before it can be tested at all. Second, an audience too small to test is an audience too small to campaign on with any confidence about the result; the honest move is to act on it anyway if the action is cheap, and to say plainly that the outcome will be an anecdote. The maths of the calculation belongs to <a href="https://phoebefu6.github.io/learn-experimentation-with-phoebe/">Experimentation</a>, which owns power, minimum detectable effect and the sequencing of tests.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>"私域复购是公域的3-5倍."</strong> The claim that private-domain (WeChat community, mini-programme, owned-group) repurchase runs three to five times the public-domain rate is everywhere in Chinese growth writing, and its most recent home is a 2026 article on the 腾讯云开发者社区. It is an industry claim, it names no dataset, and it is unverified. It is also a claim a single shop can settle for itself in one quarter: take the shop's lapsed repeat buyers, message half through the community and hold the other half out, and read the two reorder rates. Whatever the multiple turns out to be for that shop is worth more than any multiple in an article, and the operator will have it before the next quarter's budget is set.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-4">
+    <div class="section-kicker">
+      <span class="klabel">Part 4 · covers the trap</span>
+      <h2>Message everyone in win-back</h2>
+      <span class="tag concept">3 min live</span>
+    </div>
+    <p class="lede">The sentence sounds like a plan. It is a plan whose cost was set in session 2, when the knife decided how many people "win-back" contains. On the bench in session 3, the same 4,000 real customers give a win-back audience of 33, 50, 767 or 2,555 depending on the cut, and under the stated response model those audiences pay back very differently per message and in total. Read both columns, because they do not agree on the winner.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched two-column readout of the win-back audience under four cuts on the bench sample. Left column, net yield per message: mean split R$ 3.46 first, median split R$ 2.84 second, one total score and Putler's eleven both R$ 0.02 and tied third. Right column, net total: median split R$ 128 first, mean split R$ 103 second, one total score R$ 53 third, Putler's eleven R$ 13 fourth. Audience sizes and repeat-buyer shares are listed beside each row.">
+        <defs>
+          <filter id="s5dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s5dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s5dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s5dH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s5dL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s5dS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s5dB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s5dV { font: 800 12px Inter, sans-serif; fill: #1E3A8A; }
+          .s5dN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s5dH" x="30" y="26">TWO COLUMNS, TWO ORDERINGS</text>
+        <text class="s5dS" x="240" y="26">the win-back audience under four cuts, 4,000 real customers, stated response model</text>
+
+        <text class="s5dH" x="200" y="56">NET YIELD PER MESSAGE</text>
+        <text class="s5dH" x="480" y="56">NET TOTAL</text>
+
+        <g filter="url(#s5dSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- per-message bars, scale 57.8 px per real -->
+          <rect x="200" y="70" width="200" height="22" rx="3" transform="rotate(-0.5 300 81)" fill="#B4530A" stroke="#B4530A"/>
+          <rect x="200" y="125" width="164" height="22" rx="3" transform="rotate(0.4 282 136)" fill="#C3D3F5"/>
+          <rect x="200" y="180" width="4" height="22" rx="1" fill="url(#s5dHc)"/>
+          <rect x="200" y="235" width="4" height="22" rx="1" fill="#C3D3F5"/>
+          <!-- total bars, scale 1.5625 px per real -->
+          <rect x="480" y="70" width="161" height="22" rx="3" transform="rotate(0.4 560 81)" fill="#C3D3F5"/>
+          <rect x="480" y="125" width="200" height="22" rx="3" transform="rotate(-0.5 580 136)" fill="#B4530A" stroke="#B4530A"/>
+          <rect x="480" y="180" width="83" height="22" rx="3" transform="rotate(0.5 521 191)" fill="url(#s5dHc)"/>
+          <rect x="480" y="235" width="20" height="22" rx="3" transform="rotate(-0.6 490 246)" fill="#C3D3F5"/>
+          <!-- rank swap arrow between the two top rows -->
+          <path d="M464 96 L464 122" stroke="#B4530A" marker-end="url(#s5dAr)"/>
+          <path d="M472 122 L472 96" stroke="#B4530A" marker-end="url(#s5dAr)"/>
+        </g>
+
+        <text class="s5dL" x="30" y="82">Mean split · 33 people</text>
+        <text class="s5dS" x="30" y="97">100% repeat buyers</text>
+        <text class="s5dL" x="30" y="137">Median split · 50 people</text>
+        <text class="s5dS" x="30" y="152">100% repeat buyers</text>
+        <text class="s5dL" x="30" y="192">One total score · 2,555</text>
+        <text class="s5dS" x="30" y="207">2.5% repeat buyers</text>
+        <text class="s5dL" x="30" y="247">Putler's eleven · 767</text>
+        <text class="s5dS" x="30" y="262">2.4% repeat buyers</text>
+
+        <text class="s5dB" x="410" y="86">R$ 3.46 · 1st</text>
+        <text class="s5dV" x="374" y="141">R$ 2.84 · 2nd</text>
+        <text class="s5dV" x="214" y="196">R$ 0.02 · tied 3rd</text>
+        <text class="s5dV" x="214" y="251">R$ 0.02 · tied 3rd</text>
+
+        <text class="s5dV" x="650" y="86">R$ 103 · 2nd</text>
+        <text class="s5dB" x="690" y="141">R$ 128 · 1st</text>
+        <text class="s5dV" x="572" y="196">R$ 53 · 3rd</text>
+        <text class="s5dV" x="510" y="251">R$ 13 · 4th</text>
+
+        <text class="s5dN" x="30" y="292">Yields on the stated model: 1.0% and 4.0% organic reorder, lifts of 15% and 50%, R$ 0.30 a message, a tenth held out.</text>
+        <text class="s5dN" x="30" y="308">The ordering transfers because it follows the measured repeat-buyer share; the reais do not.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the two tangerine bars are on different rows, and that swap is the whole lesson of the honest dip</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Yield per message and total pull in different directions<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>From the bench in session 3, on the stated response model (lapsed one-time buyers reorder on their own 1.0 percent of the time and a message lifts that by 15 percent; lapsed repeat buyers reorder 4.0 percent of the time and a message lifts that by 50 percent; a message costs R$ 0.30; a tenth of every audience is held out):</p>
+        <table class="clean">
+          <tr><th>Cut</th><th>Win-back audience</th><th>Repeat buyers in it</th><th>Net yield per message</th><th>Net total</th></tr>
+          <tr><td>Mean split, eight (code 011)</td><td>33</td><td><strong>100%</strong></td><td><strong>R$ 3.46</strong></td><td>R$ 103</td></tr>
+          <tr><td>Median split, eight (code 011)</td><td>50</td><td>100%</td><td>R$ 2.84</td><td><strong>R$ 128</strong></td></tr>
+          <tr><td>Quintiles into Putler's eleven (At risk + Can't lose)</td><td>767</td><td>2.4%</td><td>R$ 0.02</td><td>R$ 13</td></tr>
+          <tr><td>One total score (the middle band)</td><td><strong>2,555</strong></td><td>2.5%</td><td>R$ 0.02</td><td>R$ 53</td></tr>
+        </table>
+        <p><strong>Two columns, two orderings.</strong> Per message, the mean split wins because every one of its 33 people is a proven repeat buyer. In total, the median split wins because it has 50 such people rather than 33, and the extra 17 are worth more than the small drop in yield each. Neither column is "the" answer. The per-message column is what a finance partner reads (what does each contact return?), the total column is what a growth lead reads (what does this campaign return?), and a spec that shows only one of them is hiding a decision.</p>
+        <p><strong>What transfers and what does not.</strong> The reais are on a model and will not be your numbers. The ordering is not on the model: it follows from the measured repeat-buyer share of each audience, 100 percent under the two-way splits against 2.4 and 2.5 percent under the quintile and sum cuts, and that share is a fact about who the knife put in the group. Any response model in which repeat buyers reorder more readily than one-time buyers will reproduce the ordering. That is why "message everyone in win-back" costs what it costs: under a quintile or sum cut, "everyone" is 767 or 2,555 people of whom nineteen in twenty have never bought twice.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>The campaign spec with a holdout, on your rfm table</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">Six steps in pandas on the <code>rfm</code> table from session 1, with its three-digit <code>code</code> column from the mean split. The campaign has not run, so nothing below prints a result; the measurement template carries placeholders and is left ready. Where a number is printed, it is from the Olist population and your table will differ.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 412" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The campaign spec as a sketched one-page sheet with seven fields: segment 011 Key win-back, snapshot 2018-09-01, cut mean split, audience size from your table, holdout 10 percent with seed 20180901, metric reorder within 90 days of send, cost per message R$ 0.30 from the model. An arrow labelled after 90 days leads to a dashed result template with five blank lines: rate treated, rate held out, lift, incremental orders, incremental revenue minus cost.">
+        <defs>
+          <filter id="s5eSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="61" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s5eHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s5eAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s5eH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s5eL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s5eS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s5eB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s5eN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s5eH" x="30" y="26">THE SPEC SHEET, WRITTEN BEFORE THE SEND</text>
+
+        <g filter="url(#s5eSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the sheet -->
+          <rect x="60" y="50" width="400" height="330" rx="4" transform="rotate(-0.6 260 215)" fill="#FFFFFF"/>
+          <path d="M80 88 L440 88" stroke="#CBD5EE"/>
+          <!-- seven field rows as faint rules -->
+          <path d="M80 118 L440 118 M80 154 L440 154 M80 190 L440 190 M80 226 L440 226 M80 262 L440 262 M80 298 L440 298 M80 334 L440 334" stroke="#DCE3F3"/>
+          <!-- the one thing: the holdout row -->
+          <rect x="76" y="196" width="368" height="28" rx="4" fill="#FDEEDF" stroke="#B4530A"/>
+          <!-- pen -->
+          <path d="M470 372 L436 338 L444 330 L478 364 Z" fill="#EEF3FC"/>
+          <path d="M470 372 L482 376 L478 364"/>
+          <!-- arrow to the result template -->
+          <path d="M470 200 C520 200 520 200 560 200" marker-end="url(#s5eAr)"/>
+          <!-- result template, dashed -->
+          <rect x="570" y="110" width="280" height="200" rx="4" transform="rotate(0.5 710 210)" fill="#EEF3FC" stroke-dasharray="6 5"/>
+          <path d="M700 150 L830 150 M720 180 L830 180 M660 210 L830 210 M740 240 L830 240 M790 270 L830 270" stroke="#4F5B7A"/>
+        </g>
+
+        <text class="s5eH" x="80" y="78">CAMPAIGN SPEC · win-back 011 · one page</text>
+
+        <text class="s5eL" x="90" y="108">1 · Segment</text>
+        <text class="s5eS" x="250" y="108">011 Key win-back</text>
+        <text class="s5eL" x="90" y="144">2 · Snapshot date</text>
+        <text class="s5eS" x="250" y="144">2018-09-01, in the code</text>
+        <text class="s5eL" x="90" y="180">3 · Cut</text>
+        <text class="s5eS" x="250" y="180">mean split, eight groups</text>
+        <text class="s5eB" x="90" y="216">4 · Holdout share, seed</text>
+        <text class="s5eB" x="250" y="216">10% · rng(20180901)</text>
+        <text class="s5eL" x="90" y="252">5 · Audience size</text>
+        <text class="s5eS" x="250" y="252">len(audience), from your table</text>
+        <text class="s5eL" x="90" y="288">6 · Metric and window</text>
+        <text class="s5eS" x="250" y="288">reorder within 90 days of send</text>
+        <text class="s5eL" x="90" y="324">7 · Cost per message</text>
+        <text class="s5eS" x="250" y="324">R$ 0.30 (the model; use yours)</text>
+        <text class="s5eS" x="90" y="360">action: new arrival email, ask why they left, 1 send</text>
+
+        <text class="s5eB" x="515" y="192" text-anchor="middle">after 90 days</text>
+        <text class="s5eH" x="586" y="136">RESULT TEMPLATE · blank today</text>
+        <text class="s5eS" x="586" y="154">rate, treated</text>
+        <text class="s5eS" x="586" y="184">rate, held out</text>
+        <text class="s5eS" x="586" y="214">lift = difference</text>
+        <text class="s5eS" x="586" y="244">incremental orders</text>
+        <text class="s5eS" x="586" y="274">incremental revenue minus cost</text>
+        <text class="s5eS" x="586" y="298">filled once, from both groups</text>
+
+        <text class="s5eN" x="30" y="404">Write the spec before the send. A spec written after the result is a story, not a measurement.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the tangerine row is the one that cannot be added afterwards, because once the list has gone out there is nobody left to hold back</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>The action table as a dictionary.</strong> Code to (action, channel, cap), joined onto the table so every customer carries her first move. Caps are yours to set; these are placeholders.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · ACTIONS</span>import pandas as pd
+import numpy as np
+
+ACTIONS = {
+    "111": ("protect, no unneeded discount",   "human note",  "1 per quarter"),
+    "101": ("get the second order",             "email",       "2 per month"),
+    "011": ("win back, ask why they left",      "email",       "1 send, then stop"),
+    "001": ("reactivate cheaply, then let go",  "email",       "1 send"),
+    "110": ("raise the basket",                 "checkout",    "on-site only"),
+    "100": ("onboard to order two",             "email",       "3 in 30 days"),
+    "010": ("light touch, content not spend",   "newsletter",  "1 per month"),
+    "000": ("deprioritise",                     "none",        "0"),
+}
+acts = pd.DataFrame.from_dict(ACTIONS, orient="index",
+                              columns=["action", "channel", "cap"])
+rfm = rfm.join(acts, on="code")
+print(rfm[["code", "action", "channel", "cap"]].drop_duplicates().sort_values("code"))</div>
+      </div>
+      <div class="step">
+        <p><strong>Pick the audience.</strong> One corner, by its code, from the table as of the snapshot. On Olist at the mean split this is 0.79 percent of 93,358 customers; yours will differ.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · the audience</span>audience = rfm[rfm["code"] == "011"].copy()
+print(len(audience))          # 0.79% of customers on Olist at the mean split; your table differs
+print(audience["action"].iloc[0], "·", audience["channel"].iloc[0], "·", audience["cap"].iloc[0])</div>
+      </div>
+      <div class="step">
+        <p><strong>Mark the holdout, seeded, before anyone sees the list.</strong> A tenth by convention tonight; Part 3's self-study says when a tenth is too small. The seed is what lets a second analyst reproduce exactly who was held back.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · seeded holdout</span>rng = np.random.default_rng(20180901)
+audience["held_out"] = rng.random(len(audience)) &lt; 0.10
+
+n_treated  = int((~audience["held_out"]).sum())
+n_held_out = int(audience["held_out"].sum())
+print(n_treated, n_held_out)   # about nine to one; the exact split depends on your N</div>
+      </div>
+      <div class="step">
+        <p><strong>Write the spec as a dictionary and print it.</strong> Audience definition with the snapshot date, the cut, the holdout share and seed, the metric with its window, and the cost per message. This is the sheet in the figure above; it goes in the ticket before the send.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · the campaign spec</span>SNAPSHOT = "2018-09-01"
+COST_PER_MESSAGE = 0.30      # the session 3 model's unit cost; replace with your real one
+
+spec = {
+    "segment":          "011 Key win-back",
+    "audience":         f"rfm[code == '011'] as of {SNAPSHOT}",
+    "cut":              "mean split on R, F, M (session 1, step 5)",
+    "n_audience":       int(len(audience)),
+    "holdout_share":    0.10,
+    "holdout_seed":     20180901,
+    "metric":           "reorder within 90 days of send",
+    "cost_per_message": COST_PER_MESSAGE,
+    "action":           ACTIONS["011"],
+}
+for k, v in spec.items():
+    print(f"{k:&gt;17}: {v}")</div>
+      </div>
+      <div class="step">
+        <p><strong>The measurement template, with placeholders.</strong> After the window closes you fill two rates from two groups; everything else is arithmetic on them. It is written now so that the definition of "lift" is fixed before anyone has a result to prefer.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · measure, after the window</span>result = {
+    "rate_treated":  None,   # reorders in the treated group / n_treated, after 90 days
+    "rate_held_out": None,   # reorders in the held-out group / n_held_out, same window
+}
+
+def measure(result, n_treated, avg_order_value, cost=COST_PER_MESSAGE):
+    lift                = result["rate_treated"] - result["rate_held_out"]
+    incremental_orders  = lift * n_treated
+    organic_orders      = result["rate_held_out"] * n_treated   # would have happened anyway
+    incremental_revenue = incremental_orders * avg_order_value
+    net                 = incremental_revenue - n_treated * cost
+    return {"lift": lift, "incremental_orders": incremental_orders,
+            "organic_orders_in_attributed": organic_orders,
+            "incremental_revenue": incremental_revenue, "net": net}
+
+# do not call measure() until the window has closed; today it would raise on None,
+# and that is the correct behaviour: there is no result yet to report</div>
+      </div>
+      <div class="step">
+        <p><strong>The bought-once check on your tool's top group.</strong> Apply the tool's published rule to your table (session 2 built both vendor maps), then ask what share of its top group has F of 1. If the answer is nine in ten, the action is Key develop's, not High value's.</p>
+        <div class="prompt-box good"><span class="label">★ Step 6 · bought once, in the top group</span># rfm["segment"] holds whichever tool map you built in session 2 (Klaviyo's six or Putler's eleven)
+top = rfm[rfm["segment"] == "Champions"]     # or whatever your tool calls its top group
+print(len(top) / len(rfm))
+print((top["F"] == 1).mean().round(3))
+# Olist, 93,358 customers, rank(method="first") on the 97% tie:
+#   Klaviyo's six    -> 0.139 of customers are Champions, 0.910 of them bought once
+#   Putler's eleven  -> 0.161 of customers are Champions, 0.921 of them bought once</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Save the spec and the held-out ids together, dated.</strong> <code>spec_011_2018-09-01.json</code> and <code>heldout_011_2018-09-01.csv</code>. The result is only a measurement if the same file that says who was held back also says when and by what rule, and session 6 will ask for both when the model is re-run.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before session 6</h2>
+      <span class="tag exercise">45 min</span>
+    </div>
+    <ol>
+      <li><strong>Write the spec for one segment on your own table.</strong> Seven fields, one page, before any list is exported. If you cannot fill the metric field with a window, you are not ready to send.</li>
+      <li><strong>Find your tool's cut in its documentation.</strong> The recency thresholds or quantiles, how frequency and monetary are split, and how ties are handled. If tie handling is not documented, write "not documented" in the spec; that is a finding.</li>
+      <li><strong>Compute the bought-once share of its top group</strong> on your data, as in step 6. Decide whether the action for that group is protect or get-the-second-order, and say which fact decided it.</li>
+      <li><strong>Decide the holdout share</strong> using the Experimentation course's guidance on the smallest group that can show the lift you would act on. If your audience is too small to test, write that down too, and pool or proceed knowingly.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and session 5 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · A platform reports R$ 40,000 of revenue attributed to a win-back campaign. Why is the lift a difference rather than that number, and what does attributed revenue hide?</p>
+      <button class="qopt" type="button">A · Attributed revenue is fine; the lift is just the same figure divided by the audience size</button>
+      <button class="qopt" type="button">B · The lift is the treated reorder rate on its own, because held-out customers were not part of the campaign</button>
+      <button class="qopt" type="button">C · Some of the treated customers would have reordered with no message at all; the held-out group measures that organic rate, the lift is the treated rate minus the held-out rate, and the organic rate times the treated count is revenue that was going to happen anyway and is hiding inside the attributed figure</button>
+      <button class="qopt" type="button">D · Attributed revenue only hides the cost of the messages, which can be subtracted afterwards</button>
+      <p class="qwhy">A platform attributes any purchase after a send to the send. Without a held-out group there is no way to know how many of those purchases were organic, and vendor content itself concedes the organic share is not zero. The lift is the only number that pays for the message, and it is a difference between two groups measured over the same window.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · Your marketing platform shows 14 percent of customers as "Champions". Why check the bought-once share of that group before funding a campaign aimed at them?</p>
+      <button class="qopt" type="button">A · Because the tool's cut, not the name, decided who is in the group; on Olist Klaviyo's and Putler's published rules call 13.9 and 16.1 percent of a 97-percent-one-time-buyer base Champions, and 91.0 and 92.1 percent of those Champions bought exactly once, so the right action may be a second-order push rather than protect</button>
+      <button class="qopt" type="button">B · Because Champions should always be exactly 5 percent of customers by definition</button>
+      <button class="qopt" type="button">C · Because the platform's rule is secret and cannot be read</button>
+      <button class="qopt" type="button">D · Because one-time buyers can never be worth a message</button>
+      <p class="qwhy">The rules are published and should be read. Splitting a frequency column that is 97 percent ties into thirds or fifths has to put most identical one-time buyers somewhere, and the common rank convention assigns them by row order. The bought-once share on your own data tells you whether the group is a core to protect or recent single big baskets to develop.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">3 · On the bench, the mean split gives the best net yield per message (R$ 3.46) but the median split gives the largest net total (R$ 128). Why can the two columns rank the cuts differently, and which of the figures transfers to your data?</p>
+      <button class="qopt" type="button">A · They cannot; one of the two bench numbers must be wrong</button>
+      <button class="qopt" type="button">B · Per message rewards the audience with the highest repeat-buyer share, while total also rewards size; the median audience is 50 people against 33, so it earns a little less per message and more in total. The reais are on a stated response model and do not transfer; the ordering does, because it follows from the measured repeat-buyer share of each audience</button>
+      <button class="qopt" type="button">C · Total is always the right column because it is what finance reports</button>
+      <button class="qopt" type="button">D · Per message is always the right column because it removes the effect of the cut</button>
+      <p class="qwhy">Neither column is the answer alone. A spec that shows only one of them is hiding a decision. The per-message ordering is robust because it is driven by who the knife put in the audience (100 percent repeat buyers under the two-way splits against 2.4 and 2.5 percent under the quintile and sum cuts), and that share is measured, not modelled.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The eight-group action table with channel and cap</span><span class="note">Practice, following the common English rendering of the 2x2x2 taxonomy's action list; the caps on this page are illustrative and labelled so</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Putler's action column</span><span class="note">Quoted in short form from putler.com/rfm-analysis, eleven segments and their suggested actions</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Klaviyo's thresholds</span><span class="note">Quoted from Klaviyo help centre article 17797937793179: recency 3 within 180 days, 2 within 365, else 1; frequency and monetary by thirds; six groups from listed code sets. Champions shares on Olist replicated with rank(method="first"), tie handling not documented by either vendor</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The organic share of attributed win-back revenue (15 to 22 percent)</span><span class="note">A vendor or press claim from a vendor-side blog about Klaviyo's attribution methodology; not checked at source, quoted only for the admission that some attributed revenue is organic</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">"私域复购是公域的3-5倍"</span><span class="note">Industry claim from a 2026 腾讯云开发者社区 article, no dataset named, unverified; the page says a holdout inside one shop settles it for that shop</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The session 3 bench: win-back audiences, yields and totals under four cuts</span><span class="note">Computed on a seeded 4,000-customer sample of the Olist population, verified in node against an independent pandas run; yields on a stated response model, with the model printed beside every figure</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Session 5 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Action = definition read backwards</b><span>What the code says is missing is the first move. 011 wins back and asks why; 101 gets order two; 000 gets a cap of zero.</span></div>
+      <div class="cheat-item"><b>Three columns per corner</b><span>Action, channel, frequency cap. Vendor tables give you the first and never the third.</span></div>
+      <div class="cheat-item"><b>Read the cut before the name</b><span>Klaviyo: R 3/2/1 at 180 and 365 days, F and M by thirds. Then compute the bought-once share of the top group on your data.</span></div>
+      <div class="cheat-item"><b>The lift is a difference</b><span>rate(treated) minus rate(held out), same window. Organic rate times treated count is revenue that was happening anyway.</span></div>
+      <div class="cheat-item"><b>Hold out before the list leaves</b><span>A random tenth, seeded, saved with the spec. A tenth of 33 is 3: decide the share per audience, with the experimentation maths.</span></div>
+      <div class="cheat-item"><b>Two columns, two orderings</b><span>Per message: mean 3.46 beats median 2.84. Total: median 128 beats mean 103. The ordering transfers, the reais do not.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You have a spec with a holdout in it and a table dated 2018-09-01. Session 6 keeps the model alive: how often to re-run it, how to tell drift in the groups from drift in the knife, the one-page RFM spec that travels with every table, and the two moments when RFM should hand off, to CLV when you need a forecast per customer and to clustering when the three columns stop being enough.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Session 5 of 6 · learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="04-beyond-purchase.html">← Prev: Beyond purchase</a> &nbsp;·&nbsp; <a href="06-keep-it-alive.html">Next: Keep it alive →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

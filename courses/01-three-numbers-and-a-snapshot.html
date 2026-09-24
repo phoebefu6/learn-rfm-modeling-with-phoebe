@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Session 1 of 6. Recency, frequency and monetary value defined precisely, the snapshot date that every one of them depends on, and the eight-group taxonomy as a mechanism rather than a poster. Built on 93,358 real customers.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Three numbers and a snapshot date - learn rfm modeling with phoebe">
+<meta property="og:description" content="Session 1 of 6. One customer becomes three numbers, and every one of the three changes if you move the clock. Real Olist data, from raw orders to eight named groups.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/courses/01-three-numbers-and-a-snapshot.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Three numbers and a snapshot date - learn rfm modeling with phoebe">
+<meta name="twitter:description" content="Session 1 of 6. R, F, M, the frozen clock, and eight groups from a real marketplace.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Session 1 · Three numbers and a snapshot date - learn rfm modeling with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-rfm-modeling-with-phoebe</a> / Session 1 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn RFM Modeling with Phoebe · Session 1 of 6</div>
+    <h1>Three numbers and a <span class="accent">snapshot date</span></h1>
+    <p class="sub">Every customer a shop has ever had can be described with three numbers: how long since they last bought, how many times they have bought, and how much they have spent. That is RFM, the oldest segmentation still in daily use, and it survives because it is cheap, honest and needs nothing but an order table. The catch is that none of the three numbers exists until you have chosen a date to measure them from, and moving that date by six weeks moves every customer. Tonight we build the three columns on 93,358 real customers, freeze the clock, and turn the columns into the eight named groups that most operations teams actually run.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Core</span>
+      <span class="chip audience">Analysts, growth and CRM teams</span>
+      <span class="chip audience">Python, pandas</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · R, F, M and the frozen clock</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: raw orders to eight groups</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">RFM looks like a scoring exercise and is really a chain of small decisions: what counts as an order, which id is the customer, what "spend" means, what date the clock stops at, and where the knife goes between high and low. Each decision is quick, each one changes who lands in which group, and most tutorials make all of them silently. These six sessions make them out loud, on a real marketplace where 97 percent of customers bought exactly once, because that is the shape of most retail data and it is the shape that breaks the defaults.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = run the code yourself</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A working RFM table on 93,358 real customers with the snapshot date written into the code, the eight-group taxonomy you can read as a mechanism instead of a poster, and the one sentence that stops the first argument every RFM project has: "as of which date?"</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers recency, frequency, monetary</span>
+      <h2>One customer becomes three numbers</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">Take one real customer from the Olist marketplace. Three delivered orders between October 2017 and August 2018, R$ 515 in total. Measured from 1 September 2018 she is R 11, F 3, M 515. Every one of those three carries a choice you have to make before the number exists.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sketched customer with three stacked receipts dated 2017-10-06 to 2018-08-20 becomes three numbers measured against a snapshot clock at 2018-09-01: recency 11 days, frequency 3 orders, monetary 515 reais. Each number lists the choice hiding inside it.">
+        <defs>
+          <filter id="s1aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s1aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s1aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s1aH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s1aL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s1aS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s1aB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s1aV { font: 800 20px Inter, sans-serif; fill: #1E3A8A; }
+          .s1aW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .s1aN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s1aH" x="30" y="26">ONE CUSTOMER, AS THE ORDER TABLE SEES HER</text>
+        <text class="s1aS" x="370" y="26">customer f8bc1d81, three delivered orders</text>
+
+        <g filter="url(#s1aSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- person -->
+          <circle cx="72" cy="120" r="17"/>
+          <path d="M40 176 C46 146 98 146 104 176"/>
+          <!-- three receipts, hand-stacked -->
+          <rect x="134" y="86" width="90" height="40" rx="3" transform="rotate(-1.5 179 106)" fill="#FFFFFF"/>
+          <rect x="136" y="134" width="90" height="40" rx="3" transform="rotate(1 181 154)" fill="#FFFFFF"/>
+          <rect x="134" y="182" width="90" height="40" rx="3" transform="rotate(-0.8 179 202)" fill="url(#s1aHc)"/>
+          <!-- clock -->
+          <circle cx="300" cy="62" r="22" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M300 62 L300 47 M300 62 L312 69" stroke="#B4530A"/>
+          <!-- arrows from the pile to the three numbers -->
+          <path d="M240 150 C300 150 320 110 372 110" marker-end="url(#s1aAr)"/>
+          <path d="M240 156 C300 156 320 176 372 176" marker-end="url(#s1aAr)"/>
+          <path d="M240 162 C300 162 320 242 372 242" marker-end="url(#s1aAr)"/>
+          <!-- three number boxes -->
+          <rect x="380" y="86" width="150" height="50" rx="8" transform="rotate(-0.6 455 111)" fill="#EEF3FC"/>
+          <rect x="380" y="152" width="150" height="50" rx="8" transform="rotate(0.5 455 177)" fill="#EEF3FC"/>
+          <rect x="380" y="218" width="150" height="50" rx="8" transform="rotate(-0.4 455 243)" fill="#EEF3FC"/>
+          <!-- choice cards -->
+          <rect x="560" y="86" width="290" height="50" rx="8" transform="rotate(0.4 705 111)" fill="#FFFFFF" stroke="#CBD5EE"/>
+          <rect x="560" y="152" width="290" height="50" rx="8" transform="rotate(-0.5 705 177)" fill="#FFFFFF" stroke="#CBD5EE"/>
+          <rect x="560" y="218" width="290" height="50" rx="8" transform="rotate(0.3 705 243)" fill="#FFFFFF" stroke="#CBD5EE"/>
+        </g>
+
+        <text class="s1aS" x="148" y="110">2017-10-06</text>
+        <text class="s1aS" x="150" y="158">one more order</text>
+        <text class="s1aL" x="148" y="206">2018-08-20</text>
+        <text class="s1aB" x="300" y="100" text-anchor="middle">snapshot 2018-09-01</text>
+        <text class="s1aS" x="30" y="214">she is one of</text>
+        <text class="s1aL" x="30" y="230">93,358</text>
+
+        <text class="s1aH" x="394" y="106">R · recency</text>
+        <text class="s1aV" x="470" y="123">11</text>
+        <text class="s1aS" x="504" y="123">days</text>
+        <text class="s1aH" x="394" y="172">F · frequency</text>
+        <text class="s1aV" x="470" y="189">3</text>
+        <text class="s1aS" x="490" y="189">orders</text>
+        <text class="s1aH" x="394" y="238">M · monetary</text>
+        <text class="s1aV" x="452" y="255">515</text>
+        <text class="s1aS" x="494" y="255">R$ total</text>
+
+        <text class="s1aB" x="574" y="104">THE CHOICE INSIDE IT</text>
+        <text class="s1aS" x="574" y="122">from which date? and last order placed, or delivered?</text>
+        <text class="s1aB" x="574" y="170">THE CHOICE INSIDE IT</text>
+        <text class="s1aS" x="574" y="188">all time, or a window? and do cancelled orders count?</text>
+        <text class="s1aB" x="574" y="236">THE CHOICE INSIDE IT</text>
+        <text class="s1aS" x="574" y="254">total or average basket? payments, or items x price?</text>
+
+        <text class="s1aN" x="30" y="306">Three numbers, six decisions. Every tutorial makes them for you and most of them never say so.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the right-hand column is where two analysts on the same data get two different tables</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>What each letter measures, and the choice hiding inside each<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>R, recency:</strong> days between the customer's last order and the snapshot date. Smaller is better, which is why R is the one dimension scored in reverse later on. Two choices: which date is "last order" (placed, approved, or delivered) and which date is "now". On Olist the placed timestamp is the honest one, because delivered dates depend on the carrier rather than on the customer.</p>
+        <p><strong>F, frequency:</strong> the number of orders. Choices: all time or a window (the last 12 months is common, and it changes who counts as frequent), and whether cancelled, unavailable and undelivered orders count. Here only <em>delivered</em> orders count, which drops 2,963 of 99,441.</p>
+        <p><strong>M, monetary:</strong> what the customer is worth in money. Choices: total spend or average basket (total rewards frequency twice, since F is already counted; average basket does not), and which column is "spend". Olist has both an items table (price plus freight per line) and a payments table (what was actually charged, including vouchers and instalments). The payments table is used here because it is the money that moved; 2,961 orders were paid with more than one payment and they are summed.</p>
+        <p>None of these is the right answer everywhere. What matters is that each is <strong>written down in the code, once</strong>, so that when a second analyst gets a different table the difference is a diff and not an argument.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Where RFM came from, and the date that has no source<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>RFM is direct-mail technology. The version most people mean is Arthur Hughes's from <em>Strategic Database Marketing</em> (1994): sort the customer file by recency into fifths, sort each fifth by frequency into fifths, each of those by monetary, and you have 125 cells; then mail a random tenth of every cell, read the response rate per cell, and mail the rest of only the cells that paid. The scoring was never the point. The <strong>test mailing</strong> was, and session 5 is about the modern version of that step.</p>
+        <p>Many tutorials say RFM has been "in use since 1961". That date travels from page to page without a citation, and a search for its origin during this build found none. The direct-mail roots are real and usually dated to the 1960s catalogue business, but there is no founding paper and no single year to defend. Hughes 1994 is the citable anchor. When a fact has been copied more often than it has been checked, teach the uncertainty rather than the number.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The same shop, two tables.</strong> An analyst counts frequency over all time; the marketing platform the shop uses counts the trailing twelve months. A customer who bought monthly in 2023 and never since is "frequent" in one table and "once" in the other, and the win-back campaign built on the first table mails people the second table would call lost. Neither is wrong. Not writing the window down is what was wrong.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the snapshot date</span>
+      <h2>The frozen clock</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Recency is a distance, and a distance needs two ends. If "now" is whatever day the notebook happens to run, every customer's R changes every day, the groups drift, and a segment table from March cannot be compared with one from May because they were measured from different places. The fix is one line: a snapshot date, chosen deliberately and written into the code.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two rails. On the top rail the clock drifts with each notebook run, so one customer's recency reads 11, then 42, then 73 days and her group changes. On the bottom rail the snapshot is fixed at 2018-09-01 and she stays at 11 days. At the right, monthly order bars show the ragged edge: September and October 2018 hold 20 orders and none is delivered.">
+        <defs>
+          <filter id="s1bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="23" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s1bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s1bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s1bH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s1bL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s1bS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s1bB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s1bV { font: 800 16px Inter, sans-serif; fill: #1E3A8A; }
+          .s1bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s1bH" x="30" y="26">A DRIFTING "TODAY"</text>
+        <text class="s1bS" x="190" y="26">the notebook runs three times, the customer never moves, her number does</text>
+
+        <g filter="url(#s1bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- top rail -->
+          <path d="M40 80 L560 80" stroke="#CBD5EE"/>
+          <circle cx="90" cy="80" r="6" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <!-- three clocks sliding right -->
+          <circle cx="220" cy="80" r="16"/><path d="M220 80 L220 69 M220 80 L228 85"/>
+          <circle cx="360" cy="80" r="16"/><path d="M360 80 L360 69 M360 80 L368 85"/>
+          <circle cx="500" cy="80" r="16"/><path d="M500 80 L500 69 M500 80 L508 85"/>
+          <path d="M244 62 L332 62" stroke="#4F5B7A" marker-end="url(#s1bAr)"/>
+          <path d="M384 62 L472 62" stroke="#4F5B7A" marker-end="url(#s1bAr)"/>
+          <!-- bottom rail -->
+          <path d="M40 196 L560 196" stroke="#CBD5EE"/>
+          <circle cx="90" cy="196" r="6" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <circle cx="150" cy="196" r="18" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M150 196 L150 183 M150 196 L159 202" stroke="#B4530A"/>
+          <path d="M150 178 L150 168 M144 172 L150 166 L156 172" stroke="#B4530A"/>
+          <!-- ragged edge bars -->
+          <rect x="620" y="130" width="34" height="90" fill="url(#s1bHc)"/>
+          <rect x="664" y="126" width="34" height="94" fill="url(#s1bHc)"/>
+          <rect x="708" y="122" width="34" height="98" fill="url(#s1bHc)"/>
+          <rect x="752" y="214" width="34" height="6" fill="#FDEEDF" stroke="#B4530A"/>
+          <rect x="796" y="217" width="34" height="3" fill="#FDEEDF" stroke="#B4530A"/>
+          <path d="M610 220 L840 220"/>
+        </g>
+
+        <text class="s1bS" x="90" y="106" text-anchor="middle">last order</text>
+        <text class="s1bS" x="90" y="120" text-anchor="middle">2018-08-20</text>
+        <text class="s1bV" x="220" y="122" text-anchor="middle">R = 11</text>
+        <text class="s1bS" x="220" y="138" text-anchor="middle">run on 1 Sep</text>
+        <text class="s1bV" x="360" y="122" text-anchor="middle">R = 42</text>
+        <text class="s1bS" x="360" y="138" text-anchor="middle">run on 2 Oct</text>
+        <text class="s1bV" x="500" y="122" text-anchor="middle">R = 73</text>
+        <text class="s1bS" x="500" y="138" text-anchor="middle">run on 2 Nov, now "quiet"</text>
+
+        <text class="s1bH" x="30" y="170">A FROZEN SNAPSHOT</text>
+        <text class="s1bB" x="150" y="238" text-anchor="middle">2018-09-01, in the code</text>
+        <text class="s1bV" x="300" y="202">R = 11, every run</text>
+        <text class="s1bS" x="300" y="220">and March can be compared with May</text>
+
+        <text class="s1bH" x="610" y="26">THE RAGGED EDGE</text>
+        <text class="s1bS" x="610" y="44">orders per month at the end of the file</text>
+        <text class="s1bS" x="637" y="240" text-anchor="middle">Jun</text>
+        <text class="s1bS" x="681" y="240" text-anchor="middle">Jul</text>
+        <text class="s1bS" x="725" y="240" text-anchor="middle">Aug</text>
+        <text class="s1bB" x="769" y="240" text-anchor="middle">Sep</text>
+        <text class="s1bB" x="813" y="240" text-anchor="middle">Oct</text>
+        <text class="s1bS" x="610" y="262">6,000 to 6,500 a month, then 20 orders in two months</text>
+        <text class="s1bS" x="610" y="278">and none of the 20 is delivered</text>
+
+        <text class="s1bN" x="30" y="304">Freeze the clock at the end of the last complete month. "The last date in the file" is 47 days of nobody buying.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the top rail is why a segment table without a date on it cannot be trusted or compared</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Choosing the date: the end of the last complete month, not the last row<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The Olist export's last timestamp is 17 October 2018, so the obvious snapshot is <code>df["order_purchase_timestamp"].max()</code>. It is wrong by 47 days. Only 20 orders are dated September or October and not one of them was delivered: the export stopped at the end of August and a handful of stragglers leaked in. Measured from 17 October, every customer looks a month and a half staler than the data can support, and the whole recency column shifts.</p>
+        <p>The rule that survives: <strong>plot orders per month, find the last complete one, snapshot on the first day after it.</strong> Here that is 1 September 2018. Write it as a literal in the code, not as a computed max, so that re-running next quarter is a deliberate edit rather than a silent drift.</p>
+        <p>This is the same frozen-history discipline the retention course applies to cohort tables, and it matters here for the same reason: a segment view recomputed against a moving "today" quietly restates the past every time it runs.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Which id is the customer, and why the answer costs 3 percent of the rows<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Olist's orders table carries <code>customer_id</code>, and there are 99,441 of them for 99,441 orders: it is an order-side key, one per purchase. The customers table maps it to <code>customer_unique_id</code>, of which there are 96,096. Group by the first and every customer bought exactly once, by construction, and frequency is meaningless. Group by the second and 2,801 customers turn out to have bought more than once.</p>
+        <p>Every order system has this pair somewhere: a session or checkout id and a person id. Frequency is only defined against the person, and checking which one you have is the first line of any RFM build, before any date is chosen.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the eight-group taxonomy</span>
+      <h2>Eight corners of one box</h2>
+      <span class="tag concept">4 min live</span>
+    </div>
+    <p class="lede">The simplest RFM model splits each of the three columns into high and low, which gives every customer a three-digit code of ones and zeros and puts them in one of eight corners of a box. Each corner has a name and a first action. It is a mechanism, and it is worth being able to read a code without the poster.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn cube whose three axes are recency, frequency and monetary. Each of the eight corners carries a three-digit code and a group name: 111 high value at the far top-right, 000 low value at the near bottom-left, and the six mixed corners between them. A side note explains that 1 means above the knife on that axis and that recency is read in reverse.">
+        <defs>
+          <filter id="s1cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="37" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s1cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".45"/></pattern>
+          <marker id="s1cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s1cH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s1cC { font: 800 13px Inter, sans-serif; fill: #1E3A8A; }
+          .s1cL { font: 600 11px Inter, sans-serif; fill: #14213D; }
+          .s1cS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s1cB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s1cA { font: 700 11px Inter, sans-serif; fill: #1D4ED8; letter-spacing: .05em; }
+          .s1cN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s1cH" x="30" y="26">EIGHT CORNERS, ONE BOX</text>
+        <text class="s1cS" x="200" y="26">first digit R, second F, third M · 1 = above the knife on that axis</text>
+
+        <g filter="url(#s1cSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- back face -->
+          <path d="M350 100 L560 100 L560 310 L350 310 Z" stroke="#4F5B7A" stroke-dasharray="6 5"/>
+          <!-- front face, hatched pile -->
+          <path d="M270 170 L480 170 L480 380 L270 380 Z" fill="url(#s1cHc)"/>
+          <!-- connecting edges -->
+          <path d="M270 170 L350 100 M480 170 L560 100 M480 380 L560 310 M270 380 L350 310"/>
+          <!-- corner dots -->
+          <circle cx="270" cy="380" r="6" fill="#FFFFFF"/>
+          <circle cx="480" cy="380" r="6" fill="#FFFFFF"/>
+          <circle cx="270" cy="170" r="6" fill="#FFFFFF"/>
+          <circle cx="480" cy="170" r="6" fill="#FFFFFF"/>
+          <circle cx="350" cy="310" r="6" fill="#FFFFFF"/>
+          <circle cx="560" cy="310" r="6" fill="#FFFFFF"/>
+          <circle cx="350" cy="100" r="6" fill="#FFFFFF"/>
+          <circle cx="560" cy="100" r="9" fill="#B4530A" stroke="#B4530A"/>
+          <!-- axes -->
+          <path d="M270 392 L480 392" stroke="#1D4ED8" marker-end="url(#s1cAr)"/>
+          <path d="M256 380 L256 170" stroke="#1D4ED8" marker-end="url(#s1cAr)"/>
+          <path d="M490 392 L570 322" stroke="#1D4ED8" marker-end="url(#s1cAr)"/>
+        </g>
+
+        <!-- axis captions -->
+        <text class="s1cA" x="375" y="386" text-anchor="middle">R · MORE RECENT</text>
+        <text class="s1cA" x="248" y="275" text-anchor="start" transform="rotate(-90 248 275)">F · MORE OFTEN</text>
+        <text class="s1cA" x="600" y="352">M · BIGGER SPEND</text>
+
+        <!-- front corners -->
+        <text class="s1cC" x="118" y="376">000</text>
+        <text class="s1cL" x="150" y="376">Low value</text>
+        <text class="s1cS" x="118" y="392">quiet, once, small</text>
+        <text class="s1cC" x="490" y="366" text-anchor="start">100</text>
+        <text class="s1cL" x="522" y="366">General develop</text>
+        <text class="s1cS" x="490" y="382">recent, once, small</text>
+        <text class="s1cC" x="118" y="166">010</text>
+        <text class="s1cL" x="150" y="166">General retain</text>
+        <text class="s1cS" x="118" y="182">quiet, often, small</text>
+        <text class="s1cC" x="360" y="138" text-anchor="start">110</text>
+        <text class="s1cL" x="392" y="138">General potential</text>
+        <text class="s1cS" x="360" y="154">recent, often, small</text>
+        <!-- back corners -->
+        <text class="s1cC" x="200" y="304" text-anchor="start">001</text>
+        <text class="s1cL" x="232" y="304">Key potential</text>
+        <text class="s1cS" x="200" y="320">quiet, once, big</text>
+        <text class="s1cC" x="576" y="292">101</text>
+        <text class="s1cL" x="608" y="292">Key develop</text>
+        <text class="s1cS" x="576" y="308">recent, once, big</text>
+        <text class="s1cC" x="200" y="92">011</text>
+        <text class="s1cL" x="232" y="92">Key win-back</text>
+        <text class="s1cS" x="200" y="108">quiet, often, big</text>
+        <text class="s1cC" x="580" y="92">111</text>
+        <text class="s1cB" x="612" y="92">High value</text>
+        <text class="s1cS" x="580" y="108">recent, often, big</text>
+
+        <!-- side note -->
+        <text class="s1cH" x="660" y="150">READING A CODE</text>
+        <text class="s1cS" x="660" y="170">011: not recently, but often</text>
+        <text class="s1cS" x="660" y="186">and big. A proven customer</text>
+        <text class="s1cS" x="660" y="202">going quiet. The one group</text>
+        <text class="s1cS" x="660" y="218">a win-back message is for.</text>
+        <text class="s1cS" x="660" y="246">R is read in reverse: fewer</text>
+        <text class="s1cS" x="660" y="262">days is the "1". F and M</text>
+        <text class="s1cS" x="660" y="278">read the normal way.</text>
+
+        <text class="s1cN" x="30" y="60">The knife decides everything. Session 2 puts it at the mean, the median and three other places on the same customers.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the far top-right corner is the only one where all three digits are 1, and on Olist it holds 1.28 percent of customers</figcaption>
+    </figure>
+
+    <table class="clean">
+      <tr><th>Code</th><th>Group</th><th>Who they are</th><th>First action</th></tr>
+      <tr><td><strong>111</strong></td><td>High value</td><td>Recent, frequent, big spend. The core</td><td>Protect. Early access, a human touch at key moments, never a discount they did not need</td></tr>
+      <tr><td><strong>101</strong></td><td>Key develop</td><td>Recent and big, but only once</td><td>A second purchase. Category cross-sell, a reason to return before the memory fades</td></tr>
+      <tr><td><strong>011</strong></td><td>Key win-back</td><td>Frequent and big, gone quiet</td><td>Win back. A relevant new arrival, not a generic coupon; find out why they left</td></tr>
+      <tr><td><strong>001</strong></td><td>Key potential</td><td>One big order, long ago</td><td>Reactivate cheaply. If it fails, let go</td></tr>
+      <tr><td><strong>110</strong></td><td>General potential</td><td>Recent and frequent, small baskets</td><td>Raise the basket. Bundles, thresholds for free shipping</td></tr>
+      <tr><td><strong>100</strong></td><td>General develop</td><td>Recent, once, small</td><td>Onboarding. Get the second order at low cost</td></tr>
+      <tr><td><strong>010</strong></td><td>General retain</td><td>Frequent once, small, gone quiet</td><td>Light touch. Content, not spend</td></tr>
+      <tr><td><strong>000</strong></td><td>Low value</td><td>Quiet, once, small</td><td>Deprioritise. Spend the budget elsewhere</td></tr>
+    </table>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What "high" turns out to mean on Olist, before session 2 makes it worse<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Put the knife at the mean of each column, the most common tutorial choice, and read what the eight groups contain on 93,358 real customers. The mean order count is 1.033, so "frequent" means two or more orders and only <strong>3.0 percent</strong> of customers clear it. The mean spend is R$ 165 against a median of R$ 108, so the spend column is skewed right and only <strong>29.3 percent</strong> are "big". The mean recency is 239.5 days and 54.8 percent are more recent than that.</p>
+        <p>The result: <strong>High value (111) is 1.28 percent of customers</strong> and holds 3.1 percent of revenue. The biggest group is General develop (100), recent one-time buyers with a small basket, at 37.9 percent. And the group holding the most revenue is not the corner with three ones at all: <strong>Key develop (101), recent single big baskets, is 15.1 percent of customers and 32.3 percent of revenue.</strong></p>
+        <p>None of this is a flaw in the taxonomy. It is what a marketplace where 97 percent buy once looks like through it, and it is the reason the eight names should be read as coordinates rather than as verdicts. Session 2 moves the knife and watches every one of these shares change.</p>
+      </div>
+    </details>
+
+    <div class="tryrow" data-fn="wordcount" data-multiline="1" data-title="Write your own six decisions" data-hint="For an order table you actually have: which id is the person, which orders count, which column is spend, total or average, all time or a window, and the snapshot date. Six lines." data-seed="" data-cta="Count it"></div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Raw orders to eight groups, on 93,358 real customers</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">Six steps in pandas on the public Olist dataset. Every number printed below is what the code produces; if yours differs, the difference is one of the six decisions and you should be able to name which.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The build-along as a hand-drawn pipeline: three raw tables, orders, customers and payments, flow through a delivered-only filter and two joins into one row per customer with R, F and M, then through the knife into a three-digit code and a group name.">
+        <defs>
+          <filter id="s1dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s1dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s1dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s1dH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s1dL { font: 700 11.5px Inter, sans-serif; fill: #14213D; }
+          .s1dS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s1dB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s1dW { font: 800 11.5px Inter, sans-serif; fill: #FFFFFF; }
+          .s1dN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s1dH" x="30" y="26">THE PIPELINE, SIX STEPS</text>
+
+        <g filter="url(#s1dSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- three raw tables as stacked sheets -->
+          <rect x="30" y="56" width="120" height="40" rx="3" transform="rotate(-2 90 76)" fill="#FFFFFF"/>
+          <rect x="30" y="106" width="120" height="40" rx="3" transform="rotate(1.5 90 126)" fill="#FFFFFF"/>
+          <rect x="30" y="156" width="120" height="40" rx="3" transform="rotate(-1 90 176)" fill="#FFFFFF"/>
+          <!-- funnel -->
+          <path d="M186 60 L286 60 L252 130 L252 176 L220 176 L220 130 Z" fill="url(#s1dHc)"/>
+          <!-- joins -->
+          <rect x="320" y="96" width="120" height="60" rx="8" transform="rotate(0.6 380 126)" fill="#EEF3FC"/>
+          <!-- one row per customer -->
+          <rect x="474" y="96" width="140" height="60" rx="8" transform="rotate(-0.5 544 126)" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <!-- knife -->
+          <path d="M660 90 L660 162" stroke="#B4530A" stroke-width="3"/>
+          <path d="M652 96 L668 96" stroke="#B4530A"/>
+          <!-- code + group -->
+          <rect x="700" y="96" width="150" height="60" rx="8" transform="rotate(0.4 775 126)" fill="#FDEEDF" stroke="#B4530A"/>
+          <!-- arrows -->
+          <path d="M156 76 L184 76" marker-end="url(#s1dAr)"/>
+          <path d="M156 126 L212 126" marker-end="url(#s1dAr)"/>
+          <path d="M156 176 L204 176 L204 150 L212 140" marker-end="url(#s1dAr)"/>
+          <path d="M258 126 L312 126" marker-end="url(#s1dAr)"/>
+          <path d="M446 126 L466 126" marker-end="url(#s1dAr)"/>
+          <path d="M620 126 L648 126" marker-end="url(#s1dAr)"/>
+          <path d="M672 126 L692 126" marker-end="url(#s1dAr)"/>
+        </g>
+
+        <text class="s1dL" x="40" y="80">orders</text>
+        <text class="s1dS" x="86" y="80">99,441</text>
+        <text class="s1dL" x="40" y="130">customers</text>
+        <text class="s1dS" x="110" y="130">96,096</text>
+        <text class="s1dL" x="40" y="180">payments</text>
+        <text class="s1dS" x="106" y="180">103,886</text>
+        <text class="s1dB" x="236" y="48" text-anchor="middle">1 · delivered only</text>
+        <text class="s1dS" x="236" y="200" text-anchor="middle">96,478 orders</text>
+        <text class="s1dL" x="332" y="118">2 · join both ids</text>
+        <text class="s1dS" x="332" y="134">customer_unique_id</text>
+        <text class="s1dS" x="332" y="148">3 · sum payments</text>
+        <text class="s1dW" x="486" y="118">4 · one row each</text>
+        <text class="s1dW" x="486" y="134">R · F · M</text>
+        <text class="s1dW" x="486" y="148">93,358 customers</text>
+        <text class="s1dB" x="660" y="82" text-anchor="middle">5 · the knife</text>
+        <text class="s1dS" x="660" y="180" text-anchor="middle">mean, tonight</text>
+        <text class="s1dL" x="712" y="118">6 · code and name</text>
+        <text class="s1dS" x="712" y="134">"011" = Key win-back</text>
+        <text class="s1dS" x="712" y="148">8 groups, 8 counts</text>
+
+        <text class="s1dN" x="30" y="232">Steps 1 to 4 are the same in every RFM build. Step 5 is where the six sessions live.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the funnel drops 2,963 undelivered orders and the join is what makes frequency mean anything</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Load the three tables and keep delivered orders.</strong> Two of the six decisions are made here: undelivered orders do not count, and the placed timestamp is the order date.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · load and filter</span>import pandas as pd
+from datetime import datetime
+
+orders    = pd.read_csv("data/olist_orders_dataset.csv",
+                        parse_dates=["order_purchase_timestamp"])
+customers = pd.read_csv("data/olist_customers_dataset.csv")
+payments  = pd.read_csv("data/olist_order_payments_dataset.csv")
+
+delivered = orders[orders["order_status"] == "delivered"]
+print(len(orders), len(delivered))        # 99441 96478</div>
+      </div>
+      <div class="step">
+        <p><strong>Attach the person id and the money.</strong> Decision three: the customer is <code>customer_unique_id</code>. Decision four: spend is the payments table, summed per order.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · two joins</span>d = delivered.merge(customers[["customer_id", "customer_unique_id"]],
+                    on="customer_id")
+paid = payments.groupby("order_id")["payment_value"].sum().rename("amount")
+d = d.merge(paid, left_on="order_id", right_index=True, how="left")</div>
+      </div>
+      <div class="step">
+        <p><strong>Freeze the clock.</strong> Decision five, as a literal, with the reason in a comment. Everything dated after it is dropped so the snapshot and the data agree.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · the snapshot</span># last complete month is August 2018; Sep-Oct hold 20 undelivered stragglers
+SNAPSHOT = datetime(2018, 9, 1)
+d = d[d["order_purchase_timestamp"] &lt; SNAPSHOT]</div>
+      </div>
+      <div class="step">
+        <p><strong>One row per customer.</strong> Recency from the last order to the snapshot, frequency as a count of distinct orders, monetary as total spend. Decision six: total, not average.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · R, F, M</span>rfm = d.groupby("customer_unique_id").agg(
+    last=("order_purchase_timestamp", "max"),
+    F=("order_id", "nunique"),
+    M=("amount", "sum"))
+rfm["R"] = (SNAPSHOT - rfm["last"]).dt.days
+
+print(len(rfm))                               # 93358
+print((rfm["F"] == 1).mean().round(3))        # 0.970
+print(rfm[["R", "F", "M"]].describe().round(1))</div>
+      </div>
+      <div class="step">
+        <p><strong>The knife, at the mean tonight.</strong> Above the mean is 1, below is 0, and recency is reversed because fewer days is better.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · high or low on each axis</span>rfm["r"] = (rfm["R"] &lt; rfm["R"].mean()).astype(int)   # reversed
+rfm["f"] = (rfm["F"] &gt; rfm["F"].mean()).astype(int)
+rfm["m"] = (rfm["M"] &gt; rfm["M"].mean()).astype(int)
+rfm["code"] = rfm["r"].astype(str) + rfm["f"].astype(str) + rfm["m"].astype(str)
+
+print(rfm["F"].mean().round(3), rfm["f"].mean().round(3))   # 1.033  0.030
+print(rfm["M"].mean().round(2), rfm["m"].mean().round(3))   # 165.20 0.293</div>
+      </div>
+      <div class="step">
+        <p><strong>Name the corners and count them.</strong> The mapping is a dictionary, not a chain of ifs, so it can be swapped for another taxonomy in session 5 without touching the scoring.</p>
+        <div class="prompt-box good"><span class="label">★ Step 6 · eight groups</span>GROUPS = {"111": "High value",     "101": "Key develop",
+          "011": "Key win-back",   "001": "Key potential",
+          "110": "General potential", "100": "General develop",
+          "010": "General retain", "000": "Low value"}
+rfm["group"] = rfm["code"].map(GROUPS)
+
+out = rfm.groupby("group").agg(customers=("F", "size"), revenue=("M", "sum"))
+out["customers_pct"] = (out["customers"] / len(rfm) * 100).round(2)
+out["revenue_pct"]   = (out["revenue"] / rfm["M"].sum() * 100).round(2)
+print(out.sort_values("customers", ascending=False))
+# General develop 37.88 / 19.28 · Low value 31.91 / 16.16 · Key develop 15.10 / 32.33
+# Key potential 12.11 / 26.63 · High value 1.28 / 3.06 · Key win-back 0.79 / 1.89 ...</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Save the table with the date in the filename.</strong> <code>rfm_2018-09-01.csv</code>, not <code>rfm.csv</code>. Session 6 compares two of these against each other, and the comparison is only meaningful because each one says when it was taken.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before session 2</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Run the six steps on your own order table,</strong> or on Olist if you do not have one. Write the six decisions as comments at the top of the script before you write any code below them.</li>
+      <li><strong>Move the snapshot forward one month</strong> and re-run. Count how many customers change group. That number is the cost of an undated segment table.</li>
+      <li><strong>Swap total spend for average basket</strong> in step 4 and re-run step 6. Watch Key develop and Key potential trade places with General groups. Neither is wrong; write down which question each answers.</li>
+      <li><strong>Bring the table.</strong> Session 2 moves the knife five times on it, and session 3 puts a sample of it on a bench where every share is counted live.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and session 1 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · The Olist export's last order is dated 17 October 2018. Why is 1 September 2018 the better snapshot?</p>
+      <button class="qopt" type="button">A · Because September is the start of a quarter and quarters are the convention</button>
+      <button class="qopt" type="button">B · Because only 20 orders are dated September or October and none of them is delivered, so the export effectively stops at the end of August; measuring from 17 October would make every customer 47 days staler than the data supports</button>
+      <button class="qopt" type="button">C · Because recency should always be measured from the first day of a month</button>
+      <button class="qopt" type="button">D · Because pandas cannot compute date differences across a year boundary</button>
+      <p class="qwhy">The snapshot goes at the end of the last complete month, found by plotting orders per month, and it is written as a literal so that re-running later is a deliberate edit rather than a silent drift. A is a convention that happens to coincide; the reason is the ragged edge.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">2 · Grouping Olist by <code>customer_id</code> gives 99,441 customers who each bought exactly once. What has gone wrong?</p>
+      <button class="qopt" type="button">A · Nothing; Olist customers really do all buy once</button>
+      <button class="qopt" type="button">B · The delivered filter removed the repeat orders</button>
+      <button class="qopt" type="button">C · <code>customer_id</code> is an order-side key, one per purchase; the person is <code>customer_unique_id</code>, and grouping by it finds 2,801 customers who bought more than once, which is the only thing that makes frequency mean anything</button>
+      <button class="qopt" type="button">D · The payments join duplicated rows</button>
+      <p class="qwhy">Every order system carries a checkout id and a person id. Frequency is only defined against the person, and checking which id you have is the first line of the build, before any date or knife is chosen.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Which corner of the eight holds the most revenue on Olist with the knife at the mean, and why is that not a paradox?</p>
+      <button class="qopt" type="button">A · Key develop (101), recent one-time buyers with a big basket, at 32.3 percent of revenue; on a base where 97 percent buy once, "frequent" is a tiny club, so the money sits with recent big single orders and High value is 1.28 percent of customers</button>
+      <button class="qopt" type="button">B · High value (111), because it is defined as the best customers</button>
+      <button class="qopt" type="button">C · Low value (000), because it has the most customers</button>
+      <button class="qopt" type="button">D · Key win-back (011), because lapsed customers had the longest to spend</button>
+      <p class="qwhy">The names are coordinates, not verdicts. High value means all three digits above the knife; on a one-time-buyer marketplace that is a small corner. Where the revenue actually sits depends on the base, and the taxonomy is a way of seeing it, not a promise about it.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Recency, frequency, monetary and their definitions</span><span class="note">Standard practice, with the six decisions named explicitly; every Olist figure recomputed from the public dataset in this build</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The eight-group 2x2x2 taxonomy and its action table</span><span class="note">Taught as the mechanism it is; the group names are the common English renderings of the taxonomy used across Chinese growth practice and vendor tooling</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Hughes 1994, the quintile cells and the test mailing</span><span class="note">Described from secondary summaries of Strategic Database Marketing; the book itself was not opened in this build, and the page says so</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">"RFM since 1961"</span><span class="note">Not claimed. The date circulates without a citation and none was found; Hughes 1994 is the citable anchor</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The Olist dataset and its ragged edge</span><span class="note">Brazilian E-Commerce Public Dataset by Olist, Kaggle, CC BY-NC-SA 4.0; monthly counts, id cardinalities and the 20 undelivered stragglers all measured here</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Session 1 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>R · F · M</b><span>Days since last order, count of orders, total spend. Each hides two decisions.</span></div>
+      <div class="cheat-item"><b>Six decisions, written down</b><span>Person id, which orders count, which column is spend, total or average, window, snapshot date.</span></div>
+      <div class="cheat-item"><b>Snapshot = end of last complete month</b><span>Never the last row in the file. Plot orders per month first.</span></div>
+      <div class="cheat-item"><b>Recency is reversed</b><span>Fewer days is the 1. F and M read the normal way.</span></div>
+      <div class="cheat-item"><b>Eight corners, three digits</b><span>111 High value · 011 Key win-back · 101 Key develop · 000 Low value.</span></div>
+      <div class="cheat-item"><b>Names are coordinates</b><span>On Olist, 101 holds a third of the revenue and 111 is 1.28 percent of customers.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You have three columns and a knife at the mean. Session 2 moves the knife: to the median, into thirds the way Klaviyo does it, into fifths the way most tutorials do it, and to thresholds a merchant would actually write down. On the same 93,358 customers, the share called "best" goes from 1 percent to 16 percent depending on nothing but the knife, and under two of the cuts nine in ten of the "best" customers turn out to have bought exactly once. Bring your table.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Session 1 of 6 · learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← Course home</a> &nbsp;·&nbsp; <a href="02-the-cut-decides-the-segment.html">Next: The cut decides the segment →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>

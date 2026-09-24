@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Session 2 of 6. Mean, median, thirds, fifths and a merchant threshold on the same 93,358 customers. The share called best runs from 1.28 percent to 16.1 percent, and under two vendor maps nine in ten of the best bought exactly once. The segment is a product of the cut.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="The cut decides the segment - learn rfm modeling with phoebe">
+<meta property="og:description" content="Session 2 of 6. Same customers, five knives. Who gets called a Champion depends on nothing but where the knife goes, and on a 97-percent-once base the popular defaults crown one-time buyers.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/courses/02-the-cut-decides-the-segment.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The cut decides the segment - learn rfm modeling with phoebe">
+<meta name="twitter:description" content="Session 2 of 6. Mean, median, thirds, fifths, a merchant line: five cuts on 93,358 real customers and what each one calls best.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-rfm-modeling-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Session 2 · The cut decides the segment - learn rfm modeling with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=1">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-rfm-modeling-with-phoebe</a> / Session 2 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn RFM Modeling with Phoebe · Session 2 of 6</div>
+    <h1>The cut decides <span class="accent">the segment</span></h1>
+    <p class="sub">Same 93,358 Olist customers as last week, same three columns, same snapshot date. Tonight nothing moves except the knife. Put it at the mean and 1.28 percent of customers are "best". Rank everyone into fifths and feed the scores into the most-copied tutorial map, and 16.1 percent are Champions. Under that map and under Klaviyo's published default, nine in ten of those Champions bought exactly once. Nobody changed; the cut did. A segment is not a property of a customer, it is a product of the customer and the knife, and the knife is a decision somebody made, often by accepting a default.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Core</span>
+      <span class="chip audience">Analysts, growth and CRM teams</span>
+      <span class="chip audience">Python, pandas</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Five knives, one pile</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: five cuts on 93,358 customers</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Session 1 ended with a table: one row per customer, R, F and M, and a knife at the mean of each column. The mean is where most tutorials put it, and it is one of at least five defensible places. Each place produces a different set of people called "high", and downstream every action table, every win-back list and every dashboard tile inherits that choice without saying so. Tonight is four short ideas, where the knife can go, what a column full of ties does to it, what the popular taxonomies feed on, and what happens when the pile is 300 people instead of 93,000, and then 22 minutes of running all five cuts on the same table and reading the differences.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = run the code yourself</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> Five cuts you can run on any RFM table in twenty lines, a one-function report that prints who each cut calls best and how many of them bought once, the reason <code>pd.qcut</code> refuses your frequency column and what the usual fix silently does, and the question to ask of any marketing tool before trusting its Champions tile: "where is the knife, and what does it do with ties?"</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers where the knife can go</span>
+      <h2>Five honest places for one knife</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">Take the spend column. 93,358 numbers, mean R$ 165.20, median R$ 107.78, and the mean sits above the median because a long tail of big baskets drags it right. Every cut below is a legitimate answer to "who spends a lot?", and each one lands on a different share of the same people.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn right-skewed pile of customer spend with five knives standing in it. From left: the median at 108 reais with 50 percent above, rank thirds with the top 33 percent above, the mean at 165 reais with 29.3 percent above, rank fifths with the top 20 percent above, and a merchant line at 300 reais with about the top tenth above. A side note says the top 10 percent of customers hold 38.3 percent of revenue.">
+        <defs>
+          <filter id="s2aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="52" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s2aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s2aH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2aL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s2aS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2aB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2aV { font: 800 16px Inter, sans-serif; fill: #1E3A8A; }
+          .s2aN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2aH" x="30" y="26">ONE SPEND COLUMN, FIVE KNIVES</text>
+        <text class="s2aS" x="270" y="26">93,358 customers · every knife is a defensible answer to "who spends a lot?"</text>
+
+        <g filter="url(#s2aSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the pile: right-skewed spend -->
+          <path d="M40 258 C56 150 82 78 128 76 C176 74 200 160 262 196 C330 234 470 250 620 255 C720 258 790 259 830 259 L830 260 L40 260 Z" fill="url(#s2aHc)"/>
+          <!-- baseline -->
+          <path d="M40 262 L840 262" marker-end="url(#s2aAr)"/>
+          <!-- knives: blade + handle, tangerine -->
+          <path d="M230 146 L230 258" stroke="#B4530A" stroke-width="3"/>
+          <path d="M222 152 L238 152" stroke="#B4530A"/>
+          <path d="M330 80 L330 258" stroke="#B4530A" stroke-width="3"/>
+          <path d="M322 86 L338 86" stroke="#B4530A"/>
+          <path d="M390 136 L390 258" stroke="#B4530A" stroke-width="3"/>
+          <path d="M382 142 L398 142" stroke="#B4530A"/>
+          <path d="M480 80 L480 258" stroke="#B4530A" stroke-width="3"/>
+          <path d="M472 86 L488 86" stroke="#B4530A"/>
+          <path d="M610 136 L610 258" stroke="#B4530A" stroke-width="3"/>
+          <path d="M602 142 L618 142" stroke="#B4530A"/>
+          <!-- the tail bracket -->
+          <path d="M660 236 L660 226 L830 226 L830 236" stroke="#4F5B7A"/>
+        </g>
+
+        <text class="s2aB" x="240" y="150">median R$ 108</text>
+        <text class="s2aS" x="240" y="164">50% above</text>
+        <text class="s2aB" x="330" y="58" text-anchor="middle">rank thirds</text>
+        <text class="s2aS" x="330" y="72" text-anchor="middle">top 33% above</text>
+        <text class="s2aB" x="390" y="114" text-anchor="middle">mean R$ 165</text>
+        <text class="s2aS" x="390" y="128" text-anchor="middle">29.3% above</text>
+        <text class="s2aB" x="480" y="58" text-anchor="middle">rank fifths</text>
+        <text class="s2aS" x="480" y="72" text-anchor="middle">top 20% above</text>
+        <text class="s2aB" x="610" y="114" text-anchor="middle">R$ 300, the owner's line</text>
+        <text class="s2aS" x="610" y="128" text-anchor="middle">about the top tenth</text>
+
+        <text class="s2aS" x="745" y="214" text-anchor="middle">the tail: top 10% of customers</text>
+        <text class="s2aL" x="745" y="200" text-anchor="middle">38.3% of revenue</text>
+        <text class="s2aS" x="840" y="282" text-anchor="end">spend per customer, R$</text>
+        <text class="s2aS" x="40" y="282">97% of these people bought once</text>
+
+        <text class="s2aN" x="30" y="318">Same pile. Move only the knife and "big spend" is half the customers, a third, 29 percent, a fifth or a tenth. All five are right.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the mean sits to the right of the median because the tail pulls it, so "above the mean" is already a minority</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>pd.cut fixes the edges, pd.qcut fixes the counts<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>There are two families of knife and pandas has a function for each. <code>pd.cut</code> takes <strong>edges you choose</strong>: the mean, the median, a round R$ 300, a 180-day line. The shares that land in each bin are whatever the data makes them, and on a skewed column they are lopsided. <code>pd.qcut</code> takes <strong>counts you choose</strong>: thirds, fifths, tenths. It then puts the edges wherever it has to so the bins come out equal, which on a skewed column means the edges crowd into the dense part and one bin at the top spans everything from "a bit above typical" to the largest order in the file.</p>
+        <p>Two mechanics to hold onto. Both functions build <strong>left-open, right-closed intervals</strong> by default, so a customer sitting exactly on an edge falls into the lower bin; if your threshold is "R$ 300 or more counts as big", pass <code>right=False</code> or shift the edge. And <strong>recency is scored in reverse</strong>: fewer days is better, so the labels for R run <code>labels=[5, 4, 3, 2, 1]</code> while F and M run <code>[1, 2, 3, 4, 5]</code>. Forgetting the reversal is the most common RFM bug in the wild, and it produces a Champions segment made of people who have not bought in a year.</p>
+        <p>The five placements tonight, on the spend column: the mean (R$ 165.20, 29.3 percent above it), the median (R$ 107.78, 50 percent above it by construction), rank thirds (the top 33 percent by construction), rank fifths (the top 20 percent by construction), and a merchant threshold, a round number the owner would actually write on a whiteboard. On Olist a R$ 300 line takes roughly the top tenth of customers. Five knives, five shares, one column.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why mean and median disagree on spend: skew<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>If spend were symmetric the mean and the median would sit on the same number and "above the mean" would be half the customers. On Olist the mean is R$ 165 and the median R$ 108. The gap is the tail: a minority of big baskets pulls the arithmetic average up while leaving the middle customer where she was. The <strong>top 10 percent of customers by spend hold 38.3 percent of revenue</strong>, and every one of those large numbers pushes the mean right.</p>
+        <p>The consequence for the knife: "above the mean" on a skewed column is not "the top half", it is a minority, 29.3 percent here, and the more skewed the column the smaller that minority gets. The median is immune to the tail by construction. Neither is wrong. The mean answers "who spends more than the average customer's share of the money"; the median answers "who is in the upper half". Write down which question you are asking before choosing the knife, and expect the two to disagree more on spend than on recency, because money has a longer tail than time does.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Two analysts, one table.</strong> One cuts spend at the mean, the other at the median, both by habit. In the first report "high spend" is 29 percent of customers; in the second it is 50 percent. The dashboard shows both numbers in the same week and the marketing lead asks which one is broken. Neither is. Both analysts made a defensible choice, and the argument that followed was the cost of not writing the choice into the code where a diff would have ended it in one line.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers ties</span>
+      <h2>Identical customers, different scores</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Frequency on Olist is 97.0 percent ones. Ask pandas for fifths and it refuses, honestly, because there is no place to put four edges inside a column that is almost entirely the same value. The usual fix makes the error go away. It does not make the problem go away; it hides it inside the row order of your database.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A long row of identical stick figures, all with frequency 1, in database row order, fed by five arrows into five equal bins scored 1 to 5. The first figure lands in the bin scored 1 and the last in the bin scored 5; both are circled in tangerine with the note same customer, different score. Bin 1 holds 18,672 one-time buyers, bin 5 holds 15,871 one-time buyers plus all 2,801 repeat buyers.">
+        <defs>
+          <filter id="s2bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="64" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s2bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s2bH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2bL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s2bS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2bB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2bV { font: 800 16px Inter, sans-serif; fill: #1E3A8A; }
+          .s2bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2bH" x="30" y="26">THE LOTTERY: rank(method="first") ON A COLUMN THAT IS 97% THE SAME VALUE</text>
+        <text class="s2bS" x="30" y="46">90,557 identical one-time buyers, F = 1, in database row order</text>
+
+        <g filter="url(#s2bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the row of identical customers -->
+          <circle cx="64" cy="72" r="5"/><path d="M64 77 L64 92 M58 84 L70 84 M64 92 L59 103 M64 92 L69 103"/>
+          <circle cx="96" cy="72" r="5"/><path d="M96 77 L96 92 M90 84 L102 84 M96 92 L91 103 M96 92 L101 103"/>
+          <circle cx="128" cy="72" r="5"/><path d="M128 77 L128 92 M122 84 L134 84 M128 92 L123 103 M128 92 L133 103"/>
+          <circle cx="160" cy="72" r="5"/><path d="M160 77 L160 92 M154 84 L166 84 M160 92 L155 103 M160 92 L165 103"/>
+          <circle cx="192" cy="72" r="5"/><path d="M192 77 L192 92 M186 84 L198 84 M192 92 L187 103 M192 92 L197 103"/>
+          <circle cx="224" cy="72" r="5"/><path d="M224 77 L224 92 M218 84 L230 84 M224 92 L219 103 M224 92 L229 103"/>
+          <circle cx="256" cy="72" r="5"/><path d="M256 77 L256 92 M250 84 L262 84 M256 92 L251 103 M256 92 L261 103"/>
+          <circle cx="288" cy="72" r="5"/><path d="M288 77 L288 92 M282 84 L294 84 M288 92 L283 103 M288 92 L293 103"/>
+          <circle cx="320" cy="72" r="5"/><path d="M320 77 L320 92 M314 84 L326 84 M320 92 L315 103 M320 92 L325 103"/>
+          <circle cx="352" cy="72" r="5"/><path d="M352 77 L352 92 M346 84 L358 84 M352 92 L347 103 M352 92 L357 103"/>
+          <circle cx="384" cy="72" r="5"/><path d="M384 77 L384 92 M378 84 L390 84 M384 92 L379 103 M384 92 L389 103"/>
+          <circle cx="416" cy="72" r="5"/><path d="M416 77 L416 92 M410 84 L422 84 M416 92 L411 103 M416 92 L421 103"/>
+          <circle cx="448" cy="72" r="5"/><path d="M448 77 L448 92 M442 84 L454 84 M448 92 L443 103 M448 92 L453 103"/>
+          <circle cx="480" cy="72" r="5"/><path d="M480 77 L480 92 M474 84 L486 84 M480 92 L475 103 M480 92 L485 103"/>
+          <circle cx="512" cy="72" r="5"/><path d="M512 77 L512 92 M506 84 L518 84 M512 92 L507 103 M512 92 L517 103"/>
+          <circle cx="544" cy="72" r="5"/><path d="M544 77 L544 92 M538 84 L550 84 M544 92 L539 103 M544 92 L549 103"/>
+          <circle cx="576" cy="72" r="5"/><path d="M576 77 L576 92 M570 84 L582 84 M576 92 L571 103 M576 92 L581 103"/>
+          <circle cx="608" cy="72" r="5"/><path d="M608 77 L608 92 M602 84 L614 84 M608 92 L603 103 M608 92 L613 103"/>
+          <circle cx="640" cy="72" r="5"/><path d="M640 77 L640 92 M634 84 L646 84 M640 92 L635 103 M640 92 L645 103"/>
+          <circle cx="672" cy="72" r="5"/><path d="M672 77 L672 92 M666 84 L678 84 M672 92 L667 103 M672 92 L677 103"/>
+          <circle cx="704" cy="72" r="5"/><path d="M704 77 L704 92 M698 84 L710 84 M704 92 L699 103 M704 92 L709 103"/>
+          <circle cx="736" cy="72" r="5"/><path d="M736 77 L736 92 M730 84 L742 84 M736 92 L731 103 M736 92 L741 103"/>
+          <circle cx="768" cy="72" r="5"/><path d="M768 77 L768 92 M762 84 L774 84 M768 92 L763 103 M768 92 L773 103"/>
+          <circle cx="800" cy="72" r="5"/><path d="M800 77 L800 92 M794 84 L806 84 M800 92 L795 103 M800 92 L805 103"/>
+          <!-- the two circled customers -->
+          <circle cx="64" cy="87" r="24" stroke="#B4530A" stroke-width="2.5"/>
+          <circle cx="800" cy="87" r="24" stroke="#B4530A" stroke-width="2.5"/>
+          <!-- row order arrow along the top -->
+          <path d="M80 56 L790 56" stroke="#CBD5EE" marker-end="url(#s2bAr)"/>
+          <!-- five arrows into five bins -->
+          <path d="M128 112 L134 184" marker-end="url(#s2bAr)"/>
+          <path d="M288 112 L290 184" marker-end="url(#s2bAr)"/>
+          <path d="M448 112 L446 184" marker-end="url(#s2bAr)"/>
+          <path d="M608 112 L602 184" marker-end="url(#s2bAr)"/>
+          <path d="M752 112 L756 184" marker-end="url(#s2bAr)"/>
+          <!-- five equal bins -->
+          <rect x="70" y="192" width="130" height="64" rx="6" transform="rotate(-0.6 135 224)" fill="#FDEEDF" stroke="#B4530A"/>
+          <rect x="225" y="192" width="130" height="64" rx="6" transform="rotate(0.5 290 224)" fill="#EEF3FC"/>
+          <rect x="380" y="192" width="130" height="64" rx="6" transform="rotate(-0.4 445 224)" fill="#EEF3FC"/>
+          <rect x="535" y="192" width="130" height="64" rx="6" transform="rotate(0.6 600 224)" fill="#EEF3FC"/>
+          <rect x="690" y="192" width="130" height="64" rx="6" transform="rotate(-0.5 755 224)" fill="#FDEEDF" stroke="#B4530A"/>
+        </g>
+
+        <text class="s2bB" x="64" y="130" text-anchor="middle">scored 1</text>
+        <text class="s2bB" x="800" y="130" text-anchor="middle">scored 5</text>
+
+        <text class="s2bL" x="135" y="216" text-anchor="middle">score 1</text>
+        <text class="s2bS" x="135" y="234" text-anchor="middle">18,672 once</text>
+        <text class="s2bL" x="290" y="216" text-anchor="middle">score 2</text>
+        <text class="s2bS" x="290" y="234" text-anchor="middle">all bought once</text>
+        <text class="s2bL" x="445" y="216" text-anchor="middle">score 3</text>
+        <text class="s2bS" x="445" y="234" text-anchor="middle">all bought once</text>
+        <text class="s2bL" x="600" y="216" text-anchor="middle">score 4</text>
+        <text class="s2bS" x="600" y="234" text-anchor="middle">all bought once</text>
+        <text class="s2bL" x="755" y="216" text-anchor="middle">score 5</text>
+        <text class="s2bS" x="755" y="234" text-anchor="middle">15,871 once</text>
+        <text class="s2bS" x="755" y="248" text-anchor="middle">+ 2,801 repeat</text>
+
+        <text class="s2bB" x="440" y="290" text-anchor="middle">same customer, different score - the only difference between the two circled figures is which row they sit in</text>
+
+        <text class="s2bN" x="30" y="336">Equal-count bins on a tied column are not a ranking. They are a shuffle, and the top fifth is whoever the database happened to store last.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - every repeat buyer does land in score 5, and so do 15,871 people who are indistinguishable from the ones scored 1</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The lottery: identical customers, different scores<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Run <code>pd.qcut(rfm["F"], 5)</code> on Olist and pandas raises <code>ValueError: Bin edges must be unique: [1, 1, 1, 1, 1, 15]</code>. Read the edges: the 20th, 40th, 60th and 80th percentiles of frequency are all 1, because 97 percent of the column is 1. There is no honest place to put four knives. The error is pandas telling you the truth about your data.</p>
+        <p>The fix every tutorial reaches for is to rank first: <code>pd.qcut(rfm["F"].rank(method="first"), 5)</code>. <code>method="first"</code> breaks ties by <strong>order of appearance</strong>, so the 90,557 identical one-time buyers get 90,557 different ranks, the edges become unique, and the error disappears. What has actually happened is that a column with almost no information has been given five equal bins by row order. On Olist that scores <strong>18,672 identical one-time buyers a 1 and 15,871 identical one-time buyers a 5</strong>. The 2,801 repeat buyers all land in the top fifth too, which is correct, but they share it with fifteen thousand people who are no different from the ones in the bottom fifth.</p>
+        <p>Every downstream Champion built on that score is drawn by that lottery. It is the whole reason the vendor maps in Part 3 crown one-time buyers.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What the fix is actually for<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The rank trick is not wrong in itself. It exists for <strong>spiky columns with real variety</strong>: a frequency column where most values are distinct but a few hundred customers share a value that happens to sit on a quintile edge. There, ranking breaks a tie among a few people and moves an edge by a few rows, which is a fair price for equal bins. The trick becomes a lottery only when the tie is most of the column, as it is on any one-time-buyer base, which is most retail data.</p>
+        <p>The test before applying it: <code>rfm["F"].value_counts(normalize=True).head()</code>. If one value holds more than a fifth of the rows, fifths on that column are not fifths, whatever pandas returns, and the honest move is a cut with chosen edges (once, twice, three or more) or a different dimension altogether. The full quintile build, the personas it feeds, and the persona-migration crosstab between two snapshots live in the retention course, <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">Retention a4</a>; the mechanics are taught there and not repeated here. Tonight is about what the mechanics do to a base like this one.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The platform default.</strong> A marketing platform ships quintile RFM scoring out of the box and a shop with a one-time-buyer base turns it on. The scoring runs without complaint, because the platform's implementation breaks ties the same way the tutorials do. Its "top fifth by frequency" tile is then filled by whichever one-time buyers were stored last, a segment that changes every time the database is re-indexed and that nobody can explain to the owner. The tile is not lying about the arithmetic. It is lying about what a fifth means on this base.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the taxonomies the cuts feed</span>
+      <h2>Eight groups, six groups, eleven groups</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">A cut produces scores; a taxonomy turns scores into names. Two cuts per axis give 8 codes and 8 groups. Klaviyo's published rule, three levels per axis, gives 27 codes collapsed to six groups. Fifths per axis give 125 codes, which Putler's much-copied table collapses to eleven. On the same 93,358 people, read what each one calls "Champions".</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 348" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three sketched grids of recency against frequency plus monetary. A 2 by 2 grid for the mean split with the top-right cell hatched, labelled 1.28 percent of customers and 0 percent bought once. A 3 by 3 grid for Klaviyo's rule with the top row's right cells hatched, labelled 13.9 percent and 91 percent bought once. A 5 by 5 grid for quintiles into Putler's map with the top-right 2 by 2 block hatched, labelled 16.1 percent and 92 percent bought once.">
+        <defs>
+          <filter id="s2cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="77" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s2cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s2cH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2cL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s2cS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2cB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2cT { font: 800 14px Inter, sans-serif; fill: #8A3E06; }
+          .s2cA { font: 700 11px Inter, sans-serif; fill: #1D4ED8; letter-spacing: .05em; }
+          .s2cN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2cH" x="30" y="26">THREE TAXONOMIES, ONE POPULATION</text>
+        <text class="s2cS" x="290" y="26">rows are recency, columns are frequency and spend · hatched = what each map calls best</text>
+
+        <text class="s2cL" x="120" y="66" text-anchor="middle">Mean split</text>
+        <text class="s2cS" x="120" y="82" text-anchor="middle">2 x 2 x 2 · 8 groups</text>
+        <text class="s2cL" x="370" y="66" text-anchor="middle">Klaviyo's rule</text>
+        <text class="s2cS" x="370" y="82" text-anchor="middle">3 x 3 x 3 · 27 codes to 6</text>
+        <text class="s2cL" x="620" y="66" text-anchor="middle">Fifths into Putler</text>
+        <text class="s2cS" x="620" y="82" text-anchor="middle">5 x 5 x 5 · 125 codes to 11</text>
+
+        <g filter="url(#s2cSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- grid A: 2x2 -->
+          <rect x="60" y="96" width="120" height="120" transform="rotate(-0.5 120 156)" fill="#FFFFFF"/>
+          <path d="M120 96 L120 216 M60 156 L180 156"/>
+          <rect x="120" y="96" width="60" height="60" fill="url(#s2cHc)" stroke="#B4530A" stroke-width="2.5"/>
+          <!-- grid B: 3x3 -->
+          <rect x="310" y="96" width="120" height="120" transform="rotate(0.4 370 156)" fill="#FFFFFF"/>
+          <path d="M350 96 L350 216 M390 96 L390 216 M310 136 L430 136 M310 176 L430 176"/>
+          <rect x="350" y="96" width="80" height="40" fill="url(#s2cHc)" stroke="#B4530A" stroke-width="2.5"/>
+          <!-- grid C: 5x5 -->
+          <rect x="560" y="96" width="120" height="120" transform="rotate(-0.4 620 156)" fill="#FFFFFF"/>
+          <path d="M584 96 L584 216 M608 96 L608 216 M632 96 L632 216 M656 96 L656 216 M560 120 L680 120 M560 144 L680 144 M560 168 L680 168 M560 192 L680 192"/>
+          <rect x="632" y="96" width="48" height="48" fill="url(#s2cHc)" stroke="#B4530A" stroke-width="2.5"/>
+          <!-- axes -->
+          <path d="M60 226 L180 226" stroke="#1D4ED8" marker-end="url(#s2cAr)"/>
+          <path d="M50 216 L50 96" stroke="#1D4ED8" marker-end="url(#s2cAr)"/>
+          <path d="M310 226 L430 226" stroke="#1D4ED8" marker-end="url(#s2cAr)"/>
+          <path d="M300 216 L300 96" stroke="#1D4ED8" marker-end="url(#s2cAr)"/>
+          <path d="M560 226 L680 226" stroke="#1D4ED8" marker-end="url(#s2cAr)"/>
+          <path d="M550 216 L550 96" stroke="#1D4ED8" marker-end="url(#s2cAr)"/>
+        </g>
+
+        <text class="s2cA" x="120" y="244" text-anchor="middle">F + M</text>
+        <text class="s2cA" x="370" y="244" text-anchor="middle">F + M</text>
+        <text class="s2cA" x="620" y="244" text-anchor="middle">F + M</text>
+        <text class="s2cA" x="40" y="156" text-anchor="middle" transform="rotate(-90 40 156)">R</text>
+        <text class="s2cA" x="290" y="156" text-anchor="middle" transform="rotate(-90 290 156)">R</text>
+        <text class="s2cA" x="540" y="156" text-anchor="middle" transform="rotate(-90 540 156)">R</text>
+
+        <text class="s2cT" x="120" y="272" text-anchor="middle">1.28% · 0% once</text>
+        <text class="s2cS" x="120" y="290" text-anchor="middle">"High value" = code 111</text>
+        <text class="s2cT" x="370" y="272" text-anchor="middle">13.9% · 91% once</text>
+        <text class="s2cS" x="370" y="290" text-anchor="middle">"Champions" = 333, 332, 323</text>
+        <text class="s2cT" x="620" y="272" text-anchor="middle">16.1% · 92% once</text>
+        <text class="s2cS" x="620" y="290" text-anchor="middle">"Champions" = R 4-5, F+M 4-5</text>
+
+        <text class="s2cH" x="712" y="104">HOW TO READ</text>
+        <text class="s2cS" x="712" y="122">first number: share of</text>
+        <text class="s2cS" x="712" y="136">93,358 customers the</text>
+        <text class="s2cS" x="712" y="150">map calls best</text>
+        <text class="s2cS" x="712" y="172">second: how many of</text>
+        <text class="s2cS" x="712" y="186">those bought exactly</text>
+        <text class="s2cS" x="712" y="200">once, ever</text>
+
+        <text class="s2cN" x="30" y="326">More cells did not find more Champions. Rank-based cells on a tied column found row order and called it loyalty.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the two right-hand grids crown ten times as many people as the left one, and nine in ten of them bought once</figcaption>
+    </figure>
+
+    <table class="clean">
+      <tr><th>Cut and map</th><th>Cells</th><th>Called "best"</th><th>Share of customers</th><th>Of whom bought exactly once</th></tr>
+      <tr><td>Mean split, eight groups</td><td>8</td><td>High value (111)</td><td>1.28%</td><td>0%</td></tr>
+      <tr><td>Klaviyo's rule, six groups</td><td>27, collapsed to 6</td><td>Champions (333, 332, 323)</td><td>13.9%</td><td>91.0%</td></tr>
+      <tr><td>Fifths into Putler's eleven</td><td>125, collapsed to 11</td><td>Champions (R 4-5, F+M 4-5)</td><td>16.1%</td><td>92.1%</td></tr>
+    </table>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>More cells is not more truth<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The mean split's High value corner is small because "frequent" means above the mean of 1.033 orders, which is two or more, and only 3.0 percent of Olist customers ever got there. Zero percent of High value bought once, by construction. It is a tiny group, and it is a true one.</p>
+        <p>Klaviyo's rule scores recency by calendar (3 if the last order was within 180 days, 2 within 365, else 1) and frequency and spend by rank thirds. Rank thirds on a 97-percent-ones column is the Part 2 lottery with three bins instead of five: two thirds of the one-time buyers are handed an F of 2 or 3 by row order. Champions are the codes 333, 332 and 323, which lands on <strong>13.9 percent of customers, and 91.0 percent of them bought once</strong>. Putler's table takes fifths on all three axes, averages F and M, and calls R 4-5 with F+M 4-5 Champions: <strong>16.1 percent, 92.1 percent of them one-time buyers</strong>. On this base the two vendor maps agree with each other and disagree with the data.</p>
+        <p><strong>Replication note.</strong> Neither Klaviyo nor Putler documents how its live product breaks ties on a column that is 97 percent the same value. The figures above use the pandas <code>rank(method="first")</code> convention, which is what every tutorial that "fixes" the duplicate-edge error does. They are a property of that convention on this base, not a claim about either product's output on your account. Ask your vendor the tie question directly; the honest answer is worth more than the segment tile.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Klaviyo's and Putler's published rules, quoted<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Klaviyo</strong> (help centre article 17797937793179). Recency: 3 if the customer bought within the last 180 days, 2 if within 365 days, 1 otherwise. Frequency and monetary: each ranked into thirds, 3 for the top third. The 27 three-digit codes collapse into six groups:</p>
+        <table class="clean">
+          <tr><th>Group</th><th>Codes</th></tr>
+          <tr><td>Champions</td><td>333, 332, 323</td></tr>
+          <tr><td>Loyal</td><td>321, 322, 331, 232, 233</td></tr>
+          <tr><td>Recent</td><td>312, 313, 311, 222, 223</td></tr>
+          <tr><td>Needs attention</td><td>213, 221, 123, 132, 133</td></tr>
+          <tr><td>At risk</td><td>231, 212, 122, 131, 211</td></tr>
+          <tr><td>Inactive</td><td>111, 112, 113, 121</td></tr>
+        </table>
+        <p>On Olist that produces Recent 21.6 percent, Loyal 21.5 percent, At risk 17.3 percent, Needs attention 15.5 percent, Champions 13.9 percent. Needs attention, the natural win-back audience, is 96.7 percent one-time buyers.</p>
+        <p><strong>Putler</strong> (putler.com/rfm-analysis). Each of R, F and M ranked into fifths, 5 best; F and M averaged into one score; eleven segments by ranges of R and F+M: Champions R 4-5 and F+M 4-5; Loyal R 2-5 and F+M 3-5; Potential loyalist R 3-5 and F+M 1-3; New R 4-5 and F+M 0-1; Promising R 3-4 and F+M 0-1; Needs attention R 2-3 and F+M 2-3; About to sleep R 2-3 and F+M 0-2; At risk R 0-2 and F+M 2-5; Can't lose R 0-1 and F+M 4-5; Hibernating R 1-2 and F+M 1-2; Lost R 0-2 and F+M 0-2. The published ranges overlap, so a customer can match more than one; the replication takes the first match reading top to bottom, and the build-along says so in the code.</p>
+        <p>On Olist that produces Loyal 31.6 percent, Potential loyalist 24.3 percent, At risk 19.2 percent, Champions 16.1 percent, and four of the eleven segments empty: New, Promising, Can't lose and Lost never fill because averaging F and M fifths never reaches the corner values when 97 percent of F is tied. At risk plus Can't lose, the win-back audience, is 97.6 percent one-time buyers.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The Champions tile.</strong> A shop switches on an RFM dashboard with Klaviyo-style defaults and the tile says 14 percent of customers are Champions. The team plans a loyalty tier around them. Someone counts how many of those Champions have a second order in the system and the answer is roughly one in ten. The tile was computed correctly from its own rule; the rule was written for a base where thirds mean something. The question that would have saved the quarter is not "is the maths right" but "what does the top third of a column that is 97 percent ones contain".</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-4">
+    <div class="section-kicker">
+      <span class="klabel">Part 4 · covers small N</span>
+      <h2>When the pile is 300 people</h2>
+      <span class="tag concept">3 min live</span>
+    </div>
+    <p class="lede">Everything so far was on 93,358 rows, where a 1.28 percent group is still 1,195 people. Now a constructed case: a WeChat community shop, a 私域 group of 300 customers, one of whom is a household that buys for a whole residential compound. The shop is invented. The shape is not, and it breaks every rank-based cut on the page.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A small pile of dots representing 300 customers stacked by spend, with one oversized tangerine dot far to the right under a sketched house, the household buying for a compound. A median marker stands inside the pile and stays put; a mean marker is dragged to the right by an arrow from the big dot. A note says that fifths would put 60 customers in each bin and that 5 percent of 300 is 15 people, not a segment.">
+        <defs>
+          <filter id="s2dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="89" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s2dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s2dH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2dL { font: 600 12px Inter, sans-serif; fill: #14213D; }
+          .s2dS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2dB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2dV { font: 800 16px Inter, sans-serif; fill: #1E3A8A; }
+          .s2dN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2dH" x="30" y="26">A CONSTRUCTED SHOP: 300 CUSTOMERS, ONE HOUSEHOLD BUYING FOR A COMPOUND</text>
+        <text class="s2dS" x="30" y="46">invented for the shape · the dots stand for 300 people, not counted one by one</text>
+
+        <g filter="url(#s2dSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the pile, stacked by spend -->
+          <circle cx="80" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="134" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="122" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="110" r="4" fill="#EEF3FC"/>
+          <circle cx="80" cy="98" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="134" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="122" r="4" fill="#EEF3FC"/>
+          <circle cx="94" cy="110" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="134" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="122" r="4" fill="#EEF3FC"/>
+          <circle cx="108" cy="110" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="134" r="4" fill="#EEF3FC"/>
+          <circle cx="122" cy="122" r="4" fill="#EEF3FC"/>
+          <circle cx="136" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="136" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="136" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="136" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="136" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="136" cy="134" r="4" fill="#EEF3FC"/>
+          <circle cx="150" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="150" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="150" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="150" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="150" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="164" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="164" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="164" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="164" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="164" cy="146" r="4" fill="#EEF3FC"/>
+          <circle cx="178" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="178" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="178" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="178" cy="158" r="4" fill="#EEF3FC"/>
+          <circle cx="192" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="192" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="192" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="206" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="206" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="206" cy="170" r="4" fill="#EEF3FC"/>
+          <circle cx="220" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="220" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="234" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="234" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="248" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="248" cy="182" r="4" fill="#EEF3FC"/>
+          <circle cx="262" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="276" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="290" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="304" cy="194" r="4" fill="#EEF3FC"/>
+          <circle cx="318" cy="194" r="4" fill="#EEF3FC"/>
+          <!-- the one household -->
+          <circle cx="760" cy="182" r="16" fill="#B4530A" stroke="#B4530A"/>
+          <!-- a small house over it -->
+          <path d="M742 150 L760 132 L778 150 M746 150 L746 166 L774 166 L774 150" stroke="#B4530A"/>
+          <!-- baseline -->
+          <path d="M60 206 L840 206" marker-end="url(#s2dAr)"/>
+          <!-- median marker: stays put -->
+          <path d="M130 100 L130 204" stroke="#1D4ED8" stroke-width="3"/>
+          <path d="M122 106 L138 106" stroke="#1D4ED8"/>
+          <!-- mean marker: dragged right, with the drag arrow -->
+          <path d="M340 122 L340 204" stroke="#B4530A" stroke-width="3" stroke-dasharray="7 5"/>
+          <path d="M332 128 L348 128" stroke="#B4530A"/>
+          <path d="M160 116 C220 96 280 96 328 114" stroke="#B4530A" marker-end="url(#s2dAr)"/>
+        </g>
+
+        <text class="s2dL" x="130" y="90" text-anchor="middle">median</text>
+        <text class="s2dS" x="130" y="76" text-anchor="middle">stays put</text>
+        <text class="s2dB" x="352" y="118">mean, dragged right</text>
+        <text class="s2dS" x="400" y="140">one buyer's spend moves it, and moves</text>
+        <text class="s2dS" x="400" y="154">every "above the mean" verdict with it</text>
+        <text class="s2dB" x="760" y="220" text-anchor="middle">one household</text>
+        <text class="s2dS" x="760" y="234" text-anchor="middle">buying for a compound</text>
+        <text class="s2dS" x="840" y="198" text-anchor="end">spend</text>
+        <text class="s2dS" x="60" y="226">300 customers</text>
+
+        <text class="s2dV" x="460" y="200">fifths = 60 people a bin</text>
+        <text class="s2dS" x="460" y="218">5% of 300 = 15 people, not a segment</text>
+        <text class="s2dS" x="460" y="234">the owner knows every one of them by name</text>
+
+        <text class="s2dN" x="30" y="296">Small N: the median or a threshold the owner wrote down, plus what the owner knows. Rank-based fifths are precision the data does not have.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the household is real business, not an outlier to delete, and it is exactly why the mean is the wrong knife here</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Sixty people a bin, and one of them is a building<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Say the shop has 300 customers in its community group. Fifths put 60 in each bin, thirds put 100. A "Champions" segment of 5 percent is 15 people. Percentages below that are not segments; they are a short list of names the owner could recite. Any rank-based cut on 300 rows manufactures a precision the pile does not have, and the tie problem from Part 2 is worse, not better, because a community shop's frequency column is often a handful of values shared by dozens.</p>
+        <p>Then the household. One member buys for an entire compound, so her spend is many times anyone else's. The mean of the spend column is dragged toward her, and "above the mean" is suddenly a group of a few dozen people who happen to be on the near side of one buyer's total. The median does not move; a threshold the owner would write down ("regulars are anyone over 500 yuan a quarter") does not move either. The honest cut at this size is <strong>a median or a merchant threshold, plus owner knowledge</strong>: the owner already knows which twenty customers matter, and the model's job is to confirm and organise that, not to overrule it with fifths.</p>
+        <p>Your numbers will differ, and no output is printed for this shop anywhere on the page, because it is invented. What transfers is the check: divide your N by the number of bins before you choose the knife, and if the answer is a room of people rather than a population, cut with edges you can defend out loud.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>This shop is invented, and the pattern is everywhere in 私域.</strong> Community selling on WeChat runs at exactly this scale: a few hundred contacts in a group, one seller, orders taken in chat. One member routinely buys for neighbours, a dormitory or a family compound, because that is how group buying works, and her total is a business line, not a data error. Every tutorial cut assumes a population; this is a room. Vendor claims that private-traffic repeat rates run several times higher than public-platform rates circulate widely and are not verified by any primary source read for this page, so treat them as marketing until you have measured your own room.</p>
+    </div>
+
+    <div class="tryrow" data-fn="wordcount" data-multiline="1" data-title="Write your merchant thresholds" data-hint="For a shop you know: the recency line in days after which someone is quiet, the order count that makes someone a regular, and the spend line the owner would say out loud. Three lines, with the reason for each." data-seed="" data-cta="Count it"></div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Five cuts on the same 93,358 customers</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">Start from the table session 1 saved, <code>rfm_2018-09-01.csv</code>, one row per customer with R, F and M. Seven steps: one report function, then five knives through it, then a table that puts the three "Champions" shares side by side. Every number in a comment is what the code prints on Olist; if yours differs, the difference is the knife.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The session 1 pipeline redrawn: one saved RFM table on the left fans out into five parallel knives, mean split, median split, Klaviyo's rule, fifths into Putler, merchant thresholds, each feeding a small result card with its top-group share, and all five converge into one comparison table on the right.">
+        <defs>
+          <filter id="s2eSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="97" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2eHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s2eAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s2eH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2eL { font: 700 11.5px Inter, sans-serif; fill: #14213D; }
+          .s2eS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2eB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2eW { font: 800 11.5px Inter, sans-serif; fill: #FFFFFF; }
+          .s2eN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2eH" x="30" y="26">STEP 5 OF LAST WEEK'S PIPELINE, EXPLODED INTO FIVE KNIVES</text>
+
+        <g filter="url(#s2eSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- the saved table -->
+          <rect x="30" y="182" width="180" height="60" rx="8" transform="rotate(-0.5 120 212)" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <!-- fan-out arrows to five knives -->
+          <path d="M212 200 C240 170 250 90 268 79" marker-end="url(#s2eAr)"/>
+          <path d="M212 206 C240 190 250 155 268 145" marker-end="url(#s2eAr)"/>
+          <path d="M212 212 L268 211" marker-end="url(#s2eAr)"/>
+          <path d="M212 218 C240 234 250 268 268 277" marker-end="url(#s2eAr)"/>
+          <path d="M212 224 C240 254 250 332 268 343" marker-end="url(#s2eAr)"/>
+          <!-- five knives -->
+          <path d="M282 60 L282 98" stroke="#B4530A" stroke-width="3"/><path d="M274 64 L290 64" stroke="#B4530A"/>
+          <path d="M282 126 L282 164" stroke="#B4530A" stroke-width="3"/><path d="M274 130 L290 130" stroke="#B4530A"/>
+          <path d="M282 192 L282 230" stroke="#B4530A" stroke-width="3"/><path d="M274 196 L290 196" stroke="#B4530A"/>
+          <path d="M282 258 L282 296" stroke="#B4530A" stroke-width="3"/><path d="M274 262 L290 262" stroke="#B4530A"/>
+          <path d="M282 324 L282 362" stroke="#B4530A" stroke-width="3"/><path d="M274 328 L290 328" stroke="#B4530A"/>
+          <!-- five result cards -->
+          <rect x="310" y="56" width="230" height="46" rx="6" transform="rotate(-0.6 425 79)" fill="#EEF3FC"/>
+          <rect x="310" y="122" width="230" height="46" rx="6" transform="rotate(0.5 425 145)" fill="#EEF3FC"/>
+          <rect x="310" y="188" width="230" height="46" rx="6" transform="rotate(-0.4 425 211)" fill="#EEF3FC"/>
+          <rect x="310" y="254" width="230" height="46" rx="6" transform="rotate(0.6 425 277)" fill="#EEF3FC"/>
+          <rect x="310" y="320" width="230" height="46" rx="6" transform="rotate(-0.5 425 343)" fill="#FFFFFF" stroke="#CBD5EE"/>
+          <!-- converge into the comparison -->
+          <path d="M544 79 C590 79 610 200 640 214" marker-end="url(#s2eAr)"/>
+          <path d="M544 145 C590 145 610 210 640 222" marker-end="url(#s2eAr)"/>
+          <path d="M544 211 L640 230" marker-end="url(#s2eAr)"/>
+          <path d="M544 277 C590 277 610 250 640 238" marker-end="url(#s2eAr)"/>
+          <path d="M544 343 C590 343 610 262 640 246" marker-end="url(#s2eAr)"/>
+          <rect x="650" y="194" width="200" height="72" rx="8" transform="rotate(0.4 750 230)" fill="#FDEEDF" stroke="#B4530A"/>
+        </g>
+
+        <text class="s2eW" x="44" y="204">rfm_2018-09-01.csv</text>
+        <text class="s2eW" x="44" y="220">93,358 rows · R, F, M</text>
+        <text class="s2eS" x="30" y="262">from session 1, unchanged</text>
+
+        <text class="s2eL" x="322" y="74">2 · mean split, 8 groups</text>
+        <text class="s2eS" x="322" y="92">111 High value 1.28% · 0% once</text>
+        <text class="s2eL" x="322" y="140">3 · median split, 8 groups</text>
+        <text class="s2eS" x="322" y="158">111 High value 1.46% · 011 1.18%</text>
+        <text class="s2eL" x="322" y="206">4 + 6 · fifths, then Putler's 11</text>
+        <text class="s2eS" x="322" y="224">Champions 16.1% · 92.1% once</text>
+        <text class="s2eL" x="322" y="272">5 · Klaviyo's rule, 27 codes to 6</text>
+        <text class="s2eS" x="322" y="290">Champions 13.9% · 91.0% once</text>
+        <text class="s2eL" x="322" y="338">merchant thresholds</text>
+        <text class="s2eS" x="322" y="356">the owner's numbers · session 3 bench</text>
+
+        <text class="s2eB" x="282" y="48" text-anchor="middle">the knife, five times</text>
+        <text class="s2eB" x="662" y="214">7 · one comparison table</text>
+        <text class="s2eS" x="662" y="232">three "Champions" shares</text>
+        <text class="s2eS" x="662" y="248">and how many bought once</text>
+
+        <text class="s2eN" x="30" y="392">Steps 1 to 4 of the pipeline never change. Everything downstream of the knife is a different table each time.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the report function in step 1 is what makes five knives comparable; without it you would have five printouts and an argument</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Load the saved table and write the report once.</strong> Every cut below produces a Series of group labels aligned to the table; the report takes that Series plus the labels that mean "best" and "win back", and prints the same four things every time.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · one report for every knife</span>import pandas as pd
+
+rfm = pd.read_csv("rfm_2018-09-01.csv", index_col=0)   # R, F, M from session 1
+print(len(rfm), (rfm["F"] == 1).mean().round(3))         # 93358 0.970
+
+def cut_report(rfm, scores, top_rule, winback_rule):
+    """scores: a Series of group labels, same index as rfm.
+    top_rule / winback_rule: the labels that count as best / win-back."""
+    is_top = scores.isin(top_rule)
+    is_win = scores.isin(winback_rule)
+    print(f"top group    {is_top.mean():.2%} of customers, "
+          f"{rfm.loc[is_top, 'M'].sum() / rfm['M'].sum():.2%} of revenue")
+    print(f"bought once  {(rfm.loc[is_top, 'F'] == 1).mean():.1%} of the top group")
+    print(f"win-back     {is_win.mean():.2%} of customers, {is_win.sum():,} people")</div>
+      </div>
+      <div class="step">
+        <p><strong>The mean split, as a function of the centre.</strong> Same as last week, but the centre is a parameter so step 3 can swap it in one word. Recency is reversed.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · mean split</span>def eight(rfm, centre):
+    r = (rfm["R"] &lt; centre(rfm["R"])).astype(int)   # fewer days is the 1
+    f = (rfm["F"] &gt; centre(rfm["F"])).astype(int)
+    m = (rfm["M"] &gt; centre(rfm["M"])).astype(int)
+    return r.astype(str) + f.astype(str) + m.astype(str)
+
+code_mean = eight(rfm, pd.Series.mean)
+cut_report(rfm, code_mean, top_rule=["111"], winback_rule=["011"])
+# top group    1.28% of customers, 3.06% of revenue
+# bought once  0.0% of the top group
+# win-back     0.79% of customers, ... people</div>
+      </div>
+      <div class="step">
+        <p><strong>The median split.</strong> One word changes. The frequency median is 1, so "frequent" still means two or more; the spend knife drops from R$ 165 to R$ 108 and every group that has a 1 in the third digit grows.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · median split</span>code_median = eight(rfm, pd.Series.median)
+print((code_median.value_counts(normalize=True) * 100).round(2))
+# 000 25.50   100 24.14   101 23.95   001 23.40
+# 111  1.46   011  1.18   110  0.18   010  0.18
+
+cut_report(rfm, code_median, top_rule=["111"], winback_rule=["011"])
+# the win-back group 011 is 1.18% here against 0.79% at the mean: same people, bigger audience</div>
+      </div>
+      <div class="step">
+        <p><strong>Fifths on frequency: the error, then the fix, then what the fix did.</strong> Let the error print. Then rank first, and cross-tabulate the real order count against the score it was given.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · qcut refuses, rank "fixes" it</span>try:
+    pd.qcut(rfm["F"], 5)
+except ValueError as e:
+    print(e)
+# Bin edges must be unique: [1, 1, 1, 1, 1, 15] ...
+
+rfm["Fq"] = pd.qcut(rfm["F"].rank(method="first"), 5,
+                    labels=[1, 2, 3, 4, 5]).astype(int)
+print(pd.crosstab(rfm["F"].clip(upper=3), rfm["Fq"]))
+# row F=1: 18,672 customers scored 1 ... 15,871 scored 5, by row order alone
+# rows F=2 and F=3+: every repeat buyer sits in Fq 5, sharing it with those 15,871</div>
+      </div>
+      <div class="step">
+        <p><strong>Klaviyo's rule.</strong> Recency by calendar, 180 and 365 days; frequency and spend by rank thirds, with the same rank trick; then the published dictionary from 27 codes to six groups.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · Klaviyo's six</span>KLAVIYO = {
+    "Champions":       ["333", "332", "323"],
+    "Loyal":           ["321", "322", "331", "232", "233"],
+    "Recent":          ["312", "313", "311", "222", "223"],
+    "Needs attention": ["213", "221", "123", "132", "133"],
+    "At risk":         ["231", "212", "122", "131", "211"],
+    "Inactive":        ["111", "112", "113", "121"],
+}
+TO_GROUP = {code: g for g, codes in KLAVIYO.items() for code in codes}
+
+def thirds(s):
+    return pd.qcut(s.rank(method="first"), 3, labels=[1, 2, 3]).astype(int)
+
+def klaviyo(rfm):
+    Rk = pd.Series(1, index=rfm.index)
+    Rk[rfm["R"] &lt;= 365] = 2
+    Rk[rfm["R"] &lt;= 180] = 3
+    code = Rk.astype(str) + thirds(rfm["F"]).astype(str) + thirds(rfm["M"]).astype(str)
+    return code.map(TO_GROUP)
+
+kl = klaviyo(rfm)
+cut_report(rfm, kl, top_rule=["Champions"], winback_rule=["Needs attention"])
+# top group    13.90% of customers ...
+# bought once  91.0% of the top group
+# win-back     15.50% of customers ...  (96.7% of them bought once)</div>
+      </div>
+      <div class="step">
+        <p><strong>Putler's eleven.</strong> Fifths on all three, F and M averaged, half scores rounded up, then the published ranges. The ranges overlap, so the function reads top to bottom and the first match wins; that is the convention, and it is written where the next reader can see it.</p>
+        <div class="prompt-box good"><span class="label">★ Step 6 · fifths into Putler's map</span>def fifths(s, labels):
+    return pd.qcut(s.rank(method="first"), 5, labels=labels).astype(int)
+
+def putler_name(R, FM):
+    # published ranges overlap; first match wins, top to bottom
+    if R &gt;= 4 and FM &gt;= 4: return "Champions"
+    if R &gt;= 2 and FM &gt;= 3: return "Loyal"
+    if R &gt;= 3 and FM &lt;= 3: return "Potential loyalist"
+    if R &gt;= 4 and FM &lt;= 1: return "New"
+    if R &gt;= 3 and FM &lt;= 1: return "Promising"
+    if R in (2, 3) and FM in (2, 3): return "Needs attention"
+    if R in (2, 3) and FM &lt;= 2: return "About to sleep"
+    if R &lt;= 2 and FM &gt;= 2: return "At risk"
+    if R &lt;= 1 and FM &gt;= 4: return "Can't lose"
+    if R in (1, 2) and FM in (1, 2): return "Hibernating"
+    return "Lost"
+
+def putler(rfm):
+    Rq = fifths(rfm["R"], [5, 4, 3, 2, 1])          # reversed
+    Fq = fifths(rfm["F"], [1, 2, 3, 4, 5])
+    Mq = fifths(rfm["M"], [1, 2, 3, 4, 5])
+    FM = (Fq + Mq + 1) // 2                          # average, halves round up
+    return pd.Series([putler_name(r, fm) for r, fm in zip(Rq, FM)], index=rfm.index)
+
+pt = putler(rfm)
+cut_report(rfm, pt, top_rule=["Champions"], winback_rule=["At risk", "Can't lose"])
+# top group    16.10% of customers ...
+# bought once  92.1% of the top group
+# win-back     ... (97.6% of them bought once)
+print(pt.value_counts())   # 7 of 11 non-empty: New, Promising, Can't lose, Lost never fill</div>
+      </div>
+      <div class="step">
+        <p><strong>One table, three "Champions".</strong> The same people, three shares, and a column that says how many of the best never came back.</p>
+        <div class="prompt-box good"><span class="label">★ Step 7 · the comparison</span>rows = []
+for name, scores, top in [("Mean split, 8 groups", code_mean, ["111"]),
+                          ("Klaviyo's rule, 6",    kl,        ["Champions"]),
+                          ("Fifths into Putler",   pt,        ["Champions"])]:
+    is_top = scores.isin(top)
+    rows.append({"cut": name,
+                 "called best %": round(is_top.mean() * 100, 2),
+                 "of whom bought once %": round((rfm.loc[is_top, "F"] == 1).mean() * 100, 1)})
+print(pd.DataFrame(rows).to_string(index=False))
+#                  cut  called best %  of whom bought once %
+# Mean split, 8 groups           1.28                    0.0
+#   Klaviyo's rule, 6          13.90                   91.0
+#  Fifths into Putler          16.10                   92.1</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Keep the cut in the filename too.</strong> <code>segments_2018-09-01_mean.csv</code>, <code>segments_2018-09-01_klaviyo.csv</code>. A segment table without its knife written on it is the Part 1 argument waiting to happen again next quarter, and session 6 will need both the date and the cut to compare two runs honestly.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before session 3</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Run all five cuts on your own table,</strong> or on Olist if you do not have one. Use the step 1 report unchanged so the five printouts line up, and keep the printouts.</li>
+      <li><strong>Find out which cut your marketing tool uses.</strong> Open its documentation, not its dashboard, and write down the knife: fixed days or ranks for recency, thirds or fifths or thresholds for the rest, and whether it says anything at all about ties. If it does not, write "ties: undocumented".</li>
+      <li><strong>Count how many of your "Champions" bought once</strong> under each of the five cuts. On Olist the answers are 0 percent, 0 percent, 91 percent, 92 percent and whatever your own thresholds give. Yours will differ; the spread between them is the point.</li>
+      <li><strong>Bring the numbers to session 3.</strong> A 4,000-customer sample of this table goes on a bench where six cuts are computed live, and the win-back audience each one draws gets costed at R$ 0.30 a message.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and session 2 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · <code>pd.qcut(rfm["F"], 5)</code> raises "Bin edges must be unique: [1, 1, 1, 1, 1, 15]" on Olist. What is going on, and what does the usual <code>rank(method="first")</code> fix do?</p>
+      <button class="qopt" type="button">A · The column has missing values; the fix fills them with the row number</button>
+      <button class="qopt" type="button">B · pandas cannot bin integers; the fix converts the column to floats so fifths can be computed</button>
+      <button class="qopt" type="button">C · 97 percent of the column is the value 1, so four of the five quantile edges land on the same number; the fix hands identical customers different ranks by row order, which makes the edges unique and on Olist scores 18,672 identical one-time buyers a 1 and 15,871 identical ones a 5</button>
+      <button class="qopt" type="button">D · The frequency column needs to be log-transformed first; the fix is a workaround for skew</button>
+      <p class="qwhy">The error is pandas being honest about a column with almost no information in it. Ranking first makes the error go away by turning row order into a score, and every rank-based segment downstream inherits that lottery. Check value_counts before reaching for fifths; if one value holds more than a fifth of the rows, fifths are not fifths.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">2 · On a base where 97 percent of customers bought once, Klaviyo's rule calls 13.9 percent Champions and Putler's map calls 16.1 percent Champions, and about nine in ten of each are one-time buyers. Why?</p>
+      <button class="qopt" type="button">A · Because Olist one-time buyers spend so much that they deserve the label on monetary value alone</button>
+      <button class="qopt" type="button">B · Because both maps score frequency by rank into thirds or fifths, and on a 97-percent-ties column those ranks are assigned by row order, so a large share of one-time buyers receive the top frequency score and qualify as Champions on recency and spend alone</button>
+      <button class="qopt" type="button">C · Because both vendors define Champions as the top 15 percent of customers by design</button>
+      <button class="qopt" type="button">D · Because the replication used the wrong snapshot date and made everyone look recent</button>
+      <p class="qwhy">More cells is not more truth. The top third or top fifth of a column that is 97 percent the same value contains row order, not loyalty, and both maps then read that score as if it meant something. The replication note matters here: neither vendor documents its tie handling, so this is a property of the standard pandas convention on this base, not a claim about either product's live output.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Key win-back (011) is 0.79 percent of Olist customers with the knife at the mean and 1.18 percent with it at the median. Which statement is right?</p>
+      <button class="qopt" type="button">A · Both are right; the median spend knife sits at R$ 108 instead of R$ 165, so more quiet repeat buyers clear "big spend", and the win-back audience grows by about half without a single customer changing behaviour</button>
+      <button class="qopt" type="button">B · The median figure is wrong, because the median of a skewed column overstates spend</button>
+      <button class="qopt" type="button">C · The mean figure is wrong, because recency should be cut at the median</button>
+      <button class="qopt" type="button">D · The two figures are for different snapshot dates and cannot be compared</button>
+      <p class="qwhy">Same people, same date, one knife moved on one column. The mean sits right of the median on a skewed spend column, so "above the mean" is a stricter test than "above the median" and every group with a 1 in the third digit is smaller under it. Session 3 puts a price on the difference: a bigger win-back audience costs more messages and reaches a lower share of true repeat buyers.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Five cuts on the Olist population</span><span class="note">Brazilian E-Commerce Public Dataset by Olist, Kaggle, CC BY-NC-SA 4.0; mean, median, thirds, fifths and the vendor maps all recomputed on 93,358 customers in this build, snapshot 2018-09-01</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">pandas cut and qcut behaviour</span><span class="note">Right-closed intervals, the duplicate-edge error text and the rank(method="first") tie-break as documented and as run; the 18,672 and 15,871 counts measured here</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Klaviyo's RFM thresholds</span><span class="note">Quoted from Klaviyo help centre article 17797937793179: 180 and 365 days for recency, thirds for frequency and spend, six groups with their code lists; tie handling is not documented and the page says so</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Putler's eleven-segment table</span><span class="note">Segment names and score ranges quoted from putler.com/rfm-analysis; overlapping ranges resolved first-match top to bottom, stated in the code; four segments empty on this base</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The WeChat community shop, N = 300</span><span class="note">Constructed and labelled as such; no output printed for it. The private-traffic repeat-rate multiple that circulates is an industry claim and is labelled unverified</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>cut fixes edges, qcut fixes counts</b><span>Right-closed by default. Recency labels reversed: [5, 4, 3, 2, 1].</span></div>
+      <div class="cheat-item"><b>Five knives on spend</b><span>Median R$ 108 (50%) · thirds (33%) · mean R$ 165 (29.3%) · fifths (20%) · owner's R$ 300 (about 10%).</span></div>
+      <div class="cheat-item"><b>Check ties before fifths</b><span>value_counts first. One value over a fifth of the rows means fifths are row order.</span></div>
+      <div class="cheat-item"><b>The lottery, in numbers</b><span>18,672 identical F = 1 customers scored 1; 15,871 scored 5. Same people.</span></div>
+      <div class="cheat-item"><b>Three "Champions"</b><span>Mean split 1.28%, 0% once · Klaviyo 13.9%, 91% once · Putler 16.1%, 92% once.</span></div>
+      <div class="cheat-item"><b>Small N</b><span>Divide N by bins first. 5% of 300 is 15 names. Median or owner threshold, plus the owner.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You have five cuts and a report that makes them comparable. Session 3 puts 4,000 of these customers on a bench where six cuts, the five from tonight plus one anti-lever, are computed live in the page, every share is counted as you watch, and each cut's win-back audience is costed at R$ 0.30 a message against a stated response model. Two of the audiences differ by a factor of 77 in size. Bring your homework numbers; the bench will tell you which knife your tool is holding.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Session 2 of 6 · learn-rfm-modeling-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="01-three-numbers-and-a-snapshot.html">← Prev: Three numbers and a snapshot date</a> &nbsp;·&nbsp; <a href="03-the-rfm-bench.html">Next: The RFM bench →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=2"></script>
+</body>
+</html>
