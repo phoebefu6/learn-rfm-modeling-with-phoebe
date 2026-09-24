@@ -131,19 +131,20 @@ A seeded sample (`numpy.random.default_rng(20180901)`, 4,000 rows) of the real p
 as three integer arrays (57 KB). Sample shape matches the population: 97.08% one-time buyers,
 mean spend R$ 172.84, median R$ 110.36, mean recency 240.5 days.
 
-Six cuts on the same 4,000 people. Verified headlessly in node on 2026-09-24 against an
+Seven cuts on the same 4,000 people. Verified headlessly in node on 2026-09-24 against an
 independent pandas implementation before any page quoted a number; both agree to the row.
 
 | Cut | Groups | Top group | Top group who bought once | Win-back audience | Repeat buyers in it | Net yield per message | Net incremental |
 |---|---|---|---|---|---|---|---|
 | Mean split, eight | 8 | 0.97% (2.42% rev) | **0%** | 33 | **100%** | **R$ 3.46** | R$ 103 |
-| Median split, eight | 8 | 1.40% (2.63% rev) | 0% | 50 | 100% | R$ 2.84 | **R$ 128** |
+| Median split, eight | 8 | 1.40% (2.63% rev) | 0% | 50 | 100% | R$ 2.84 | R$ 128 |
+| Fifths, then collapse to eight (the tutorial route) | 8 | 6.38% (13.2% rev) | 84.7% | 422 | 12.6% | R$ 0.53 | **R$ 203** |
 | Klaviyo's six | 6 | 13.30% (23.6% rev) | **89.9%** | 630 | 3.7% | R$ 0.15 | R$ 83 |
 | Quintiles into Putler's eleven | 7 non-empty | 15.90% (27.0% rev) | **91.5%** | 767 | 2.4% | **R$ 0.02** | R$ 13 |
 | Merchant thresholds | 7 | 0.70% (1.27% rev) | 0% | 24 | 100% | R$ 2.44 | R$ 53 |
 | **ANTI: one total score** | 3 | 7.98% (18.5% rev) | 83.1% | **2,555** | 2.5% | R$ 0.02 | R$ 53 |
 
-Win-back audience per cut: mean/median = code 011; Klaviyo = Needs attention; Putler = At risk +
+Win-back audience per cut: mean/median/collapse = code 011; Klaviyo = Needs attention; Putler = At risk +
 Can't lose; thresholds = Lapsed repeat; sum = the middle band 8-12.
 
 **The findings the sessions are built on, all measured:**
@@ -219,7 +220,7 @@ source. Session 4 names weighting as a live debate and gives no canonical weight
 |---|---|---|---|
 | 1 | Three numbers and a snapshot date | Olist | One customer becomes three numbers; the frozen clock; the eight-group taxonomy as a mechanism |
 | 2 | The cut decides the segment | Olist + 私域 N=300 | Mean vs median vs tercile vs quintile on one skewed pile; 97% ties; identical customers, different scores |
-| 3 | **The RFM bench** | Olist sample | Six cuts, every share counted; the anti-lever |
+| 3 | **The RFM bench** | Olist sample | Seven cuts, every share counted; the anti-lever |
 | 4 | Beyond purchase | Taobao, Douyin, Pinduoduo | RFE, room loyalty, the referral axis; which axis replaces M and which adds |
 | 5 | From segment to action, and proving it | Douyin 店播, Klaviyo, 私域 | Action table per group; the holdout gate; message-everyone trap |
 | 6 | Keep it alive | all | Cadence, drift, the RFM spec sheet, graduation to CLV (a6) or clustering (Unsupervised) |
@@ -273,3 +274,18 @@ one doodle anchor per figure, labels outside boxes where possible, no paragraph 
   document-scoped
 
 Floor: 3 figures per session page, one per Part, plus one in the build-along.
+
+### Added 2026-09-24 after Phoebe's coverage check
+
+- **The tutorial route, "fifths then collapse"** (rank quintiles, score above 3 becomes 1): on the
+  population 111 = 6.92% of customers (13.1% of revenue), 84.8% of whom bought once; 011 = 9.80%,
+  86.3% once; 000 22.25%, 100 14.47%, 010 14.24%, 001 13.72%, 101 9.56%, 110 9.04%. Seventh
+  bench preset `collapse`; on the 4,000: top 6.38% / 84.7% once, win-back 422 / 12.6% repeat,
+  R$ 0.53 per message, R$ 203 net (the largest total on the bench, another total-vs-per-message
+  divergence).
+- **`pd.cut` with the tutorial's recency edges** [0, 50, 100, 200, 300, 365]: bins 10,662 / 8,819 /
+  23,013 / 21,159 / 8,733; **20,972 customers (22.5%) past 365 days become NaN silently.**
+  `pd.qcut(R, 5)` edges on the population: 2, 94, 179, 270, 384, 715 days; about 18,700 a fifth.
+- **Distribution shapes** (session 1 step 5 and figure s1e): R by 100-day band 20.9 / 24.7 /
+  22.7 / 14.1 / 11.2 / 6.2 / 0.3%; F 97.0 / 2.76 / 0.19 / 0.05%; M by band 46.3 / 32.3 / 10.3 /
+  4.5 / 2.0 / 3.3 (500-1000) / 1.2% (over 1000).

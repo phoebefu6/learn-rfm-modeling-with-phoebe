@@ -138,6 +138,20 @@
              top: ["Champions"], winback: ["At risk", "Can't lose"], q: q };
   }
 
+  /* The tutorial route: rank each column into fifths (1-5), then collapse a score above 3 to 1
+   * and 3 or below to 0, and read the three bits as the same eight groups. A rank split at the
+   * top two fifths of each axis, so it inherits the row-order scoring of a tied column. */
+  function cutCollapse(d) {
+    var q = quintiles(d);
+    var seg = new Array(d.n), codes = new Array(d.n);
+    for (var i = 0; i < d.n; i++) {
+      seg[i] = (q.Rq[i] > 3 ? "1" : "0") + (q.Fq[i] > 3 ? "1" : "0") + (q.Mq[i] > 3 ? "1" : "0");
+      codes[i] = "" + q.Rq[i] + q.Fq[i] + q.Mq[i];
+    }
+    return { seg: seg, codes: codes, names: function (c) { return EIGHT[c].name + " (" + c + ")"; },
+             top: ["111"], winback: ["011"], q: q };
+  }
+
   function cutThreshold(d) {
     var medM = median(d.M);
     var seg = new Array(d.n);
@@ -172,6 +186,9 @@
     { id: "median", label: "Median split, eight groups",
       note: "Same eight groups, but the knife sits at the median. Half the customers are 'high' on each axis by construction.",
       cut: function (d) { return cutTwoByTwo(d, median); } },
+    { id: "collapse", label: "Fifths, then collapse to eight",
+      note: "Rank each column into fifths, call a score above 3 'high', read the bits as the same eight groups. The route most tutorials take.",
+      cut: cutCollapse },
     { id: "klaviyo", label: "Klaviyo's rule, six groups",
       note: "Recency by calendar (180 and 365 days), frequency and spend by rank terciles. Thresholds as published in Klaviyo's help centre.",
       cut: cutKlaviyo },

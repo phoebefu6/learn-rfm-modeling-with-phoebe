@@ -149,6 +149,67 @@
       </div>
     </details>
 
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two hand-drawn rulers of recency in days from 0 to 715. The top ruler has the fixed edges 50, 100, 200, 300 and 365 with very unequal bin counts of 10,662, 8,819, 23,013, 21,159 and 8,733 customers, and a hatched region past 365 days holding 20,972 customers that pd.cut turns into NaN. The bottom ruler has equal counts of about 18,700 per fifth and the edges land wherever the data puts them: 94, 179, 270 and 384 days.">
+        <defs>
+          <filter id="s2fSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="83" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2fHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <pattern id="s2fHt" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#B4530A" stroke-width="1" opacity=".6"/></pattern>
+        </defs>
+        <style>
+          .s2fH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2fL { font: 600 11px Inter, sans-serif; fill: #14213D; }
+          .s2fS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2fB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2fN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2fH" x="30" y="26">TWO FAMILIES OF KNIFE, ONE COLUMN: RECENCY IN DAYS</text>
+        <text class="s2fS" x="430" y="26">ruler runs 0 to 715 days · 1 px = about 1 day</text>
+
+        <g filter="url(#s2fSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- top ruler: pd.cut fixed edges. x = 60 + days x 1.1 -->
+          <path d="M60 110 L846 110" stroke-width="3"/>
+          <path d="M115 96 L115 124 M170 96 L170 124 M280 96 L280 124 M390 96 L390 124 M462 96 L462 124" stroke="#B4530A" stroke-width="2.5"/>
+          <rect x="462" y="98" width="384" height="24" fill="url(#s2fHt)"/>
+          <!-- bottom ruler: qcut equal counts -->
+          <path d="M60 218 L846 218" stroke-width="3"/>
+          <path d="M163 204 L163 232 M257 204 L257 232 M357 204 L357 232 M482 204 L482 232" stroke="#1D4ED8" stroke-width="2.5"/>
+          <!-- a small knife doodle -->
+          <path d="M30 60 L30 84 M24 64 L36 64" stroke="#4F5B7A"/>
+        </g>
+
+        <text class="s2fL" x="60" y="60">pd.cut · you choose the edges, the counts fall where they fall</text>
+        <text class="s2fB" x="115" y="90" text-anchor="middle">50</text>
+        <text class="s2fB" x="170" y="90" text-anchor="middle">100</text>
+        <text class="s2fB" x="280" y="90" text-anchor="middle">200</text>
+        <text class="s2fB" x="390" y="90" text-anchor="middle">300</text>
+        <text class="s2fB" x="462" y="90" text-anchor="middle">365</text>
+        <text class="s2fS" x="87" y="142" text-anchor="middle">10,662</text>
+        <text class="s2fS" x="142" y="142" text-anchor="middle">8,819</text>
+        <text class="s2fS" x="225" y="142" text-anchor="middle">23,013</text>
+        <text class="s2fS" x="335" y="142" text-anchor="middle">21,159</text>
+        <text class="s2fS" x="426" y="142" text-anchor="middle">8,733</text>
+        <text class="s2fB" x="654" y="142" text-anchor="middle">20,972 customers past the last edge become NaN</text>
+        <text class="s2fS" x="654" y="158" text-anchor="middle">22.5 percent of the file, silently</text>
+
+        <text class="s2fL" x="60" y="196">pd.qcut · you choose the counts, the edges fall where they fall</text>
+        <text class="s2fS" x="163" y="250" text-anchor="middle">94</text>
+        <text class="s2fS" x="257" y="250" text-anchor="middle">179</text>
+        <text class="s2fS" x="357" y="250" text-anchor="middle">270</text>
+        <text class="s2fS" x="482" y="250" text-anchor="middle">384</text>
+        <text class="s2fS" x="111" y="266" text-anchor="middle">18,802</text>
+        <text class="s2fS" x="210" y="266" text-anchor="middle">18,757</text>
+        <text class="s2fS" x="307" y="266" text-anchor="middle">18,723</text>
+        <text class="s2fS" x="419" y="266" text-anchor="middle">18,471</text>
+        <text class="s2fS" x="664" y="266" text-anchor="middle">18,605, spanning 384 to 715 days</text>
+
+        <text class="s2fN" x="30" y="292">Fixed edges give bins you can name and rows you can lose. Equal counts give bins you can compare and edges nobody chose.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the hatched tail is the tutorial's own edges applied to a file that runs past them, and the loss is a fifth of the customers</figcaption>
+    </figure>
+
     <details class="card">
       <summary><span class="mode self">Self-study</span>Why mean and median disagree on spend: skew<span class="mini">2 min</span><span class="caret">▶</span></summary>
       <div class="body">
@@ -371,6 +432,82 @@
       <tr><td>Fifths into Putler's eleven</td><td>125, collapsed to 11</td><td>Champions (R 4-5, F+M 4-5)</td><td>16.1%</td><td>92.1%</td></tr>
     </table>
 
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The tutorial route drawn as a pipeline: each column ranked into fifths giving scores 1 to 5, then a knife at 3 turning 4 and 5 into a 1 and 1 to 3 into a 0, then the three bits read as the eight groups. On Olist this calls 6.92 percent of customers high value, of whom 84.8 percent bought once, and puts 9.8 percent in key win-back, of whom 86.3 percent bought once. Beside it the mean split gives 1.28 percent high value with nobody who bought once.">
+        <defs>
+          <filter id="s2gSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="89" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="s2gHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#1D4ED8" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="s2gAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#14213D" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .s2gH { font: 800 12px Inter, sans-serif; fill: #14213D; }
+          .s2gL { font: 600 11px Inter, sans-serif; fill: #14213D; }
+          .s2gS { font: 400 11px Inter, sans-serif; fill: #4F5B7A; }
+          .s2gB { font: 800 11px Inter, sans-serif; fill: #8A3E06; }
+          .s2gV { font: 800 15px Inter, sans-serif; fill: #1E3A8A; }
+          .s2gW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .s2gN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
+        </style>
+
+        <text class="s2gH" x="30" y="26">THE TUTORIAL ROUTE: FIFTHS, THEN A KNIFE AT 3, THEN EIGHT GROUPS</text>
+
+        <g filter="url(#s2gSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- five score boxes -->
+          <rect x="40" y="70" width="34" height="34" rx="5" fill="#FFFFFF"/>
+          <rect x="80" y="70" width="34" height="34" rx="5" fill="#FFFFFF"/>
+          <rect x="120" y="70" width="34" height="34" rx="5" fill="#FFFFFF"/>
+          <rect x="160" y="70" width="34" height="34" rx="5" fill="url(#s2gHc)"/>
+          <rect x="200" y="70" width="34" height="34" rx="5" fill="url(#s2gHc)"/>
+          <!-- the knife at 3 -->
+          <path d="M157 56 L157 122" stroke="#B4530A" stroke-width="3"/>
+          <path d="M151 60 L163 60" stroke="#B4530A"/>
+          <!-- arrow to bits -->
+          <path d="M244 87 L296 87" marker-end="url(#s2gAr)"/>
+          <rect x="304" y="66" width="120" height="42" rx="8" transform="rotate(-0.6 364 87)" fill="#EEF3FC"/>
+          <path d="M432 87 L484 87" marker-end="url(#s2gAr)"/>
+          <rect x="492" y="60" width="150" height="54" rx="8" transform="rotate(0.5 567 87)" fill="#1D4ED8" stroke="#1D4ED8"/>
+          <!-- result panels -->
+          <rect x="40" y="160" width="390" height="100" rx="8" transform="rotate(0.3 235 210)" fill="#FDEEDF" stroke="#B4530A"/>
+          <rect x="450" y="160" width="390" height="100" rx="8" transform="rotate(-0.3 645 210)" fill="#EEF3FC"/>
+        </g>
+
+        <text class="s2gL" x="57" y="92" text-anchor="middle">1</text>
+        <text class="s2gL" x="97" y="92" text-anchor="middle">2</text>
+        <text class="s2gL" x="137" y="92" text-anchor="middle">3</text>
+        <text class="s2gL" x="177" y="92" text-anchor="middle">4</text>
+        <text class="s2gL" x="217" y="92" text-anchor="middle">5</text>
+        <text class="s2gS" x="40" y="126">rank each column into fifths, 1 to 5</text>
+        <text class="s2gB" x="157" y="50" text-anchor="middle">above 3 = "high"</text>
+        <text class="s2gL" x="364" y="83" text-anchor="middle">4 or 5 becomes 1</text>
+        <text class="s2gS" x="364" y="99" text-anchor="middle">1 to 3 becomes 0</text>
+        <text class="s2gW" x="567" y="83" text-anchor="middle">"011" = Key win-back</text>
+        <text class="s2gS" x="567" y="101" text-anchor="middle" fill="#EEF3FC">the same eight names</text>
+        <text class="s2gS" x="660" y="90">a rank split at the</text>
+        <text class="s2gS" x="660" y="106">top two fifths per axis</text>
+
+        <text class="s2gB" x="56" y="184">FIFTHS, THEN COLLAPSE · on the 93,358</text>
+        <text class="s2gV" x="56" y="210">111 High value: 6.92%</text>
+        <text class="s2gS" x="56" y="228">of whom 84.8 percent bought exactly once</text>
+        <text class="s2gS" x="56" y="246">011 Key win-back: 9.80%, of whom 86.3 percent bought once</text>
+        <text class="s2gL" x="466" y="184">MEAN SPLIT · same people</text>
+        <text class="s2gV" x="466" y="210">111 High value: 1.28%</text>
+        <text class="s2gS" x="466" y="228">of whom nobody bought once</text>
+        <text class="s2gS" x="466" y="246">011 Key win-back: 0.79%, every one a repeat buyer</text>
+
+        <text class="s2gN" x="30" y="290">Same eight names, same three digits. The knife at 3 on a ranked, 97-percent-tied column is what fills the corners with first-time buyers.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the collapse step looks like a simplification of the fifths and is really a second knife, placed at the top two fifths by construction</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The tutorial route: fifths first, then collapse to eight<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Most RFM tutorials, including the one many analysts learn from, do not put the knife at the mean. They rank each column into fifths with <code>pd.qcut</code>, then collapse: a score of 4 or 5 becomes a 1, a score of 1 to 3 becomes a 0, and the three bits are read as the eight groups of session 1. It looks like the same taxonomy with a tidier scoring step in front of it.</p>
+        <p>It is a different knife. Collapsing at 3 is a rank split at <strong>the top two fifths of each axis, by construction</strong>, so 40 percent of customers are "high" on every column regardless of the column's shape. On frequency that is impossible to do honestly: 97 percent of the column is the value 1, so the fifths come from row order (Part 2), and the collapse then promotes about two fifths of identical one-time buyers to "frequent". On Olist the route calls <strong>6.92 percent of customers High value, and 84.8 percent of them bought exactly once</strong>; its Key win-back group is 9.8 percent of customers and 86.3 percent of those bought once. The mean split on the same people: 1.28 percent High value with nobody who bought once, 0.79 percent Key win-back and every one a repeat buyer.</p>
+        <p>Neither is the wrong taxonomy. The eight names are identical. What differs is where the knife sits and whether the column can bear it, and that is a decision to write down, not inherit. Session 3 runs both on the same 4,000 people side by side.</p>
+      </div>
+    </details>
+
     <details class="card">
       <summary><span class="mode live">Live</span>More cells is not more truth<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
@@ -560,7 +697,7 @@
       <h2>Five cuts on the same 93,358 customers</h2>
       <span class="tag demo">★ 22 min · everyone builds</span>
     </div>
-    <p class="lede">Start from the table session 1 saved, <code>rfm_2018-09-01.csv</code>, one row per customer with R, F and M. Seven steps: one report function, then five knives through it, then a table that puts the three "Champions" shares side by side. Every number in a comment is what the code prints on Olist; if yours differs, the difference is the knife.</p>
+    <p class="lede">Start from the table session 1 saved, <code>rfm_2018-09-01.csv</code>, one row per customer with R, F and M. Nine steps: one report function, then six knives through it (mean, median, fixed edges, Klaviyo thirds, fifths into Putler, fifths then collapse), then a table that puts the four "Champions" shares side by side. Every number in a comment is what the code prints on Olist; if yours differs, the difference is the knife.</p>
 
     <figure class="zoomable">
       <svg viewBox="0 0 880 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The session 1 pipeline redrawn: one saved RFM table on the left fans out into five parallel knives, mean split, median split, Klaviyo's rule, fifths into Putler, merchant thresholds, each feeding a small result card with its top-group share, and all five converge into one comparison table on the right.">
@@ -692,8 +829,25 @@ print(pd.crosstab(rfm["F"].clip(upper=3), rfm["Fq"]))
 # rows F=2 and F=3+: every repeat buyer sits in Fq 5, sharing it with those 15,871</div>
       </div>
       <div class="step">
+        <p><strong>Fixed edges with pd.cut, and the row it quietly drops.</strong> The tutorial edges for recency are 0, 50, 100, 200, 300 and 365 days. On a file whose recency runs to 715 days, every customer past the last edge becomes NaN, and nothing warns you.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · pd.cut on recency, the tutorial edges</span>edges = [0, 50, 100, 200, 300, 365]
+rfm["R_bin"] = pd.cut(rfm["R"], edges)               # left-open, right-closed: (0, 50], (50, 100] ...
+print(rfm["R_bin"].value_counts().sort_index())
+# (0, 50]      10662
+# (50, 100]     8819
+# (100, 200]   23013
+# (200, 300]   21159
+# (300, 365]    8733
+print(rfm["R_bin"].isna().sum())                     # 20972 customers past 365 days: NaN, 22.5% of the file
+
+# the same column with counts fixed instead of edges: fifths, edges wherever the data puts them
+rfm["R_score"] = pd.qcut(rfm["R"], 5, labels=[5, 4, 3, 2, 1])   # reversed: fewest days = 5
+print(pd.qcut(rfm["R"], 5, retbins=True)[1].round())            # [2, 94, 179, 270, 384, 715]
+print(rfm["R_score"].value_counts().sort_index())               # about 18,700 in each fifth</div>
+      </div>
+      <div class="step">
         <p><strong>Klaviyo's rule.</strong> Recency by calendar, 180 and 365 days; frequency and spend by rank thirds, with the same rank trick; then the published dictionary from 27 codes to six groups.</p>
-        <div class="prompt-box good"><span class="label">★ Step 5 · Klaviyo's six</span>KLAVIYO = {
+        <div class="prompt-box good"><span class="label">★ Step 6 · Klaviyo's six</span>KLAVIYO = {
     "Champions":       ["333", "332", "323"],
     "Loyal":           ["321", "322", "331", "232", "233"],
     "Recent":          ["312", "313", "311", "222", "223"],
@@ -721,7 +875,7 @@ cut_report(rfm, kl, top_rule=["Champions"], winback_rule=["Needs attention"])
       </div>
       <div class="step">
         <p><strong>Putler's eleven.</strong> Fifths on all three, F and M averaged, half scores rounded up, then the published ranges. The ranges overlap, so the function reads top to bottom and the first match wins; that is the convention, and it is written where the next reader can see it.</p>
-        <div class="prompt-box good"><span class="label">★ Step 6 · fifths into Putler's map</span>def fifths(s, labels):
+        <div class="prompt-box good"><span class="label">★ Step 7 · fifths into Putler's map</span>def fifths(s, labels):
     return pd.qcut(s.rank(method="first"), 5, labels=labels).astype(int)
 
 def putler_name(R, FM):
@@ -753,11 +907,28 @@ cut_report(rfm, pt, top_rule=["Champions"], winback_rule=["At risk", "Can't lose
 print(pt.value_counts())   # 7 of 11 non-empty: New, Promising, Can't lose, Lost never fill</div>
       </div>
       <div class="step">
-        <p><strong>One table, three "Champions".</strong> The same people, three shares, and a column that says how many of the best never came back.</p>
-        <div class="prompt-box good"><span class="label">★ Step 7 · the comparison</span>rows = []
-for name, scores, top in [("Mean split, 8 groups", code_mean, ["111"]),
-                          ("Klaviyo's rule, 6",    kl,        ["Champions"]),
-                          ("Fifths into Putler",   pt,        ["Champions"])]:
+        <p><strong>The tutorial route: fifths, then collapse to eight.</strong> Score every column 1 to 5 by rank, call a score above 3 "high", read the bits as the same eight groups. It is a rank split at the top two fifths of each axis, so on frequency it inherits step 4's row-order scoring before the collapse.</p>
+        <div class="prompt-box good"><span class="label">★ Step 8 · fifths, then collapse</span>def collapse(rfm):
+    Rq = fifths(rfm["R"], [5, 4, 3, 2, 1])
+    Fq = fifths(rfm["F"], [1, 2, 3, 4, 5])
+    Mq = fifths(rfm["M"], [1, 2, 3, 4, 5])
+    hi = lambda q: (q &gt; 3).astype(int).astype(str)     # 4 or 5 -> "1", 1 to 3 -> "0"
+    return hi(Rq) + hi(Fq) + hi(Mq)
+
+code_collapse = collapse(rfm)
+cut_report(rfm, code_collapse, top_rule=["111"], winback_rule=["011"])
+# top group    6.92% of customers, 13.1% of revenue
+# bought once  84.8% of the top group
+# win-back 011  9.80% of customers ... (86.3% of them bought once)
+# Compare the mean split: 111 was 1.28% with nobody who bought once, 011 was 0.79% and all repeat buyers.</div>
+      </div>
+      <div class="step">
+        <p><strong>One table, four "Champions".</strong> The same people, four shares, and a column that says how many of the best never came back.</p>
+        <div class="prompt-box good"><span class="label">★ Step 9 · the comparison</span>rows = []
+for name, scores, top in [("Mean split, 8 groups",   code_mean,     ["111"]),
+                          ("Fifths then collapse, 8", code_collapse, ["111"]),
+                          ("Klaviyo's rule, 6",      kl,            ["Champions"]),
+                          ("Fifths into Putler",     pt,            ["Champions"])]:
     is_top = scores.isin(top)
     rows.append({"cut": name,
                  "called best %": round(is_top.mean() * 100, 2),
@@ -765,6 +936,7 @@ for name, scores, top in [("Mean split, 8 groups", code_mean, ["111"]),
 print(pd.DataFrame(rows).to_string(index=False))
 #                  cut  called best %  of whom bought once %
 # Mean split, 8 groups           1.28                    0.0
+# Fifths then collapse, 8        6.92                   84.8
 #   Klaviyo's rule, 6          13.90                   91.0
 #  Fifths into Putler          16.10                   92.1</div>
       </div>
