@@ -151,7 +151,7 @@ Can't lose; thresholds = Lapsed repeat; sum = the middle band 8-12.
 1. **The cut decides who is called best.** Two vendor defaults name 13-16% of a base where 97%
    bought once as Champions, and nine in ten of those Champions bought exactly once. The
    mean-split top group is 1% of customers and none of them bought once. Same people.
-2. **Quintiles on a tied column are a lottery.** 800 identical one-time buyers were scored 1 and
+2. **Quintiles on a tied column are decided by row order.** 800 identical one-time buyers were scored 1 and
    683 identical ones scored 5, by row order. That is what the rank "fix" for the duplicate-edge
    error does when 97% of a column is the same value, and it is why the vendor Champions are
    mostly one-time buyers.

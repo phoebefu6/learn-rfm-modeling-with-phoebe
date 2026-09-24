@@ -187,7 +187,7 @@
           .s2bN { font: 400 12px Inter, sans-serif; fill: #4F5B7A; }
         </style>
 
-        <text class="s2bH" x="30" y="26">THE LOTTERY: rank(method="first") ON A COLUMN THAT IS 97% THE SAME VALUE</text>
+        <text class="s2bH" x="30" y="26">ROW ORDER DECIDES: rank(method="first") ON A COLUMN THAT IS 97% THE SAME VALUE</text>
         <text class="s2bS" x="30" y="46">90,557 identical one-time buyers, F = 1, in database row order</text>
 
         <g filter="url(#s2bSk)" fill="none" stroke="#14213D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -258,18 +258,18 @@
     </figure>
 
     <details class="card">
-      <summary><span class="mode live">Live</span>The lottery: identical customers, different scores<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <summary><span class="mode live">Live</span>Row order decides: identical customers, different scores<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>Run <code>pd.qcut(rfm["F"], 5)</code> on Olist and pandas raises <code>ValueError: Bin edges must be unique: [1, 1, 1, 1, 1, 15]</code>. Read the edges: the 20th, 40th, 60th and 80th percentiles of frequency are all 1, because 97 percent of the column is 1. There is no honest place to put four knives. The error is pandas telling you the truth about your data.</p>
         <p>The fix every tutorial reaches for is to rank first: <code>pd.qcut(rfm["F"].rank(method="first"), 5)</code>. <code>method="first"</code> breaks ties by <strong>order of appearance</strong>, so the 90,557 identical one-time buyers get 90,557 different ranks, the edges become unique, and the error disappears. What has actually happened is that a column with almost no information has been given five equal bins by row order. On Olist that scores <strong>18,672 identical one-time buyers a 1 and 15,871 identical one-time buyers a 5</strong>. The 2,801 repeat buyers all land in the top fifth too, which is correct, but they share it with fifteen thousand people who are no different from the ones in the bottom fifth.</p>
-        <p>Every downstream Champion built on that score is drawn by that lottery. It is the whole reason the vendor maps in Part 3 crown one-time buyers.</p>
+        <p>Every downstream Champion built on that score is decided by that row order. It is the whole reason the vendor maps in Part 3 crown one-time buyers.</p>
       </div>
     </details>
 
     <details class="card">
       <summary><span class="mode self">Self-study</span>What the fix is actually for<span class="mini">2 min</span><span class="caret">▶</span></summary>
       <div class="body">
-        <p>The rank trick is not wrong in itself. It exists for <strong>spiky columns with real variety</strong>: a frequency column where most values are distinct but a few hundred customers share a value that happens to sit on a quintile edge. There, ranking breaks a tie among a few people and moves an edge by a few rows, which is a fair price for equal bins. The trick becomes a lottery only when the tie is most of the column, as it is on any one-time-buyer base, which is most retail data.</p>
+        <p>The rank trick is not wrong in itself. It exists for <strong>spiky columns with real variety</strong>: a frequency column where most values are distinct but a few hundred customers share a value that happens to sit on a quintile edge. There, ranking breaks a tie among a few people and moves an edge by a few rows, which is a fair price for equal bins. The trick becomes arbitrary only when the tie is most of the column, as it is on any one-time-buyer base, which is most retail data.</p>
         <p>The test before applying it: <code>rfm["F"].value_counts(normalize=True).head()</code>. If one value holds more than a fifth of the rows, fifths on that column are not fifths, whatever pandas returns, and the honest move is a cut with chosen edges (once, twice, three or more) or a different dimension altogether. The full quintile build, the personas it feeds, and the persona-migration crosstab between two snapshots live in the retention course, <a href="https://phoebefu6.github.io/learn-customer-retention-with-phoebe/courses/a4-segmentation-rfm.html">Retention a4</a>; the mechanics are taught there and not repeated here. Tonight is about what the mechanics do to a base like this one.</p>
       </div>
     </details>
@@ -375,7 +375,7 @@
       <summary><span class="mode live">Live</span>More cells is not more truth<span class="mini">3 min</span><span class="caret">▶</span></summary>
       <div class="body">
         <p>The mean split's High value corner is small because "frequent" means above the mean of 1.033 orders, which is two or more, and only 3.0 percent of Olist customers ever got there. Zero percent of High value bought once, by construction. It is a tiny group, and it is a true one.</p>
-        <p>Klaviyo's rule scores recency by calendar (3 if the last order was within 180 days, 2 within 365, else 1) and frequency and spend by rank thirds. Rank thirds on a 97-percent-ones column is the Part 2 lottery with three bins instead of five: two thirds of the one-time buyers are handed an F of 2 or 3 by row order. Champions are the codes 333, 332 and 323, which lands on <strong>13.9 percent of customers, and 91.0 percent of them bought once</strong>. Putler's table takes fifths on all three axes, averages F and M, and calls R 4-5 with F+M 4-5 Champions: <strong>16.1 percent, 92.1 percent of them one-time buyers</strong>. On this base the two vendor maps agree with each other and disagree with the data.</p>
+        <p>Klaviyo's rule scores recency by calendar (3 if the last order was within 180 days, 2 within 365, else 1) and frequency and spend by rank thirds. Rank thirds on a 97-percent-ones column is the Part 2 row-order problem with three bins instead of five: two thirds of the one-time buyers are handed an F of 2 or 3 by row order. Champions are the codes 333, 332 and 323, which lands on <strong>13.9 percent of customers, and 91.0 percent of them bought once</strong>. Putler's table takes fifths on all three axes, averages F and M, and calls R 4-5 with F+M 4-5 Champions: <strong>16.1 percent, 92.1 percent of them one-time buyers</strong>. On this base the two vendor maps agree with each other and disagree with the data.</p>
         <p><strong>Replication note.</strong> Neither Klaviyo nor Putler documents how its live product breaks ties on a column that is 97 percent the same value. The figures above use the pandas <code>rank(method="first")</code> convention, which is what every tutorial that "fixes" the duplicate-edge error does. They are a property of that convention on this base, not a claim about either product's output on your account. Ask your vendor the tie question directly; the honest answer is worth more than the segment tile.</p>
       </div>
     </details>
@@ -802,7 +802,7 @@ print(pd.DataFrame(rows).to_string(index=False))
       <button class="qopt" type="button">B · pandas cannot bin integers; the fix converts the column to floats so fifths can be computed</button>
       <button class="qopt" type="button">C · 97 percent of the column is the value 1, so four of the five quantile edges land on the same number; the fix hands identical customers different ranks by row order, which makes the edges unique and on Olist scores 18,672 identical one-time buyers a 1 and 15,871 identical ones a 5</button>
       <button class="qopt" type="button">D · The frequency column needs to be log-transformed first; the fix is a workaround for skew</button>
-      <p class="qwhy">The error is pandas being honest about a column with almost no information in it. Ranking first makes the error go away by turning row order into a score, and every rank-based segment downstream inherits that lottery. Check value_counts before reaching for fifths; if one value holds more than a fifth of the rows, fifths are not fifths.</p>
+      <p class="qwhy">The error is pandas being honest about a column with almost no information in it. Ranking first makes the error go away by turning row order into a score, and every rank-based segment downstream inherits that arbitrariness. Check value_counts before reaching for fifths; if one value holds more than a fifth of the rows, fifths are not fifths.</p>
     </div>
 
     <div class="quiz-q" data-answer="1">
@@ -847,7 +847,7 @@ print(pd.DataFrame(rows).to_string(index=False))
       <div class="cheat-item"><b>cut fixes edges, qcut fixes counts</b><span>Right-closed by default. Recency labels reversed: [5, 4, 3, 2, 1].</span></div>
       <div class="cheat-item"><b>Five knives on spend</b><span>Median R$ 108 (50%) · thirds (33%) · mean R$ 165 (29.3%) · fifths (20%) · owner's R$ 300 (about 10%).</span></div>
       <div class="cheat-item"><b>Check ties before fifths</b><span>value_counts first. One value over a fifth of the rows means fifths are row order.</span></div>
-      <div class="cheat-item"><b>The lottery, in numbers</b><span>18,672 identical F = 1 customers scored 1; 15,871 scored 5. Same people.</span></div>
+      <div class="cheat-item"><b>Row order, in numbers</b><span>18,672 identical F = 1 customers scored 1; 15,871 scored 5. Same people.</span></div>
       <div class="cheat-item"><b>Three "Champions"</b><span>Mean split 1.28%, 0% once · Klaviyo 13.9%, 91% once · Putler 16.1%, 92% once.</span></div>
       <div class="cheat-item"><b>Small N</b><span>Divide N by bins first. 5% of 300 is 15 names. Median or owner threshold, plus the owner.</span></div>
     </div>
