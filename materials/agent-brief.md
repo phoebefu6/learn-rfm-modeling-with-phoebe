@@ -62,6 +62,10 @@ collapse whitespace, never dissolve a list into a paragraph, never drop a compon
   `#EEF3FC` cobalt-50 · `#14213D` ink · `#4F5B7A` muted · `#CBD5EE` faint · `#DCE3F3` hairline ·
   `#B4530A` tangerine · `#8A3E06` tangerine-ink · `#FDEEDF` tangerine-50 · `#FFFFFF` white ·
   `#991B1B` `#FEF2F2` `#FCA5A5` universal reds (only for a wrong-way panel).
+- Chinese terms: default to the English word. When the Chinese is genuinely the name (a publisher,
+  a platform feature with no settled English), write `中文 (English)` with the translation in
+  brackets after it, on EVERY occurrence. Grep `[\u4e00-\u9fff]` before you finish; the gate
+  does not check this. Phoebe's rule, 2026-09-24.
 - Titles and widget ids must not collide with sibling courses: do not title anything
   "Segment cuts", "Segmentation: who is retained", or use `id="cut-bench"`.
 
